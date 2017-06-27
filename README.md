@@ -1,9 +1,10 @@
 # webgame_project
 web-game with android and web both
 
-##목표) 웹게임 + 안드연동 (feat. DB와 서버)
+#목표
+웹게임 + 안드연동 (feat. DB와 서버)
 
-##필요한 그림(?) :
+#필요한 그림(?)
 #UI
 			-버튼
 				확인
@@ -43,7 +44,7 @@ web-game with android and web both
 		
 
 
-##필요한 기술 기능(?) :
+#필요한 기술 기능(?)
 		영웅 특기?
 		사용자의 이미지 업로드
 		능력치류: 힘 민 체
@@ -63,7 +64,7 @@ web-game with android and web both
 
 
 
-##용어사전:
+#용어사전
 	지휘자: 영웅같은 뭐시기. 병력 지휘함. 병력 통제시 필수.
 	수정(자원): 뭔가 할때 필요한 자원. 수정으로 명명. 수정이다.
 
