@@ -23,7 +23,7 @@ web-game with android and web both
 				도시 지휘자 맵 우편함 동맹 (랭킹..?)
 			* 기타UI
 				?
-			## 건물류
+		## 건물류
 			* 마을
 				공터(건물을 짓기위한 초석)
 				건설중
@@ -59,7 +59,7 @@ web-game with android and web both
 	지휘자: 영웅같은 뭐시기. 병력 지휘함. 병력 통제시 필수.
 	수정(자원): 뭔가 할때 필요한 자원. 수정으로 명명. 수정이다.
 	아이콘: 작은 사각형으로 정보를 알려줄때 직관성을 위해 사용하는 그림
-#참조(references):
+# 참조(references)
 	* 웹web
 		- kirarafantasia.com
 
