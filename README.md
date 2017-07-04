@@ -42,8 +42,8 @@ web-game with android and web both
 		## 지휘자(포트릿)
 			남자 여자
 # 필요한 기술 기능(?)
-		영웅 특기?
-		사용자의 이미지 업로드
+		영웅 특기?	-	보류
+		사용자의 이미지 업로드	-	보류
 		능력치류: 힘 민 체
 				* 힘에 통솔부대 유닛류 공격력증가
 				* 민에 맵 이동속도 증가
@@ -67,19 +67,85 @@ web-game with android and web both
 
 
 
-//////////////////미정리
+# DB
 
-DB
+Members Table
+이름	UserID	UserPW	UserName	UserEmail	UserLevel	SaveProduction
+타입	varchar	varchar	varchar		varchar		int		int
+비고	P키				Nullable			보유자원
 
-	유저정보(id pwd,nickname, email)
-	마을(소유자 locationId, 마을위치xy, 주둔병력,
-		 외부자원지(소유자(외래키), x,y 자원종류 주둔병력)
-		지휘자 병력
+Unit
+이름 unitId	uName	atk	hp	spd
+타입 int	varchar int	int	int
+비고 P키
+
+
+
+SlotTable
+이름	slotId	SlotUID amount
+타입	int	int	int
+비고	P키	유닛F키 유닛수
+	auto	Nullable 
+
+Castle Table
+이름 	UserId	CastleName	CastleKind	LocationId
+타입	varchar	varchar		int		int
+비고						P키
+
+Hero	Table
+이름	ID	STR	AGI	CON	Owner	LocationID	specialty	status			potrait	sex
+타입	int	int	int	int	varchar	int		int		int			int	bit
+비고	P키				F키	F키		영웅특기	상태			면상	성별
+	auto				UserID			미구현		(공격가는중, 귀환중, 대기)
+
+Specialty Table(미구현)
+이름	ID	kind	?	?
+타입	int	int	?	?
+비고	P키	병종	무언가능력치증가효과에대한무언가.
+	auto
+
+CastleTroop Table
+이름	LocationId	slot1	slot2	slot3
+타입	int		int	int	int
+비고	F키		슬롯테이블을값으로가짐
+
+HeroTroop Table
+이름	HeroID	slot1	slot2	slot3	slot4	slot5	slot6
+타입	int	int	int	int	int	int	int
+비고	F키	슬롯테이블을값으로가지는여섯개의슬롯인것이다
+
+
+Building Table
+이름	LocationId	kind	level	roomNumber
+타입	int		int	int	int
+비고	F키		건물종류 건물레벨 마을내_방번호
+
+Build Table
+이름	 Name	buildTime	value
+타입	varchar	time		int
+비고	P키	건설시간	소모자원
+	건물이름
+
+Structure Table
+이름	kind	name	buildtime	value
+타입	int	varchar	time		int
+비고	P키	건물이름 건설시간	소모자원
+
+UnitBuild Table
+이름	UnitId	name	buildTime	value
+타입	int	varchar	time		int
+비고	F키	유닛이름 양성시간	소모자원
 
 
 
 
-	지휘자
-	병력
+
+
+
+
+
+
+
+
 
 
