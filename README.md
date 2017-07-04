@@ -63,6 +63,7 @@ web-game with android and web both
 # ÂüÁ¶(references)
 	* À¥web
 		- kirarafantasia.com
+		- https://www.slideshare.net/_ce/db-42498020
 
 
 
