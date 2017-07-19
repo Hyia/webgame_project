@@ -6,9 +6,8 @@
 </head>
 <body>
 <h1>
-	Hello world!  
+	this is index page
+	이것은 인덱스 페이지로 제일 먼저 나타나는 페이지.
 </h1>
-
-<P>  The time on the server is ${serverTime}. </P>
 </body>
 </html>
