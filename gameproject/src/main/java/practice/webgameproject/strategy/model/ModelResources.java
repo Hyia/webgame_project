@@ -22,7 +22,10 @@ public class ModelResources {
 	}
 	
 	
-	
+
+	/**
+	 * fixme:// LocationID를 통해 비교할 다른 무언가가 나타나면 추가할 것.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof ModelResources){
