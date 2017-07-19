@@ -1,0 +1,151 @@
+members TABLE
+	UserID		VARCHAR(20)
+	UserPW		VARCHAR(20)
+	UserNicName	VARCHAR(20)
+	UserEmail	VARCHAR(50)
+	UserLevel	INT(11)
+	SaveProduction 	DECIMAL(11,0)
+	
+	PRIMARY KEY (`UserID`)
+
+=============================================
+outresourcee TABLE
+	LocationID	INT(11) 	AUTO_INCREMENT
+	UserID		VARCHAR(20) 
+	Production 	INT(11) 
+	Kind 		INT(11) 
+	
+	PRIMARY KEY (`LocationID`)
+
+=============================================
+resourcee TABLE
+	LocationID	INT(11) 
+	Production 	INT(11)
+	
+	INDEX `FKresourcee994383` (`LocationID`),
+	CONSTRAINT `FKresourcee994383` FOREIGN KEY (`LocationID`) REFERENCES `castle` (`LocationID`)
+
+=============================================
+
+slot TABLE
+	SoltID 		INT(11)		AUTO_INCREMENT
+	SoltUID 	INT(11)
+	SoltAmount	INT(11)
+	
+	PRIMARY KEY (`SoltID`),
+	INDEX `FKslot24470` (`SoltUID`),
+	CONSTRAINT `FKslot24470` FOREIGN KEY (`SoltUID`) REFERENCES `unit` (`UnitID`)
+
+=============================================
+
+structures TABLE
+	Name 		VARCHAR(20)
+	Kind 		INT(11) 	AUTO_INCREMENT
+	Time 		INT(11) 
+	Values 		INT(11) 
+	
+	PRIMARY KEY (`Kind`)
+	
+=============================================
+
+unit TABLE
+	UnitID 		INT(11) 	AUTO_INCREMENT
+	Name 		VARCHAR(20)
+	ATK 		INT(11) 
+	SPD 		INT(11) 
+	HP 		INT(11) 
+	
+	PRIMARY KEY (`UnitID`)
+	
+=============================================
+
+unitbuild TABLE
+	UnitID 		INT(11)
+	Name 		VARCHAR(20)
+	BuildTime 	TIME
+	Values 		INT(11)
+	
+	PRIMARY KEY (`UnitID`),
+	INDEX `FKunitbuild757991` (`UnitID`),
+	CONSTRAINT `FKunitbuild757991` FOREIGN KEY (`UnitID`) REFERENCES `unit` (`UnitID`)
+	
+=============================================
+
+xyval TABLE
+	LocationID	 INT(11)
+	CastleX 	 INT(11)
+	CastleY 	 INT(11)
+	Kind 		 INT(11)
+	
+	PRIMARY KEY (`LocationID`),
+	INDEX `FKxyval622154` (`LocationID`),
+	INDEX `FKxyval748416` (`LocationID`),
+	CONSTRAINT `FKxyval622154` FOREIGN KEY (`LocationID`) REFERENCES `castle` (`LocationID`),
+	CONSTRAINT `FKxyval748416` FOREIGN KEY (`LocationID`) REFERENCES `outresourcee` (`LocationID`)
+	
+=============================================
+
+herotroop TABLE
+	HeroID	 INT(11)
+	SlotID 	 INT(11)
+	
+	INDEX `FKherotroop19456` (`HeroID`),
+	INDEX `FKherotroop803884` (`SlotID`),
+	CONSTRAINT `FKherotroop19456` FOREIGN KEY (`HeroID`) REFERENCES `herotable` (`HeroID`),
+	CONSTRAINT `FKherotroop803884` FOREIGN KEY (`SlotID`) REFERENCES `slot` (`SoltID`)
+	
+=============================================
+
+herotable TABLE
+	HeroID 		INT(11)		AUTO_INCREMENT
+	STR 		INT(11) 
+	AGI 		INT(11) 
+	CON 		INT(11) 
+	Owner 		VARCHAR(20)
+	LacationID  	INT(11) 
+	Statuus 	INT(11) 
+	Specialty 	INT(11) 
+	Potrait 	INT(11) 
+	Sex 		BIT(1)
+	
+	PRIMARY KEY (`HeroID`),
+	INDEX `FKherotable409061` (`LacationID`),
+	CONSTRAINT `FKherotable409061` FOREIGN KEY (`LacationID`) REFERENCES `xyval` (`LocationID`)
+	
+=============================================
+
+castletroop TABLE
+	LocationID	 INT(11)
+	SlotID 		 INT(11)
+	
+	INDEX `FKcastletroo610402` (`LocationID`),
+	INDEX `FKcastletroo459201` (`SlotID`),
+	CONSTRAINT `FKcastletroo459201` FOREIGN KEY (`SlotID`) REFERENCES `slot` (`SoltID`),
+	CONSTRAINT `FKcastletroo610402` FOREIGN KEY (`LocationID`) REFERENCES `castle` (`LocationID`)
+	
+=============================================
+
+castle TABLE
+	UserID 		 VARCHAR(20)
+	Name 		 VARCHAR(20)
+	Kind 		 INT(11) 
+	LocationID	 INT(11) 	AUTO_INCREMENT
+	
+	PRIMARY KEY (`LocationID`),
+	INDEX `FKcastle962896` (`UserID`),
+	CONSTRAINT `FKcastle962896` FOREIGN KEY (`UserID`) REFERENCES `members` (`UserID`)
+	
+=============================================
+
+building TABLE
+	LocationID 	 INT(11)
+	Kind 		 INT(11)
+	Level 		 INT(11)	DEFAULT '1'
+	RoomNumber	 INT(11)
+	
+	INDEX `FKbuilding569226` (`LocationID`),
+	INDEX `FKbuilding863068` (`Kind`),
+	CONSTRAINT `FKbuilding569226` FOREIGN KEY (`LocationID`) REFERENCES `castle` (`LocationID`),
+	CONSTRAINT `FKbuilding863068` FOREIGN KEY (`Kind`) REFERENCES `structures` (`Kind`)
+
+=============================================
