@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.mysql.mapperWebGame">
+    
+    <!-- 아이디와 비밀번호로 정보조회 -->
+    <select id="getMembers" parameterType="Modelmembers"  resultType="Modelmembers">        
+        SELECT * FROM members
+         WHERE UserID = #{UserID} &amp;&amp; UserPW =#{UserPW}
+    </select>
+    
+    <!-- 유저 성 정보 가져오기 -->
+    <select id="getCastle" parameterType="Modelmembers"  resultType="java.util.List">        
+        SELECT * FROM
+         castle where UserID=#{UserID}
+    </select>
+    
+    <!-- 성에 있는 영웅 정보 가져오기 -->
+    <select id="getherotable" parameterType="ModelCastle"  resultType="java.util.List">        
+  		 SELECT * FROM
+      		  herotable where LocationID=#{LocationID}
+         		 
+    </select>
+    
+    <!-- 성에병력 슬롯ID 정보 가져오기 -->
+    <select id="getCatleTroopData" parameterType="ModelCastle"  resultType="java.util.List">        
+ 		select SlotID,SoltUID,SoltAmount from
+			castletroop_SlotUnit
+				where LocationID=#{LocationID}
+ 
+    </select>
+    
+    <!-- 영웅의병력 슬롯ID 정보 가져오기 -->
+    <select id="getHeroTroopData" parameterType="ModelHerotable"  resultType="java.util.List">        
+ 		select SlotID,SoltUID,SoltAmount from
+			herotroop_SlotUnit
+				where HeroID=#{HeroID}
+    </select>
+    
+    <!-- 유닛  스탯정보 가져오기 -->
+    <select id="getUnit"  resultType="java.util.List">        
+ 		SELECT * FROM unit
+      		  unitbuild
+    </select>
+    
+    <!-- 유닛  건설정보 가져오기 -->
+    <select id="getUnit"  resultType="java.util.List">        
+ 		SELECT * FROM unitbuild
+    </select>
+    
+    <!-- 건물 건설정보  가져오기 -->
+    <select id="getUnit"  resultType="java.util.List">        
+ 		SELECT * FROM structures
+      		  
+    </select>
+    
+    <!-- 성의 건물 레벨 정보   가져오기 -->
+    <select id="getUnit" parameterType="ModelCastle"  resultType="java.util.List">        
+ 		SELECT * FROM building where LocationID=#{LocationID}
+      		  
+    </select>
+    
+    <!-- 성자원지+야외자원지   가져오기 -->
+    <select id="getUnit" parameterType="ModelCastle" resultType="java.util.List">  Production_AllResult      
+ 			SELECT AP FROM Production_AllResult where LocationID=#{LocationID}
+      		  
+    </select>
+    
+    
+    <select id="getPhoneList"              resultType="ModelPhone">
+        SELECT *  FROM TB_Phone 
+    </select>
+    
+    <insert id="insertPhone" parameterType="ModelPhone">
+        INSERT INTO 
+        TB_phone (   name  ,   manufacturer   ,   price  )
+        VALUES   ( #{name} , #{manufacturer}  , #{price} )
+    </insert>
+    
+    <!-- mysql multi insert
+        INSERT INTO t (col1, col2, col3) 
+               VALUES ('val1_1', 'val1_2', 'val1_3')
+                    , ('val2_1', 'val2_2', 'val2_3')
+                    , ('val3_1', 'val3_2', 'val3_3')
+        ;
+     -->
+    <insert id="insertPhoneList" parameterType="java.util.List">
+        INSERT INTO  TB_Phone (   name  ,   manufacturer   ,   price  )
+        VALUES
+            <foreach collection="list" item="item" index="index" open="(" separator="),(" close=")">
+                #{item.name} , #{item.manufacturer} , #{item.price}
+            </foreach>
+    </insert>
+    
+ </mapper>

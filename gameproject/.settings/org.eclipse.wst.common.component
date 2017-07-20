@@ -4,10 +4,7 @@
 		<wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/resources"/>
 		<wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/java"/>
 		<wb-resource deploy-path="/" source-path="src/main/webapp"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/resources"/>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Administrator/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/4.1.9.RELEASE/ad15dfeb48d0127e424f1a3c0d15e4c81a5dc2b7/spring-beans-4.1.9.RELEASE.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>
