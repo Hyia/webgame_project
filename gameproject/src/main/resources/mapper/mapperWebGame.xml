@@ -3,14 +3,93 @@
 
 <mapper namespace="mapper.mysql.mapperWebGame">
     
+    <!-- Insert Mappers Start ======================================================== -->
+    
+    <!-- Members Insert -->
+    <select id="InsertMembers" parameterType="ModelMembers">        
+        Insert into Members
+        	('UserID', 'UserPW', 'UserNicName', 'UserEmail', 'UserLevel', 'SaveProduction')
+        		values (#{UserID}, #{UserPW}, #{UserNicName}, #{UserEmail}, #{UserLevel}, #{SaveProduction})
+    </select>
+    
+    <!-- Castle Insert -->
+    <select id="InsertCastle" parameterType="ModelCastle">        
+        Insert into Castle
+        	('UserID', 'Name', 'Kind', 'LocationID')
+        		values (#{UserID}, #{Name}, #{Kind}, #{LocationID})
+    </select>
+    
+    <!-- xyval Insert -->
+    <select id="InsertXYval" parameterType="ModelXYval">        
+        Insert into xyval
+        	('LocationID', 'CastleX', 'CastleY', 'Kind')
+        		values (#{LocationID}, #{CastleX}, #{CastleY}, #{Kind})
+    </select>
+    
+    <!-- resource Insert -->
+    <select id="InsertResource" parameterType="ModelResource">        
+        Insert into resource
+        	('LocationID', 'Production')
+        		values (#{LocationID}, #{Production})
+    </select>
+    
+    <!-- OutResource Insert -->
+    <select id="InsertOutResource" parameterType="ModelOutResource">        
+        Insert into OutResource
+        	('LocationID', 'UserID', 'Production', 'Kind')
+        		values (#{LocationID}, #{UserID}, #{Production}, #{Kind})
+    </select>
+    
+    <!-- Building Insert -->
+    <select id="InsertBuilding" parameterType="ModelBuilding">        
+        Insert into Building
+        	('LocationID', 'Kind', 'Level', 'RoomNumber')
+        		values (#{LocationID}, #{Kind}, #{Level}, #{RoomNumber})
+    </select>
+    
+    <!-- Castletroop Insert -->
+    <select id="InsertCastletroop" parameterType="ModelCastletroop">        
+        Insert into Castletroop
+        	('LocationID', 'SlotID')
+        		values (#{LocationID}, #{SlotID})
+    </select>
+    
+    <!-- Herotable Insert -->
+    <select id="InsertHerotable" parameterType="ModelHerotable">        
+        Insert into Herotable
+        	('HeroID', 'STR', 'AGI', 'CON', 'Owner', 'LocationID','Statuus', 'Specialty', 'Potrait', 'Sex')
+        		values (#{HeroID}, #{STR}, #{AGI}, #{CON}, #{Owner}, #{LocationID}, #{Statuus}, #{Specialty}, #{Potrait}, #{Sex} )
+    </select>
+    
+    <!-- Herotroop Insert -->
+    <select id="InsertHerotroop" parameterType="ModelHerotroop">        
+        Insert into Herotroop
+        	('HeroID', 'SlotID')
+        		values (#{HeroID}, #{SlotID})
+    </select>
+    
+    <!-- Slot Insert -->
+    <select id="InsertSlot" parameterType="ModelSlot">        
+        Insert into Slot
+        	('SlotID', 'SoltUID', 'SoltAmount')
+        		values (#{SlotID}, #{SoltUID}, #{SoltAmount})
+    </select>
+    
+    <!-- Insert Mappers End ======================================================== -->
+    
+    
+    
+    
+    <!-- select Mappers Start ======================================================== -->
+    
     <!-- 아이디와 비밀번호로 정보조회 -->
-    <select id="getMembers" parameterType="Modelmembers"  resultType="Modelmembers">        
+    <select id="getMembers" parameterType="ModelMembers"  resultType="Modelmembers">        
         SELECT * FROM members
          WHERE UserID = #{UserID} &amp;&amp; UserPW =#{UserPW}
     </select>
     
     <!-- 유저 성 정보 가져오기 -->
-    <select id="getCastle" parameterType="Modelmembers"  resultType="java.util.List">        
+    <select id="getCastle" parameterType="ModelMembers"  resultType="java.util.List">        
         SELECT * FROM
          castle where UserID=#{UserID}
     </select>
@@ -66,6 +145,7 @@
       		  
     </select>
     
+    <!-- select Mappers End ======================================================== -->
     
     <select id="getPhoneList"              resultType="ModelPhone">
         SELECT *  FROM TB_Phone 
