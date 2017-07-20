@@ -54,6 +54,17 @@ public class ModelMembers {
 		SaveProduction = STARTING_USER_RESOURCE_AMOUNT;
 	}
 	
+	
+	public ModelMembers(String userID, String userPW, String userNicName, String userEmail, Integer userLevel,
+			Integer saveProduction) {
+		super();
+		UserID = userID;
+		UserPW = userPW;
+		UserNicName = userNicName;
+		UserEmail = userEmail;
+		UserLevel = userLevel;
+		SaveProduction = saveProduction;
+	}
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof ModelMembers){

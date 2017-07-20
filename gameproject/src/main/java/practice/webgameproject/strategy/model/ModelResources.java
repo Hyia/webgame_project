@@ -1,7 +1,5 @@
 package practice.webgameproject.strategy.model;
 
-import static org.mockito.Matchers.contains;
-
 public class ModelResources {
 
 	private Integer LocationID;//
