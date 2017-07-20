@@ -32,6 +32,12 @@ public class ModelOutResources {
 		Production = production;
 		Kind = kind;
 	}
+	public ModelOutResources(Integer locationID, String userID, Integer production, Integer kind) {
+		LocationID = locationID;
+		UserID = userID;
+		Production = production;
+		Kind = kind;
+	}
 	
 	
 }
