@@ -1,6 +1,6 @@
 package practice.webgameproject.strategy.model;
 
-public class ModelUser {
+public class ModelMembers {
 	private static final int STARTING_USER_RESOURCE_AMOUNT = 0;// 신규유저 시작자원량
 
 	private	String	UserID			;				//` 		VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
@@ -45,7 +45,7 @@ public class ModelUser {
 	public void setSaveProduction(Integer saveProduction) {
 		SaveProduction = saveProduction;
 	}
-	public ModelUser(String userID, String userPW, String userNicName, String userEmail) {
+	public ModelMembers(String userID, String userPW, String userNicName, String userEmail) {
 		UserID = userID;
 		UserPW = userPW;
 		UserNicName = userNicName;
@@ -56,8 +56,8 @@ public class ModelUser {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof ModelUser){
-			ModelUser otherUser = (ModelUser)obj;
+		if(obj instanceof ModelMembers){
+			ModelMembers otherUser = (ModelMembers)obj;
 			if(this.UserID.equals(otherUser.UserID) ){
 				return true;
 			}
