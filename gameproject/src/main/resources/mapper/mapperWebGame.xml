@@ -10,31 +10,60 @@
     </select>
     
     <!-- 유저 성 정보 가져오기 -->
-    <select id="getCastle" parameterType="ModelCastle"  resultType="java.util.List">        
-        SELECT c.* FROM
-         members m join castle c
-          on m.UserID=c.UserID
+    <select id="getCastle" parameterType="Modelmembers"  resultType="java.util.List">        
+        SELECT * FROM
+         castle where UserID=#{UserID}
     </select>
     
     <!-- 성에 있는 영웅 정보 가져오기 -->
     <select id="getherotable" parameterType="ModelCastle"  resultType="java.util.List">        
-  		 SELECT h.* FROM
-      		  castle c join herotable h
-         		 on c.LocationID = h.LocationID
+  		 SELECT * FROM
+      		  herotable where LocationID=#{LocationID}
+         		 
     </select>
     
     <!-- 성에병력 슬롯ID 정보 가져오기 -->
-    <select id="getCatleTroopSoltId" parameterType="ModelCastle"  resultType="java.util.List">        
- 		SELECT ct.SlotID FROM
-      		  castle c join castletroop ct
-         		 on c.LocationID = ct.LocationID
+    <select id="getCatleTroopData" parameterType="ModelCastle"  resultType="java.util.List">        
+ 		select SlotID,SoltUID,SoltAmount from
+			castletroop_SlotUnit
+				where LocationID=#{LocationID}
+ 
     </select>
     
-    <!-- 성에병력 슬롯ID로 슬롯에 잇는 유닛 정보 가져오기 -->
-    <select id="getCatleTroopSoltId" parameterType="ModelCastle"  resultType="java.util.List">        
- 		SELECT ct.SlotID FROM
-      		  castle c join castletroop ct
-         		 on c.LocationID = ct.LocationID
+    <!-- 영웅의병력 슬롯ID 정보 가져오기 -->
+    <select id="getHeroTroopData" parameterType="ModelHerotable"  resultType="java.util.List">        
+ 		select SlotID,SoltUID,SoltAmount from
+			herotroop_SlotUnit
+				where HeroID=#{HeroID}
+    </select>
+    
+    <!-- 유닛  스탯정보 가져오기 -->
+    <select id="getUnit"  resultType="java.util.List">        
+ 		SELECT * FROM unit
+      		  unitbuild
+    </select>
+    
+    <!-- 유닛  건설정보 가져오기 -->
+    <select id="getUnit"  resultType="java.util.List">        
+ 		SELECT * FROM unitbuild
+    </select>
+    
+    <!-- 건물 건설정보  가져오기 -->
+    <select id="getUnit"  resultType="java.util.List">        
+ 		SELECT * FROM structures
+      		  
+    </select>
+    
+    <!-- 성의 건물 레벨 정보   가져오기 -->
+    <select id="getUnit" parameterType="ModelCastle"  resultType="java.util.List">        
+ 		SELECT * FROM building where LocationID=#{LocationID}
+      		  
+    </select>
+    
+    <!-- 성자원지+야외자원지   가져오기 -->
+    <select id="getUnit" parameterType="ModelCastle" resultType="java.util.List">  Production_AllResult      
+ 			SELECT AP FROM Production_AllResult where LocationID=#{LocationID}
+      		  
     </select>
     
     
