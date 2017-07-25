@@ -71,15 +71,31 @@ public class Engine {
 	public String getErrorMsg(int errorCode){
 		return service.getErrorMsg(errorCode);
 	}
-	
+
+	/**
+	 * 새 건물 건설용 메서드.
+	 * @param targetCastle
+	 * @param kind
+	 * @param roomNumber
+	 * @return IServices.SUCCESS or errorcode
+	 */
 	public int buildStucture(ModelCastle targetCastle,int kind,int roomNumber){
 		return buildStucture(targetCastle.getLocationID(), kind, roomNumber);
 	}
+	/**
+	 * 새 건물 건설용 메서드.
+	 * @param locationID
+	 * @param kind
+	 * @param roomNumber
+	 * @return
+	 */
 	public int buildStucture(int locationID,int kind,int roomNumber){
 		ModelBuilding building = new ModelBuilding(locationID,kind,BASIC_BUILDING_LEVEL,roomNumber);
 		int result = service.insertBuilding(building);
 		return result;
 	}
+	
+	
 	
 	
 

@@ -42,9 +42,7 @@ public class ModelStructures {
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
 		if( obj instanceof ModelStructures){
-			if(((ModelStructures) obj).getName().equals(Name)){
-				return true;
-			}
+			return ((ModelStructures) obj).getKind().intValue() ==  this.Kind;
 		}
 		return false;
 	}
