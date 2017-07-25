@@ -10,6 +10,11 @@ public class ModelUnit {
 	public Integer getUnitID() {
 		return UnitID;
 	}
+	
+	public void setUnitID(Integer unitID) {
+		UnitID = unitID;
+	}
+
 	public String getName() {
 		return Name;
 	}
@@ -36,6 +41,13 @@ public class ModelUnit {
 	}
 	public ModelUnit(String name, Integer aTK, Integer sPD, Integer hP) {
 		super();
+		Name = name;
+		ATK = aTK;
+		SPD = sPD;
+		HP = hP;
+	}
+	public ModelUnit(Integer unitID,String name, Integer aTK, Integer sPD, Integer hP) {
+		this.UnitID = unitID;
 		Name = name;
 		ATK = aTK;
 		SPD = sPD;

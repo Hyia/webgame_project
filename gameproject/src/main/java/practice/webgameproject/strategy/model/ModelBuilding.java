@@ -36,6 +36,24 @@ public class ModelBuilding {
 		RoomNumber = roomNumber;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof ModelBuilding){
+			ModelBuilding target = (ModelBuilding)obj;
+			if(LocationID.intValue() != target.LocationID.intValue()){
+				return false;
+			}
+			if(target.RoomNumber.intValue() == this.RoomNumber.intValue()){
+				return true;
+			}else{
+				return false;
+			}
+			
+		}
+		
+		return super.equals(obj);
+	}
+	
 	
 	
 }
