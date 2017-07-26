@@ -1,5 +1,7 @@
 package practice.webgameproject.strategy.service;
 
+import static org.mockito.Mockito.stub;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,6 +140,34 @@ public class TempararyServiceGame extends ServiceGame{
 		}
 	}
 	
+	@Override
+	public ModelBuilding getBuilding(Integer locationID, int roomNumber) {
+		ModelBuilding target= new ModelBuilding(locationID,null,null,roomNumber);
+		
+		int index= buildings_in_castle.indexOf(target);
+		if(index!=-1){
+			//해당 건물이 있음
+			target = buildings_in_castle.get(index);
+		}else{
+			//해당 건물이 없음
+			target.setKind(IServices.BUILDING_TYPE_BLANK);
+			target.setLevel(IServices.BUILDING_BASIC_LEVEL);
+			buildings_in_castle.add(target);
+		}
+		
+		return target;
+	}
+	
+	@Override
+	public ModelStructures getSturcture(Integer kind) {
+		ModelStructures target = null;
+
+		int index = structures.indexOf(kind);
+		if(index != -1){
+			target = structures.get(index);
+		}
+		return target;
+	}
 	
 
 	

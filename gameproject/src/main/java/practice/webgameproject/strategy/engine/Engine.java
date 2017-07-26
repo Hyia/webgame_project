@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelMembers;
+import practice.webgameproject.strategy.model.ModelStructures;
 import practice.webgameproject.strategy.model.ModelXYval;
 import practice.webgameproject.strategy.service.ServiceGame;
 
@@ -77,7 +78,7 @@ public class Engine {
 	 * @param targetCastle
 	 * @param kind
 	 * @param roomNumber
-	 * @return IServices.SUCCESS or errorcode
+	 * @return IServices.SUCCESS or error code
 	 */
 	public int buildStucture(ModelCastle targetCastle,int kind,int roomNumber){
 		return buildStucture(targetCastle.getLocationID(), kind, roomNumber);
@@ -87,7 +88,7 @@ public class Engine {
 	 * @param locationID
 	 * @param kind
 	 * @param roomNumber
-	 * @return
+	 * @return IServices.SUCCESS or error code
 	 */
 	public int buildStucture(int locationID,int kind,int roomNumber){
 		ModelBuilding building = new ModelBuilding(locationID,kind,BASIC_BUILDING_LEVEL,roomNumber);
@@ -95,6 +96,34 @@ public class Engine {
 		return result;
 	}
 	
+	/**
+	 * 건물 업그레이드. 놈의 자원을 빼먹어라
+	 * @param who
+	 * @param building
+	 * @return
+	 */
+	public int upgradeStructure(ModelMembers who, ModelBuilding building){
+		
+		return -1;
+	}
+	
+	/**
+	 * 건물 업그레이드. 놈의 자원을 빼먹어라
+	 * @param who
+	 * @param roomNumber
+	 * @return
+	 */
+	public int upgradeStructure(ModelMembers who, Integer locationID,int roomNumber){
+
+		int stocked_resource = who.getSaveProduction();
+		ModelBuilding target = service.getBuilding(locationID,roomNumber);//
+		ModelStructures structure = service.getSturcture(target.getKind());
+		
+		
+		
+		
+		return -1;
+	}
 	
 	
 	

@@ -32,6 +32,8 @@ public interface IServices {
 	public static final int BUILDING_TYPE_RESOURCECENTER = 2;
 	public static final int BUILDING_TYPE_BARRACKS = 3;
 	public static final int BUILDING_TYPE_TAVERN = 4;
+	
+	public static final int BUILDING_BASIC_LEVEL = 1;
 
 	//types - units
 	public static final int UNIT_TYPE_LV1 = 0;

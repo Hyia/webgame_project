@@ -11,6 +11,7 @@ import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelMembers;
+import practice.webgameproject.strategy.model.ModelStructures;
 import practice.webgameproject.strategy.model.ModelXYval;
 
 @Service("serviceGame")
@@ -74,5 +75,15 @@ public class ServiceGame extends DaoGame{
 	public int insertBuilding(ModelBuilding building) {
 		// TODO Auto-generated method stub
 		return ERROR_NOT_MAKE_YET;
+	}
+
+	public ModelBuilding getBuilding(Integer locationID, int roomNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ModelStructures getSturcture(Integer kind) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
