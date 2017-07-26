@@ -95,57 +95,157 @@
     </select>
     
     <!-- 성에 있는 영웅 정보 가져오기 -->
-    <select id="getherotable" parameterType="ModelCastle"  resultType="java.util.List">        
+    <select id="getherotable" parameterType="ModelCastle"  resultType="">        
+  		 SELECT * FROM
+      		  herotable where LocationID=#{LocationID}
+         		 
+    </select>
+    
+    <!-- 성좌표 정보 가져오기 -->
+    <select id="getherotable" parameterType="ModelCastle"  resultType="ModelCastle">        
   		 SELECT * FROM
       		  herotable where LocationID=#{LocationID}
          		 
     </select>
     
     <!-- 성에병력 슬롯ID 정보 가져오기 -->
-    <select id="getCatleTroopData" parameterType="ModelCastle"  resultType="java.util.List">        
+    <select id="getCatleTroopData" parameterType="ModelCastle"  resultType="ModelCastle">        
  		select SlotID,SoltUID,SoltAmount from
 			castletroop_SlotUnit
 				where LocationID=#{LocationID}
  
     </select>
     
+    <!-- 성의 건물 레벨 정보   가져오기 -->
+    <select id="getUnit" parameterType="ModelCastle"  resultType="ModelBuilding">        
+ 		SELECT * FROM building where LocationID=#{LocationID}
+      		  
+    </select>
+    
+    <!-- 성자원지+야외자원지   가져오기 -->
+    <select id="getUnit" parameterType="ModelMembers" resultType="int">      
+ 			select sum(ap.Production) from
+
+			(select Production from castle  where castle.UserID = #{UserID}
+
+				union
+
+			 select Production from outresource  where outresource.UserID = #{UserID}) as ap  
+    </select>
+    
+    <!-- 영웅 정보 가져오기 -->
+    <select id="getHero" parameterType="ModelHerotable"  resultType="ModelHerotable">        
+ 		select * from
+			Herotable
+				where LocationID=#{LocationID}
+    </select>
+    
     <!-- 영웅의병력 슬롯ID 정보 가져오기 -->
-    <select id="getHeroTroopData" parameterType="ModelHerotable"  resultType="java.util.List">        
+    <select id="getHeroTroopData" parameterType="ModelHerotable"  resultType="ModelHerotable">        
  		select SlotID,SoltUID,SoltAmount from
 			herotroop_SlotUnit
 				where HeroID=#{HeroID}
     </select>
     
     <!-- 유닛  스탯정보 가져오기 -->
-    <select id="getUnit"  resultType="java.util.List">        
+    <select id="getUnit"  resultType="ModelUnit">        
  		SELECT * FROM unit
       		  unitbuild
     </select>
     
     <!-- 유닛  건설정보 가져오기 -->
-    <select id="getUnit"  resultType="java.util.List">        
+    <select id="getUnit"  resultType="ModelUnitBuild">        
  		SELECT * FROM unitbuild
     </select>
     
     <!-- 건물 건설정보  가져오기 -->
-    <select id="getUnit"  resultType="java.util.List">        
+    <select id="getUnit"  resultType="ModelStructures">        
  		SELECT * FROM structures
       		  
     </select>
     
-    <!-- 성의 건물 레벨 정보   가져오기 -->
-    <select id="getUnit" parameterType="ModelCastle"  resultType="java.util.List">        
- 		SELECT * FROM building where LocationID=#{LocationID}
-      		  
-    </select>
     
-    <!-- 성자원지+야외자원지   가져오기 -->
-    <select id="getUnit" parameterType="ModelCastle" resultType="java.util.List">  Production_AllResult      
- 			SELECT AP FROM Production_AllResult where LocationID=#{LocationID}
-      		  
-    </select>
     
     <!-- ========================== select Mappers ============================== -->
+    
+    
+    <!-- ========================== update Mappers ============================== -->
+    
+    <!-- 유저정보 업데이트 -->
+    <update id="updateMembers" parameterType="ModelMembers">
+    	UPDATE members 
+       		SET  UserPW			=	#{UserPW}
+       			,UserPW			=	#{UserPW}
+       			,UserNicName	=	#{UserNicName}
+       			,UserEmail		=	#{UserEmail}
+       			,UserLevel		=	#{UserLevel}
+       			,SaveProduction	=	#{SaveProduction}
+       	WHERE UserID	=	#{UserID}
+    
+    </update>
+    
+    <!-- 유저의 세이브 자원 업데이트 -->
+    <update id="updateMembersProduction" parameterType="ModelMembers">
+    	UPDATE castle 
+       		SET  Production	=	#{Production}
+       	WHERE UserID	=	#{UserID}
+    
+    </update>building
+    
+    <!-- 성의 이름 업데이트 -->
+    <update id="updateCastleName" parameterType="ModelCastle">
+    	UPDATE castle 
+       		SET  Name	=	#{Name}
+       	WHERE LocationID	=	#{LocationID}
+    
+    </update>
+    
+    <!-- 성의 자원 업데이트 -->
+    <update id="updateCastleProduction" parameterType="ModelCastle">
+    	UPDATE castle 
+       		SET  SaveProduction	=	#{SaveProduction}
+       	WHERE LocationID	=	#{LocationID}
+    
+    </update>
+    
+    
+    <!-- 성의 건물 정보 업데이트 -->
+    <update id="updateBuilding" parameterType="ModelBuilding">
+    	UPDATE Building 
+       		SET  level		=	#{Level}
+       			,RoomNumber	=	#{RoomNumber}
+       	WHERE LocationID	=	#{LocationID}
+    
+    </update>
+    
+    <!-- 영웅 정보 업데이트 -->
+    <update id="updateHero" parameterType="ModelHeroTable">
+    	UPDATE updateHero 
+       		SET	 STR		= #{STR}
+				,AGI        = #{AGI}
+				,CON        = #{CON}
+				,Owner      = #{Owner}
+				,LacationID = #{LacationID}
+				,Statuus    = #{Statuus}
+				,Specialty  = #{Specialty}
+				,Potrait    = #{Potrait}
+				,Sex        = #{Sex}
+       	WHERE HeroID=#{HeroID}
+    
+    </update>
+    
+    <!-- 영웅 슬롯 유닛 정보 업데이트 -->
+    <update id="updateSlot" parameterType="ModelSlot">
+    	UPDATE slot 
+       		SET  SoltUID		=	#{SoltUID}
+       			,SoltAmount		=	#{SoltAmount}
+       	WHERE SoltID	=	#{SoltID}
+    
+    </update>
+    
+    
+    
+    <!-- ========================== update Mappers ============================== -->
     
     <select id="getPhoneList"              resultType="ModelPhone">
         SELECT *  FROM TB_Phone 
