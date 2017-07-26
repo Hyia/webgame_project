@@ -83,13 +83,13 @@
     <!-- ========================== select Mappers ============================== -->
     
     <!-- 아이디와 비밀번호로 정보조회 -->
-    <select id="getMembers" parameterType="ModelMembers"  resultType="Modelmembers">        
+    <select id="getMembersLogin" parameterType="ModelMembers"  resultType="int">        
         SELECT * FROM members
-         WHERE UserID = #{UserID} &amp;&amp; UserPW =#{UserPW}
+         WHERE UserID = #{UserID} and UserPW =#{UserPW}
     </select>
     
     <!-- 유저 성 정보 가져오기 -->
-    <select id="getCastle" parameterType="ModelMembers"  resultType="java.util.List">        
+    <select id="getCastle" parameterType="ModelMembers"  resultType="ModelCastle">        
         SELECT * FROM
          castle where UserID=#{UserID}
     </select>
