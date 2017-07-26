@@ -3,84 +3,84 @@
 
 <mapper namespace="mapper.mysql.mapperWebGame">
     
-    <!-- Insert Mappers Start ======================================================== -->
+    <!-- ========================== Insert Mappers ============================== -->
     
     <!-- Members Insert -->
-    <select id="InsertMembers" parameterType="ModelMembers">        
+    <insert id="InsertMembers" parameterType="ModelMembers">        
         Insert into Members
         	('UserID', 'UserPW', 'UserNicName', 'UserEmail', 'UserLevel', 'SaveProduction')
         		values (#{UserID}, #{UserPW}, #{UserNicName}, #{UserEmail}, #{UserLevel}, #{SaveProduction})
-    </select>
+    </insert>
     
     <!-- Castle Insert -->
-    <select id="InsertCastle" parameterType="ModelCastle">        
+    <insert id="InsertCastle" parameterType="ModelCastle">        
         Insert into Castle
         	('UserID', 'Name', 'Kind', 'LocationID')
         		values (#{UserID}, #{Name}, #{Kind}, #{LocationID})
-    </select>
+    </insert>
     
     <!-- xyval Insert -->
-    <select id="InsertXYval" parameterType="ModelXYval">        
+    <insert id="InsertXYval" parameterType="ModelXYval">        
         Insert into xyval
         	('LocationID', 'CastleX', 'CastleY', 'Kind')
         		values (#{LocationID}, #{CastleX}, #{CastleY}, #{Kind})
-    </select>
+    </insert>
     
     <!-- resource Insert -->
-    <select id="InsertResource" parameterType="ModelResource">        
+    <insert id="InsertResource" parameterType="ModelResource">        
         Insert into resource
         	('LocationID', 'Production')
         		values (#{LocationID}, #{Production})
-    </select>
+    </insert>
     
     <!-- OutResource Insert -->
-    <select id="InsertOutResource" parameterType="ModelOutResource">        
+    <insert id="InsertOutResource" parameterType="ModelOutResource">        
         Insert into OutResource
         	('LocationID', 'UserID', 'Production', 'Kind')
         		values (#{LocationID}, #{UserID}, #{Production}, #{Kind})
-    </select>
+    </insert>
     
     <!-- Building Insert -->
-    <select id="InsertBuilding" parameterType="ModelBuilding">        
+    <insert id="InsertBuilding" parameterType="ModelBuilding">        
         Insert into Building
         	('LocationID', 'Kind', 'Level', 'RoomNumber')
         		values (#{LocationID}, #{Kind}, #{Level}, #{RoomNumber})
-    </select>
+    </insert>
     
     <!-- Castletroop Insert -->
-    <select id="InsertCastletroop" parameterType="ModelCastletroop">        
+    <insert id="InsertCastletroop" parameterType="ModelCastletroop">        
         Insert into Castletroop
         	('LocationID', 'SlotID')
         		values (#{LocationID}, #{SlotID})
-    </select>
+    </insert>
     
     <!-- Herotable Insert -->
-    <select id="InsertHerotable" parameterType="ModelHerotable">        
+    <insert id="InsertHerotable" parameterType="ModelHerotable">        
         Insert into Herotable
         	('HeroID', 'STR', 'AGI', 'CON', 'Owner', 'LocationID','Statuus', 'Specialty', 'Potrait', 'Sex')
         		values (#{HeroID}, #{STR}, #{AGI}, #{CON}, #{Owner}, #{LocationID}, #{Statuus}, #{Specialty}, #{Potrait}, #{Sex} )
-    </select>
+    </insert>
     
     <!-- Herotroop Insert -->
-    <select id="InsertHerotroop" parameterType="ModelHerotroop">        
+    <insert id="InsertHerotroop" parameterType="ModelHerotroop">        
         Insert into Herotroop
         	('HeroID', 'SlotID')
         		values (#{HeroID}, #{SlotID})
-    </select>
+    </insert>
     
     <!-- Slot Insert -->
-    <select id="InsertSlot" parameterType="ModelSlot">        
+    <insert id="InsertSlot" parameterType="ModelSlot">        
         Insert into Slot
         	('SlotID', 'SoltUID', 'SoltAmount')
         		values (#{SlotID}, #{SoltUID}, #{SoltAmount})
-    </select>
+    </insert>
     
-    <!-- Insert Mappers End ======================================================== -->
-    
-    
+    <!-- ========================== Insert Mappers ============================== -->
     
     
-    <!-- select Mappers Start ======================================================== -->
+    
+    
+    <!-- ========================== select Mappers ============================== -->
     
     <!-- 아이디와 비밀번호로 정보조회 -->
     <select id="getMembers" parameterType="ModelMembers"  resultType="Modelmembers">        
@@ -145,7 +145,7 @@
       		  
     </select>
     
-    <!-- select Mappers End ======================================================== -->
+    <!-- ========================== select Mappers ============================== -->
     
     <select id="getPhoneList"              resultType="ModelPhone">
         SELECT *  FROM TB_Phone 
