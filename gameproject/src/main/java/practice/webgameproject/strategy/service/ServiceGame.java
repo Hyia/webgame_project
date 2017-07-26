@@ -33,12 +33,26 @@ public class ServiceGame extends DaoGame{
 
 	public String getErrorMsg(int errorCode) {
 		// TODO 오류종류가 추가되면 여기도 수정 ㄱㄱ
+		/**
+	public static final int ERROR_GENERAL_EXCEPTION = -1;
+	public static final int ERROR_NOT_MAKE_YET = -100;
+	public static final int ERROR_UNHANDLED_EXCEPTION = -10;
+	public static final int ERROR_CANNOT_FIND_USER = -20;
+	public static final int ERROR_INVAILD_LOCATIONID = -30;
+	public static final int ERROR_CANNOT_BUILD_THIS_PLACE = -40;
+		 */
 		switch(errorCode){
 		case ERROR_NOT_MAKE_YET:
 			return "아직 만들지 않은 메서드가 포함됩니다.";
 		case ERROR_CANNOT_FIND_USER:
 			return "유저를 찾을 수 업습니다.";
+		case ERROR_INVAILD_ACCESS:
+			return "부적절한 접근입니다.";
+		case ERROR_CANNOT_BUILD_THIS_PLACE:
+			return "여기에 건설할 수 없습니다.";
 				
+		case ERROR_GENERAL_EXCEPTION:
+			return "알 수 없는 오류거나 에러코드를 설정하지 않았습니다.";
 		case ERROR_UNHANDLED_EXCEPTION://아무 내용도, break도 없는 case구절.
 		default:
 			return "알 수 없는 오류입니다.";

@@ -37,6 +37,20 @@ public class ModelXYval {
 	}
 	
 	
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		if(obj instanceof ModelXYval){
+			ModelXYval target = (ModelXYval)obj;
+			return target.LocationID.intValue() == this.LocationID.intValue();
+		}
+		if(obj instanceof Integer){
+			Integer target = (Integer)obj;
+			return target.intValue() == this.LocationID.intValue();
+		}
+		return super.equals(obj);
+	}
+	
 	
 	
 }

@@ -36,5 +36,19 @@ public class ModelCastle {
 		LocationID = locationID;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(obj instanceof ModelCastle){
+			ModelCastle target = (ModelCastle)obj;
+			return target.LocationID.intValue() == this.LocationID.intValue();
+		}
+		if(obj instanceof Integer){//LocationID로 비교
+			Integer target = (Integer)obj;
+			return target.intValue() == LocationID.intValue();
+		}
+		
+		return super.equals(obj);
+	}
 	
 }

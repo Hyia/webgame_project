@@ -3,25 +3,149 @@
 
 <mapper namespace="mapper.mysql.mapperWebGame">
     
+    <!-- Insert Mappers Start ======================================================== -->
+    
+    <!-- Members Insert -->
+    <select id="InsertMembers" parameterType="ModelMembers">        
+        Insert into Members
+        	('UserID', 'UserPW', 'UserNicName', 'UserEmail', 'UserLevel', 'SaveProduction')
+        		values (#{UserID}, #{UserPW}, #{UserNicName}, #{UserEmail}, #{UserLevel}, #{SaveProduction})
+    </select>
+    
+    <!-- Castle Insert -->
+    <select id="InsertCastle" parameterType="ModelCastle">        
+        Insert into Castle
+        	('UserID', 'Name', 'Kind', 'LocationID')
+        		values (#{UserID}, #{Name}, #{Kind}, #{LocationID})
+    </select>
+    
+    <!-- xyval Insert -->
+    <select id="InsertXYval" parameterType="ModelXYval">        
+        Insert into xyval
+        	('LocationID', 'CastleX', 'CastleY', 'Kind')
+        		values (#{LocationID}, #{CastleX}, #{CastleY}, #{Kind})
+    </select>
+    
+    <!-- resource Insert -->
+    <select id="InsertResource" parameterType="ModelResource">        
+        Insert into resource
+        	('LocationID', 'Production')
+        		values (#{LocationID}, #{Production})
+    </select>
+    
+    <!-- OutResource Insert -->
+    <select id="InsertOutResource" parameterType="ModelOutResource">        
+        Insert into OutResource
+        	('LocationID', 'UserID', 'Production', 'Kind')
+        		values (#{LocationID}, #{UserID}, #{Production}, #{Kind})
+    </select>
+    
+    <!-- Building Insert -->
+    <select id="InsertBuilding" parameterType="ModelBuilding">        
+        Insert into Building
+        	('LocationID', 'Kind', 'Level', 'RoomNumber')
+        		values (#{LocationID}, #{Kind}, #{Level}, #{RoomNumber})
+    </select>
+    
+    <!-- Castletroop Insert -->
+    <select id="InsertCastletroop" parameterType="ModelCastletroop">        
+        Insert into Castletroop
+        	('LocationID', 'SlotID')
+        		values (#{LocationID}, #{SlotID})
+    </select>
+    
+    <!-- Herotable Insert -->
+    <select id="InsertHerotable" parameterType="ModelHerotable">        
+        Insert into Herotable
+        	('HeroID', 'STR', 'AGI', 'CON', 'Owner', 'LocationID','Statuus', 'Specialty', 'Potrait', 'Sex')
+        		values (#{HeroID}, #{STR}, #{AGI}, #{CON}, #{Owner}, #{LocationID}, #{Statuus}, #{Specialty}, #{Potrait}, #{Sex} )
+    </select>
+    
+    <!-- Herotroop Insert -->
+    <select id="InsertHerotroop" parameterType="ModelHerotroop">        
+        Insert into Herotroop
+        	('HeroID', 'SlotID')
+        		values (#{HeroID}, #{SlotID})
+    </select>
+    
+    <!-- Slot Insert -->
+    <select id="InsertSlot" parameterType="ModelSlot">        
+        Insert into Slot
+        	('SlotID', 'SoltUID', 'SoltAmount')
+        		values (#{SlotID}, #{SoltUID}, #{SoltAmount})
+    </select>
+    
+    <!-- Insert Mappers End ======================================================== -->
+    
+    
+    
+    
+    <!-- select Mappers Start ======================================================== -->
+    
     <!-- 아이디와 비밀번호로 정보조회 -->
-    <select id="getMembers" parameterType="Modelmembers"  resultType="Modelmembers">        
+    <select id="getMembers" parameterType="ModelMembers"  resultType="Modelmembers">        
         SELECT * FROM members
          WHERE UserID = #{UserID} &amp;&amp; UserPW =#{UserPW}
     </select>
     
     <!-- 유저 성 정보 가져오기 -->
-    <select id="getCastle" parameterType="ModelCastle"  resultType="ModelCastle">        
-        SELECT c.* FROM
-         members m join castle c
-          on m.UserID=c.UserID
+    <select id="getCastle" parameterType="ModelMembers"  resultType="java.util.List">        
+        SELECT * FROM
+         castle where UserID=#{UserID}
     </select>
     
     <!-- 성에 있는 영웅 정보 가져오기 -->
-    <select id="gete" parameterType="ModelCastle"  resultType="ModelCastle">        
-        SELECT c.* FROM
-         members m join castle c
-          on m.UserID=c.UserID
+    <select id="getherotable" parameterType="ModelCastle"  resultType="java.util.List">        
+  		 SELECT * FROM
+      		  herotable where LocationID=#{LocationID}
+         		 
     </select>
+    
+    <!-- 성에병력 슬롯ID 정보 가져오기 -->
+    <select id="getCatleTroopData" parameterType="ModelCastle"  resultType="java.util.List">        
+ 		select SlotID,SoltUID,SoltAmount from
+			castletroop_SlotUnit
+				where LocationID=#{LocationID}
+ 
+    </select>
+    
+    <!-- 영웅의병력 슬롯ID 정보 가져오기 -->
+    <select id="getHeroTroopData" parameterType="ModelHerotable"  resultType="java.util.List">        
+ 		select SlotID,SoltUID,SoltAmount from
+			herotroop_SlotUnit
+				where HeroID=#{HeroID}
+    </select>
+    
+    <!-- 유닛  스탯정보 가져오기 -->
+    <select id="getUnit"  resultType="java.util.List">        
+ 		SELECT * FROM unit
+      		  unitbuild
+    </select>
+    
+    <!-- 유닛  건설정보 가져오기 -->
+    <select id="getUnit"  resultType="java.util.List">        
+ 		SELECT * FROM unitbuild
+    </select>
+    
+    <!-- 건물 건설정보  가져오기 -->
+    <select id="getUnit"  resultType="java.util.List">        
+ 		SELECT * FROM structures
+      		  
+    </select>
+    
+    <!-- 성의 건물 레벨 정보   가져오기 -->
+    <select id="getUnit" parameterType="ModelCastle"  resultType="java.util.List">        
+ 		SELECT * FROM building where LocationID=#{LocationID}
+      		  
+    </select>
+    
+    <!-- 성자원지+야외자원지   가져오기 -->
+    <select id="getUnit" parameterType="ModelCastle" resultType="java.util.List">  Production_AllResult      
+ 			SELECT AP FROM Production_AllResult where LocationID=#{LocationID}
+      		  
+    </select>
+    
+    <!-- select Mappers End ======================================================== -->
     
     <select id="getPhoneList"              resultType="ModelPhone">
         SELECT *  FROM TB_Phone 
