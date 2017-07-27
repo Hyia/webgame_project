@@ -173,7 +173,7 @@
     
     <!-- 유저정보 업데이트 -->
     <update id="updateMembers" parameterType="ModelMembers">
-    	UPDATE members 
+    	update members 
        		SET  UserPW			=	#{UserPW}
        			,UserPW			=	#{UserPW}
        			,UserNicName	=	#{UserNicName}
@@ -186,15 +186,15 @@
     
     <!-- 유저의 세이브 자원 업데이트 -->
     <update id="updateMembersProduction" parameterType="ModelMembers">
-    	UPDATE castle 
+    	update castle 
        		SET  Production	=	#{Production}
        	WHERE UserID	=	#{UserID}
     
-    </update>building
+    </update>
     
     <!-- 성의 이름 업데이트 -->
     <update id="updateCastleName" parameterType="ModelCastle">
-    	UPDATE castle 
+    	update castle 
        		SET  Name	=	#{Name}
        	WHERE LocationID	=	#{LocationID}
     
@@ -202,7 +202,7 @@
     
     <!-- 성의 자원 업데이트 -->
     <update id="updateCastleProduction" parameterType="ModelCastle">
-    	UPDATE castle 
+    	update castle 
        		SET  SaveProduction	=	#{SaveProduction}
        	WHERE LocationID	=	#{LocationID}
     
@@ -211,7 +211,7 @@
     
     <!-- 성의 건물 정보 업데이트 -->
     <update id="updateBuilding" parameterType="ModelBuilding">
-    	UPDATE Building 
+    	update Building 
        		SET  level		=	#{Level}
        			,RoomNumber	=	#{RoomNumber}
        	WHERE LocationID	=	#{LocationID}
@@ -220,7 +220,7 @@
     
     <!-- 영웅 정보 업데이트 -->
     <update id="updateHero" parameterType="ModelHeroTable">
-    	UPDATE updateHero 
+    	update updateHero 
        		SET	 STR		= #{STR}
 				,AGI        = #{AGI}
 				,CON        = #{CON}
@@ -236,7 +236,7 @@
     
     <!-- 영웅 슬롯 유닛 정보 업데이트 -->
     <update id="updateSlot" parameterType="ModelSlot">
-    	UPDATE slot 
+    	update slot 
        		SET  SoltUID		=	#{SoltUID}
        			,SoltAmount		=	#{SoltAmount}
        	WHERE SoltID	=	#{SoltID}
