@@ -38,6 +38,8 @@ public class TempararyServiceGame extends ServiceGame{
 	private List<ModelUnit> units;
 	private List<ModelUnitBuild> unitbuildTime;
 	private List<ModelXYval> locations;
+	private List<ModelWaitList_Unit> leftedUnitBuildTime;
+	private List<ModelWaitList_Building> leftedStructureBuildTime;
 	
 	
 	public TempararyServiceGame() {
@@ -168,8 +170,38 @@ public class TempararyServiceGame extends ServiceGame{
 		}
 		return target;
 	}
+
+
+	@Override
+	public int upgradeBuilding(ModelBuilding target) {
+		// TODO Auto-generated method stub
+		return super.upgradeBuilding(target);
+	}
+
+
+	@Override
+	public int updateMemberResource(ModelMembers who) {
+		users.get(users.indexOf(who)).setSaveProduction(who.getSaveProduction());
+		
+		int index = users.indexOf(who);
+		if(index == -1){
+			return IServices.ERROR_CANNOT_FIND_USER;
+		}else{
+			ModelMembers target = users.get(index);
+			target.setSaveProduction(who.getSaveProduction());
+			return IServices.SUCCESS;
+		}
+	}
+
+
+	@Override
+	public List<Object> getProducingList() {
+		// TODO Auto-generated method stub
+		return super.getProducingList();
+	}
 	
 
+	
 	
 	
 	

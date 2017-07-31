@@ -1,5 +1,8 @@
 package practice.webgameproject.strategy.engine;
 
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import practice.webgameproject.strategy.model.ModelBuilding;
@@ -18,6 +21,16 @@ public class Engine {
 	
 	public Engine(ServiceGame service){
 		this.service = service;
+		
+		List<Object> producions = service.getProducingList();
+		for(int i=0 ; i < producions.size(); i++){
+			Object target = producions.get(i);
+			if(target instanceof ModelWaitList_Unit || target instanceof ModelWaitList_Building){
+				ProductThread tr = new ProductThread();
+				tr.setFinish_time(target.getWaitTime());
+				tr.setTarget(target);
+			}
+		}
 	}
 	
 	/**
@@ -103,8 +116,7 @@ public class Engine {
 	 * @return
 	 */
 	public int upgradeStructure(ModelMembers who, ModelBuilding building){
-		
-		return -1;
+		return upgradeStructure(who,building.getLocationID(),building.getRoomNumber());
 	}
 	
 	/**
@@ -119,13 +131,52 @@ public class Engine {
 		ModelBuilding target = service.getBuilding(locationID,roomNumber);//
 		ModelStructures structure = service.getSturcture(target.getKind());
 		
+		int require_resource = service.getUpgradeValue(target, structure.getValues().intValue());
 		
-		
-		
+		if(stocked_resource >= require_resource){
+			//뭔가 업그레이드 시행
+
+			service.upgradeBuilding(target);
+			who.setSaveProduction( stocked_resource - require_resource);
+			service.updateMemberResource(who);
+			
+			return service.SUCCESS;
+		}else{
+			//
+			return service.ERROR_INVAILD_ACCESS;
+		}
+	}
+	
+	
+	public int productUnit(){
 		return -1;
 	}
 	
 	
+	private class ProductThread extends Thread{
+		private long finish_time = -1;
+		private boolean quickdone = false;
+		private Object target = null;
+		
+		public void setFinish_time(long finish_time) {
+			this.finish_time = finish_time;
+		}
+		
+		public void setTarget(Object target){
+			this.target = target;
+		}
+		
+		@Override
+		public void run() {
+			//wait until time elapsed or quick done
+			while((new Date()).getTime() - finish_time >= 0 || !quickdone);
+			
+			if(target instanceof ModelWaitList_Unit || target instanceof ModelWaitList_Building){
+				target.getLocationId()
+			}
+		
+		}
+	}
 	
 
 }
