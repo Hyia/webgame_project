@@ -1,40 +1,40 @@
 package practice.webgameproject.strategy.model;
 
 public class ModelSlot {
-	private Integer SoltID;// 		INT(11)		AUTO_INCREMENT
-	private Integer SoltUID;// 	unit id
-	private Integer SoltAmount;//	amount of units
+	private Integer SlotID;// 		INT(11)		AUTO_INCREMENT
+	private Integer SlotUID;// 	unit id
+	private Integer SlotAmount;//	amount of units
 
 	public Integer getSoltID() {
-		return SoltID;
+		return SlotID;
 	}
 	
 	public void setSoltID(Integer soltID) {
-		SoltID = soltID;
+		SlotID = soltID;
 	}
 
 	public Integer getSoltUID() {
-		return SoltUID;
+		return SlotUID;
 	}
 	public void setSoltUID(Integer soltUID) {
-		SoltUID = soltUID;
+		SlotUID = soltUID;
 	}
 	public Integer getSoltAmount() {
-		return SoltAmount;
+		return SlotAmount;
 	}
 	public void setSoltAmount(Integer soltAmount) {
-		SoltAmount = soltAmount;
+		SlotAmount = soltAmount;
 	}
 	public ModelSlot(Integer soltUID, Integer soltAmount) {
-		SoltUID = soltUID;
-		SoltAmount = soltAmount;
+		SlotUID = soltUID;
+		SlotAmount = soltAmount;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof ModelSlot){
 			ModelSlot target = (ModelSlot) obj;
-			return target.getSoltID().intValue() == SoltID.intValue();
+			return target.getSoltID().intValue() == SlotID.intValue();
 		}
 		return false;
 	}
