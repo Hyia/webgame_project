@@ -34,6 +34,7 @@ public class ServiceGame extends DaoGame{
 		return null;
 	}
 
+	//에러메세지를 반납해줄 메서드
 	public String getErrorMsg(int errorCode) {
 		// TODO 오류종류가 추가되면 여기도 수정 ㄱㄱ
 		/**
@@ -62,6 +63,7 @@ public class ServiceGame extends DaoGame{
 		}
 	}
 
+	//맴버를 추가함
 	public int registerMember(ModelMembers member) {
 		// TODO Auto-generated method stub
 		int result = ERROR_UNHANDLED_EXCEPTION;
@@ -74,21 +76,25 @@ public class ServiceGame extends DaoGame{
 		return result;
 	}
 
+	//건물을 추가함
 	public int insertBuilding(ModelBuilding building) {
 		// TODO Auto-generated method stub
 		return ERROR_NOT_MAKE_YET;
 	}
 
+	//특정누군가의 어디에 있는 건물정보를 가져옴
 	public ModelBuilding getBuilding(Integer locationID, int roomNumber) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	//건물 기본정보를 가져옴
 	public ModelStructures getSturcture(Integer kind) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	//건물레벨증가에 필요한 자원을 가져옴
 	public int getUpgradeValue(Object target, int baseValue) {
 		if(target instanceof ModelBuilding){
 			//건설 계산식
@@ -97,16 +103,19 @@ public class ServiceGame extends DaoGame{
 		return -1;
 	}
 
-	public int upgradeBuilding(ModelBuilding target) {
+	//건물 DB를 갱신
+	public int updateBuilding(ModelBuilding target) {
 		// TODO Auto-generated method stub
 		return -1;
 	}
 
+	//유저의 자원만을 갱신. TODO 자원 외의 정보만 갱신할 매서드. 코딩 중 헷갈리지 않기 위함.+ DB에 필요이상의 변화 방지.
 	public int updateMemberResource(ModelMembers who) {
 		// TODO Auto-generated method stub
 		return -1;
 	}
 	
+	// FIXME 임시. 건물과 유닛으로 나눠놓자.
 	public List<Object> getProducingList(){
 		// TODO Auto-generated method stub
 		return null;

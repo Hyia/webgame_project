@@ -29,6 +29,7 @@ public class Engine {
 				ProductThread tr = new ProductThread();
 				tr.setFinish_time(target.getWaitTime());
 				tr.setTarget(target);
+				tr.start();
 			}
 		}
 	}
@@ -136,9 +137,13 @@ public class Engine {
 		if(stocked_resource >= require_resource){
 			//뭔가 업그레이드 시행
 
-			service.upgradeBuilding(target);
 			who.setSaveProduction( stocked_resource - require_resource);
+			
 			service.updateMemberResource(who);
+			service.updateBuilding(target);
+			
+			ProductThread tr = new ProductThread();
+			tr.setTarget(target);
 			
 			return service.SUCCESS;
 		}else{

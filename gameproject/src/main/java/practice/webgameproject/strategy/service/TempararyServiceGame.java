@@ -173,9 +173,9 @@ public class TempararyServiceGame extends ServiceGame{
 
 
 	@Override
-	public int upgradeBuilding(ModelBuilding target) {
+	public int updateBuilding(ModelBuilding target) {
 		// TODO Auto-generated method stub
-		return super.upgradeBuilding(target);
+		return super.updateBuilding(target);
 	}
 
 
