@@ -12,6 +12,8 @@ import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelStructures;
+import practice.webgameproject.strategy.model.ModelUnit;
+import practice.webgameproject.strategy.model.ModelUnitBuild;
 import practice.webgameproject.strategy.model.ModelXYval;
 
 @Service("serviceGame")
@@ -85,5 +87,23 @@ public class ServiceGame extends DaoGame{
 	public ModelStructures getSturcture(Integer kind) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public int getUpgradeValue(Object target, int baseValue) {
+		if(target instanceof ModelBuilding){
+			//건설 계산식
+			return (((ModelBuilding) target).getLevel()+1) * baseValue;
+		}
+		return -1;
+	}
+
+	public int upgradeBuilding(ModelBuilding target) {
+		// TODO Auto-generated method stub
+		return -1;
+	}
+
+	public int updateMemberResource(ModelMembers who) {
+		// TODO Auto-generated method stub
+		return -1;
 	}
 }

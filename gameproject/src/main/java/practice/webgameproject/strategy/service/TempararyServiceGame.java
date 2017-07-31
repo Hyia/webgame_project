@@ -168,6 +168,28 @@ public class TempararyServiceGame extends ServiceGame{
 		}
 		return target;
 	}
+
+
+	@Override
+	public int upgradeBuilding(ModelBuilding target) {
+		// TODO Auto-generated method stub
+		return super.upgradeBuilding(target);
+	}
+
+
+	@Override
+	public int updateMemberResource(ModelMembers who) {
+		users.get(users.indexOf(who)).setSaveProduction(who.getSaveProduction());
+		
+		int index = users.indexOf(who);
+		if(index == -1){
+			return IServices.ERROR_CANNOT_FIND_USER;
+		}else{
+			ModelMembers target = users.get(index);
+			target.setSaveProduction(who.getSaveProduction());
+			return IServices.SUCCESS;
+		}
+	}
 	
 
 	

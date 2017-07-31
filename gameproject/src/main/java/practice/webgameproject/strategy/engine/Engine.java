@@ -119,10 +119,20 @@ public class Engine {
 		ModelBuilding target = service.getBuilding(locationID,roomNumber);//
 		ModelStructures structure = service.getSturcture(target.getKind());
 		
+		int require_resource = service.getUpgradeValue(target, structure.getValues().intValue());
 		
-		
-		
-		return -1;
+		if(stocked_resource >= require_resource){
+			//뭔가 업그레이드 시행
+
+			service.upgradeBuilding(target);
+			who.setSaveProduction( stocked_resource - require_resource);
+			service.updateMemberResource(who);
+			
+			return service.SUCCESS;
+		}else{
+			//
+			return service.ERROR_INVAILD_ACCESS;
+		}
 	}
 	
 	
