@@ -17,6 +17,8 @@ import practice.webgameproject.strategy.model.ModelSlot;
 import practice.webgameproject.strategy.model.ModelStructures;
 import practice.webgameproject.strategy.model.ModelUnit;
 import practice.webgameproject.strategy.model.ModelUnitBuild;
+import practice.webgameproject.strategy.model.ModelWaitList_Building;
+import practice.webgameproject.strategy.model.ModelWaitList_Unit;
 import practice.webgameproject.strategy.model.ModelXYval;
 
 /**
@@ -56,6 +58,8 @@ public class TempararyServiceGame extends ServiceGame{
 		units = new ArrayList();
 		unitbuildTime = new ArrayList();
 		locations = new ArrayList();
+		leftedUnitBuildTime= new ArrayList();
+		leftedStructureBuildTime= new ArrayList();
 		
 		//sturctures	name kind buildtime value
 		structures.add(new ModelStructures("Centural_center", IServices.BUILDING_TYPE_CENTER, 10, 100));
@@ -196,8 +200,15 @@ public class TempararyServiceGame extends ServiceGame{
 
 	@Override
 	public List<Object> getProducingList() {
-		// TODO Auto-generated method stub
-		return super.getProducingList();
+		List<Object> result = new ArrayList();
+		for(int i=0; i<leftedStructureBuildTime.size();i++){
+			result.add(leftedStructureBuildTime.get(i));
+		}
+		for(int i=0; i<leftedUnitBuildTime.size();i++){
+			result.add(leftedUnitBuildTime.get(i));
+		}
+		
+		return result;
 	}
 	
 

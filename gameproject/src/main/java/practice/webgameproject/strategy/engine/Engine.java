@@ -5,10 +5,16 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
+import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelMembers;
+import practice.webgameproject.strategy.model.ModelSlot;
 import practice.webgameproject.strategy.model.ModelStructures;
+import practice.webgameproject.strategy.model.ModelUnit;
+import practice.webgameproject.strategy.model.ModelWaitList_Building;
+import practice.webgameproject.strategy.model.ModelWaitList_Unit;
 import practice.webgameproject.strategy.model.ModelXYval;
 import practice.webgameproject.strategy.service.ServiceGame;
 
@@ -18,16 +24,27 @@ public class Engine {
 	
 	private static final int STARTING_USER_RESOURCE_AMOUNT = 0;// 신규유저 시작자원량
 	private static final int BASIC_BUILDING_LEVEL = 1;// 신규 건물 초기레벨
-	
+
+	//엔진 초기화
 	public Engine(ServiceGame service){
+		//서비스를 가져옴
 		this.service = service;
-		
-		List<Object> producions = service.getProducingList();
+		//나은 제조시간을 가져옴
+		List<Object> producions = this.service.getProducingList();
 		for(int i=0 ; i < producions.size(); i++){
 			Object target = producions.get(i);
-			if(target instanceof ModelWaitList_Unit || target instanceof ModelWaitList_Building){
+			
+			//건물인 경우
+			if(target instanceof ModelWaitList_Building){
 				ProductThread tr = new ProductThread();
-				tr.setFinish_time(target.getWaitTime());
+				tr.setFinish_time(((ModelWaitList_Building) target).getWaitTime().getTime());
+				tr.setTarget(target);
+				tr.start();
+			}
+			//유닛인 경우
+			if(target instanceof ModelWaitList_Unit){
+				ProductThread tr = new ProductThread();
+				tr.setFinish_time(((ModelWaitList_Unit) target).getWaitTime().getTime());
 				tr.setTarget(target);
 				tr.start();
 			}
@@ -138,22 +155,30 @@ public class Engine {
 			//뭔가 업그레이드 시행
 
 			who.setSaveProduction( stocked_resource - require_resource);
-			
+			//자원은 즉시 빠져야함
 			service.updateMemberResource(who);
-			service.updateBuilding(target);
 			
+			//쓰레드 시작하기
+			long buildTime = (new Date()).getTime() + structure.getTime().intValue();
+			ModelWaitList_Building queueBuilding = new ModelWaitList_Building(new Date(buildTime), locationID, structure.getKind().intValue(), roomNumber);
 			ProductThread tr = new ProductThread();
-			tr.setTarget(target);
+			tr.setTarget(queueBuilding);
+			tr.setFinish_time(queueBuilding.getWaitTime().getTime());
+			tr.start();
 			
-			return service.SUCCESS;
+			return IServices.SUCCESS;
 		}else{
 			//
-			return service.ERROR_INVAILD_ACCESS;
+			return IServices.ERROR_INVAILD_ACCESS;
 		}
 	}
 	
 	
-	public int productUnit(){
+	public int productUnit(ModelMembers who, Integer locationID, int kind, int amount){
+		return -1;
+	}
+	public int productUnit(ModelMembers who, Integer locationID, ModelUnit unit, int amount){
+		service.getUnitKind(unit.getUnitID());
 		return -1;
 	}
 	
@@ -176,8 +201,27 @@ public class Engine {
 			//wait until time elapsed or quick done
 			while((new Date()).getTime() - finish_time >= 0 || !quickdone);
 			
-			if(target instanceof ModelWaitList_Unit || target instanceof ModelWaitList_Building){
-				target.getLocationId()
+			//건물인 경우
+			if(target instanceof ModelWaitList_Building){
+				int locationID = ((ModelWaitList_Building) target).getLocationID().intValue();
+				int roomNumber = ((ModelWaitList_Building) target).getRoomNumber();
+				ModelBuilding building = service.getBuilding(locationID, roomNumber);
+				//레벨업
+				building.setLevel(building.getLevel()+1);
+				service.updateBuilding(building);
+			}
+			//유닛인 경우
+			if(target instanceof ModelWaitList_Unit){
+				int locationID = ((ModelWaitList_Unit) target).getLocationID().intValue();
+				int amount = ((ModelWaitList_Unit) target).getAmount().intValue();
+				List<ModelCastleTroop> troops = service.getCastleTroops(locationID);
+				for(int i=0; i< troops.size();i++){
+					ModelSlot slot = service.getSlot(troops.get(i).getSlotID());
+					if(slot.getSoltUID().intValue() == ((ModelWaitList_Unit) target).getUnitID().intValue()){
+						slot.setSoltAmount(slot.getSoltAmount() + ((ModelWaitList_Unit) target).getAmount());
+						break;
+					}
+				}
 			}
 		
 		}
