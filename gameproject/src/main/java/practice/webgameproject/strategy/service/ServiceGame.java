@@ -9,8 +9,10 @@ import practice.webgameproject.strategy.dao.DaoGame;
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
+import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelMembers;
+import practice.webgameproject.strategy.model.ModelSlot;
 import practice.webgameproject.strategy.model.ModelStructures;
 import practice.webgameproject.strategy.model.ModelUnit;
 import practice.webgameproject.strategy.model.ModelUnitBuild;
@@ -100,19 +102,19 @@ public class ServiceGame extends DaoGame{
 			//건설 계산식
 			return (((ModelBuilding) target).getLevel()+1) * baseValue;
 		}
-		return -1;
+		return ERROR_NOT_MAKE_YET;
 	}
 
 	//건물 DB를 갱신
 	public int updateBuilding(ModelBuilding target) {
 		// TODO Auto-generated method stub
-		return -1;
+		return ERROR_NOT_MAKE_YET;
 	}
 
 	//유저의 자원만을 갱신. TODO 자원 외의 정보만 갱신할 매서드. 코딩 중 헷갈리지 않기 위함.+ DB에 필요이상의 변화 방지.
 	public int updateMemberResource(ModelMembers who) {
 		// TODO Auto-generated method stub
-		return -1;
+		return ERROR_NOT_MAKE_YET;
 	}
 	
 	// FIXME 임시. 건물과 유닛으로 나눠놓자.
@@ -120,4 +122,35 @@ public class ServiceGame extends DaoGame{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	//해당 성의 병력을 가져옴. FIXME 그런데 SLOT 리스트를 리턴하는편이 더 낫지않을까...?
+	public List<ModelCastleTroop> getCastleTroops(int locationID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//슬롯 아이디로 모델슬롯을 가져옴
+	public ModelSlot getSlot(Integer slotID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//유닛의 총 가격을 가져온다.
+	public int getUnitValue(int kind, int amount) {
+		// TODO Auto-generated method stub
+		return ERROR_NOT_MAKE_YET;
+	}
+
+	//유닛 꼬라지를 가져온다.
+	public ModelUnitBuild getUnitBuild(int kind) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	//슬롯을 하나 만들어서 성에 등록한다. 인자로 받은 슬롯의 정보를 쑤셔넣으면 됨.
+	public int insertSlotToCastle(int locationID, ModelSlot slot) {
+		// TODO Auto-generated method stub
+		return ERROR_NOT_MAKE_YET;
+	}
+
 }
