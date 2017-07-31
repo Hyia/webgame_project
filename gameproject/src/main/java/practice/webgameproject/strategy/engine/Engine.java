@@ -103,8 +103,7 @@ public class Engine {
 	 * @return
 	 */
 	public int upgradeStructure(ModelMembers who, ModelBuilding building){
-		
-		return -1;
+		return upgradeStructure(who,building.getLocationID(),building.getRoomNumber());
 	}
 	
 	/**
