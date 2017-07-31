@@ -1,0 +1,6 @@
+/.metadata/
+*.class
+/gameproject/bin/
+/bin/
+/.settings/
+/.gradle/
