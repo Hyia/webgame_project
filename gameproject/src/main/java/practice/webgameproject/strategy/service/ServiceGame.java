@@ -123,26 +123,31 @@ public class ServiceGame extends DaoGame{
 		return null;
 	}
 
+	//해당 성의 병력을 가져옴. FIXME 그런데 SLOT 리스트를 리턴하는편이 더 낫지않을까...?
 	public List<ModelCastleTroop> getCastleTroops(int locationID) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	//슬롯 아이디로 모델슬롯을 가져옴
 	public ModelSlot getSlot(Integer slotID) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	//유닛의 총 가격을 가져온다.
 	public int getUnitValue(int kind, int amount) {
 		// TODO Auto-generated method stub
 		return ERROR_NOT_MAKE_YET;
 	}
 
+	//유닛 꼬라지를 가져온다.
 	public ModelUnitBuild getUnitBuild(int kind) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	//슬롯을 하나 만들어서 성에 등록한다. 인자로 받은 슬롯의 정보를 쑤셔넣으면 됨.
 	public int insertSlotToCastle(int locationID, ModelSlot slot) {
 		// TODO Auto-generated method stub
 		return ERROR_NOT_MAKE_YET;
