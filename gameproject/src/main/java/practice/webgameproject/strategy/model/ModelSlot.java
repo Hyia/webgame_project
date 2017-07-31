@@ -8,6 +8,11 @@ public class ModelSlot {
 	public Integer getSoltID() {
 		return SoltID;
 	}
+	
+	public void setSoltID(Integer soltID) {
+		SoltID = soltID;
+	}
+
 	public Integer getSoltUID() {
 		return SoltUID;
 	}
@@ -25,6 +30,14 @@ public class ModelSlot {
 		SoltAmount = soltAmount;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof ModelSlot){
+			ModelSlot target = (ModelSlot) obj;
+			return target.getSoltID().intValue() == SoltID.intValue();
+		}
+		return false;
+	}
 	
 	
 	

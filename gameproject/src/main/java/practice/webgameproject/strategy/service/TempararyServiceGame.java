@@ -178,8 +178,18 @@ public class TempararyServiceGame extends ServiceGame{
 
 	@Override
 	public int updateBuilding(ModelBuilding target) {
-		// TODO Auto-generated method stub
-		return super.updateBuilding(target);
+		int index = buildings_in_castle.indexOf(target);
+
+		if(index != -1){
+			ModelBuilding building = buildings_in_castle.get(index);
+			building.setLevel(target.getLevel());
+			building.setKind(target.getKind());
+			building.setRoomNumber(target.getRoomNumber());
+			
+			return SUCCESS;
+		}
+		
+		return ERROR_INVAILD_ACCESS;
 	}
 
 
@@ -200,7 +210,7 @@ public class TempararyServiceGame extends ServiceGame{
 
 	@Override
 	public List<Object> getProducingList() {
-		List<Object> result = new ArrayList();
+		List<Object> result = new ArrayList<Object>();
 		for(int i=0; i<leftedStructureBuildTime.size();i++){
 			result.add(leftedStructureBuildTime.get(i));
 		}
@@ -209,6 +219,73 @@ public class TempararyServiceGame extends ServiceGame{
 		}
 		
 		return result;
+	}
+
+	@Override
+	public List<ModelCastleTroop> getCastleTroops(int locationID) {
+		List<ModelCastleTroop> result = new ArrayList<ModelCastleTroop>();
+		for(int i=0; i < troops_in_castle.size(); i++){
+			if(troops_in_castle.get(i).getLocationID().intValue() == locationID){
+				result.add(troops_in_castle.get(i));
+			}
+		}
+		return result;
+	}
+
+
+	@Override
+	public ModelSlot getSlot(Integer slotID) {
+		ModelSlot result = unitSolts.get(unitSolts.indexOf(slotID));
+		return result;
+	}
+
+
+	@Override
+	public int getUnitValue(int kind, int amount) {
+		ModelUnitBuild target = new ModelUnitBuild(kind, null, null, null);
+		int index = unitbuildTime.indexOf(target);
+		if(index != -1){
+			
+			target = unitbuildTime.get(index);
+			
+			return target.getValues()*amount;
+		}else{
+			return ERROR_INVAILD_ACCESS;
+		}
+	}
+
+
+	@Override
+	public ModelUnitBuild getUnitBuild(int kind) {
+		ModelUnitBuild target = new ModelUnitBuild(kind, null, null, null);
+		int index = unitbuildTime.indexOf(target);
+		if(index != -1){
+			
+			target = unitbuildTime.get(index);
+			
+			return target;
+		}else{
+			return null;
+		}
+	}
+
+
+	@Override
+	public int insertSlotToCastle(int locationID, ModelSlot slot) {
+		
+		ModelCastle castle = new ModelCastle(null, null, null, locationID);
+		int index = castles.indexOf(castle);
+		if(index != -1){
+			ModelSlot newSlot = slot;
+			newSlot.setSoltID(unitSolts.size());
+			unitSolts.add(newSlot);
+			ModelCastleTroop troop = new ModelCastleTroop(locationID, newSlot.getSoltID());
+			troops_in_castle.add(troop);
+			
+			return SUCCESS;
+		}else{
+			return ERROR_INVAILD_ACCESS;
+		}
 	}
 	
 

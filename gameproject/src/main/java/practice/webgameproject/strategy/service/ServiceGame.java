@@ -133,11 +133,6 @@ public class ServiceGame extends DaoGame{
 		return null;
 	}
 
-	public int getUnitKind(Integer unitID) {
-		// TODO Auto-generated method stub
-		return ERROR_NOT_MAKE_YET;
-	}
-
 	public int getUnitValue(int kind, int amount) {
 		// TODO Auto-generated method stub
 		return ERROR_NOT_MAKE_YET;
@@ -146,6 +141,11 @@ public class ServiceGame extends DaoGame{
 	public ModelUnitBuild getUnitBuild(int kind) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public int insertSlotToCastle(int locationID, ModelSlot slot) {
+		// TODO Auto-generated method stub
+		return ERROR_NOT_MAKE_YET;
 	}
 
 }

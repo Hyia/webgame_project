@@ -225,11 +225,12 @@ public class Engine {
 			//건물인 경우
 			if(target instanceof ModelWaitList_Building){
 				int locationID = ((ModelWaitList_Building) target).getLocationID().intValue();
-				int roomNumber = ((ModelWaitList_Building) target).getRoomNumber();
+				int roomNumber = ((ModelWaitList_Building) target).getRoomNumber().intValue();
 				ModelBuilding building = service.getBuilding(locationID, roomNumber);
 				//레벨업
 				building.setLevel(building.getLevel()+1);
 				service.updateBuilding(building);
+				return;
 			}
 			//유닛인 경우
 			if(target instanceof ModelWaitList_Unit){
@@ -238,6 +239,7 @@ public class Engine {
 				List<ModelCastleTroop> troops = service.getCastleTroops(locationID);
 				boolean isAdded = false;
 				
+				//이미 해당 유닛종류가 성에 있는 경우.
 				for(int i=0; i< troops.size();i++){
 					ModelSlot slot = service.getSlot(troops.get(i).getSlotID());
 					if(slot.getSoltUID().intValue() == ((ModelWaitList_Unit) target).getUnitID().intValue()){
@@ -249,11 +251,12 @@ public class Engine {
 				}
 				
 				if(!isAdded){
-					//해당 유닛이 성에 전혀 없던 경우
-					
+					//해당 유닛이 성에 전혀 없던 경우. 슬롯을 만들어서 해당 성에 박아놓기
+					ModelSlot slot = new ModelSlot(((ModelWaitList_Unit) target).getUnitID(), amount);
+					service.insertSlotToCastle(locationID, slot);
 				}
+				return;
 			}
-		
 		}
 	}
 	
