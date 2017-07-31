@@ -13,6 +13,7 @@ import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelSlot;
 import practice.webgameproject.strategy.model.ModelStructures;
 import practice.webgameproject.strategy.model.ModelUnit;
+import practice.webgameproject.strategy.model.ModelUnitBuild;
 import practice.webgameproject.strategy.model.ModelWaitList_Building;
 import practice.webgameproject.strategy.model.ModelWaitList_Unit;
 import practice.webgameproject.strategy.model.ModelXYval;
@@ -175,11 +176,31 @@ public class Engine {
 	
 	
 	public int productUnit(ModelMembers who, Integer locationID, int kind, int amount){
-		return -1;
+		ModelUnitBuild unit_build_info = service.getUnitBuild(kind);
+
+		return productUnit(who,locationID,unit_build_info,amount);
+		
 	}
 	public int productUnit(ModelMembers who, Integer locationID, ModelUnit unit, int amount){
-		service.getUnitKind(unit.getUnitID());
-		return -1;
+		return productUnit(who,locationID,unit.getUnitID(),amount);
+	}
+	public int productUnit(ModelMembers who, Integer locationID, ModelUnitBuild unitType, int amount){
+		int stocked_resource = who.getSaveProduction();
+		int require_resource = service.getUnitBuild(unitType.getUnitID()).getValues() * amount;
+
+		if(stocked_resource >= require_resource){
+			long buildTime = (new Date()).getTime() + unitType.getBuildTime().getTime();
+			ModelWaitList_Unit queueUnit = new ModelWaitList_Unit(new Date(buildTime), unitType.getUnitID(), locationID, amount);
+			
+			ProductThread tr = new ProductThread();
+			tr.setTarget(queueUnit);
+			tr.setFinish_time(queueUnit.getWaitTime().getTime());
+			tr.start();
+			
+			return IServices.SUCCESS;
+		}else{
+			return IServices.ERROR_INVAILD_ACCESS;
+		}
 	}
 	
 	
@@ -215,12 +236,21 @@ public class Engine {
 				int locationID = ((ModelWaitList_Unit) target).getLocationID().intValue();
 				int amount = ((ModelWaitList_Unit) target).getAmount().intValue();
 				List<ModelCastleTroop> troops = service.getCastleTroops(locationID);
+				boolean isAdded = false;
+				
 				for(int i=0; i< troops.size();i++){
 					ModelSlot slot = service.getSlot(troops.get(i).getSlotID());
 					if(slot.getSoltUID().intValue() == ((ModelWaitList_Unit) target).getUnitID().intValue()){
+						//수량 증가시키고 나감
 						slot.setSoltAmount(slot.getSoltAmount() + ((ModelWaitList_Unit) target).getAmount());
+						isAdded = true;
 						break;
 					}
+				}
+				
+				if(!isAdded){
+					//해당 유닛이 성에 전혀 없던 경우
+					
 				}
 			}
 		

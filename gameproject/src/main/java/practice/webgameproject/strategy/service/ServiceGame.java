@@ -138,4 +138,14 @@ public class ServiceGame extends DaoGame{
 		return ERROR_NOT_MAKE_YET;
 	}
 
+	public int getUnitValue(int kind, int amount) {
+		// TODO Auto-generated method stub
+		return ERROR_NOT_MAKE_YET;
+	}
+
+	public ModelUnitBuild getUnitBuild(int kind) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
