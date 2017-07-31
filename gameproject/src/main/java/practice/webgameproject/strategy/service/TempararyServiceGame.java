@@ -38,6 +38,8 @@ public class TempararyServiceGame extends ServiceGame{
 	private List<ModelUnit> units;
 	private List<ModelUnitBuild> unitbuildTime;
 	private List<ModelXYval> locations;
+	private List<ModelWaitList_Unit> leftedUnitBuildTime;
+	private List<ModelWaitList_Building> leftedStructureBuildTime;
 	
 	
 	public TempararyServiceGame() {
@@ -190,8 +192,16 @@ public class TempararyServiceGame extends ServiceGame{
 			return IServices.SUCCESS;
 		}
 	}
+
+
+	@Override
+	public List<Object> getProducingList() {
+		// TODO Auto-generated method stub
+		return super.getProducingList();
+	}
 	
 
+	
 	
 	
 	

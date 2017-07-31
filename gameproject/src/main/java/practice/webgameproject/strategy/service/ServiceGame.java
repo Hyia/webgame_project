@@ -106,4 +106,9 @@ public class ServiceGame extends DaoGame{
 		// TODO Auto-generated method stub
 		return -1;
 	}
+	
+	public List<Object> getProducingList(){
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
