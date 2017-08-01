@@ -42,7 +42,11 @@ public class ModelXYval {
 		// TODO Auto-generated method stub
 		if(obj instanceof ModelXYval){
 			ModelXYval target = (ModelXYval)obj;
-			return target.LocationID.intValue() == this.LocationID.intValue();
+			if(target.getLocationID() !=null){
+				return target.LocationID.intValue() == this.LocationID.intValue();
+			}else{
+				return (target.getCastleX()==this.CastleX) && (target.getCastleY()==this.CastleY);
+			}
 		}
 		if(obj instanceof Integer){
 			Integer target = (Integer)obj;

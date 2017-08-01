@@ -273,13 +273,13 @@ public class TempararyServiceGame extends ServiceGame{
 	@Override
 	public int insertSlotToCastle(int locationID, ModelSlot slot) {
 		
-		ModelCastle castle = new ModelCastle(null, null, null, locationID);
+		ModelCastle castle = new ModelCastle(null, null, null,locationID, null);
 		int index = castles.indexOf(castle);
 		if(index != -1){
 			ModelSlot newSlot = slot;
-			newSlot.setSoltID(unitSolts.size());
+			newSlot.setSlotID(unitSolts.size());
 			unitSolts.add(newSlot);
-			ModelCastleTroop troop = new ModelCastleTroop(locationID, newSlot.getSoltID());
+			ModelCastleTroop troop = new ModelCastleTroop(locationID, newSlot.getSlotID());
 			troops_in_castle.add(troop);
 			
 			return SUCCESS;
