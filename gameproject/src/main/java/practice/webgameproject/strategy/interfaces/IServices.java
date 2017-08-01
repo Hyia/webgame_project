@@ -68,7 +68,7 @@ public interface IServices {
 	
 	
 	//general methods - Others Information -GET
-	public List<ModelUnit> 		 getUnitInformation	(ModelUnit targetUnit);
+	public ModelUnit 		 getUnitInformation	(int UnitID);
 	
 	public List<ModelUnitBuild>  getUnitBuild		(ModelUnitBuild targetUnitBuild);
 	

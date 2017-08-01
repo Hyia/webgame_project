@@ -110,7 +110,7 @@ public class DaoGame implements IServices{
 	}
 
 	@Override
-	public List<ModelUnit> getUnitInformation(ModelUnit targetUnit) {
+	public ModelUnit getUnitInformation(int UnitID) {
 		// TODO Auto-generated method stub
 		return null;
 	}
