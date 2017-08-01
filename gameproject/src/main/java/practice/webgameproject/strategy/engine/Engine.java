@@ -204,6 +204,19 @@ public class Engine {
 		}
 	}
 	
+	public int goBattle(ModelHeroTable hero, ModelXYval targetLocation){
+		return goBattle(hero, targetLocation.getLocationID());
+	}
+	public int goBattle(ModelHeroTable hero, int x, int y){
+		ModelXYval xy = new ModelXYval(null, x, y, null);
+		return -1;
+	}
+	public int goBattle(ModelHeroTable hero, Integer locationID){
+		return goBattle(hero);
+	}
+	
+	
+	
 	
 	private class ProductThread extends Thread{
 		private long finish_time = -1;
@@ -221,7 +234,7 @@ public class Engine {
 		@Override
 		public void run() {
 			//wait until time elapsed or quick done
-			while((new Date()).getTime() - finish_time >= 0 || !quickdone);
+			while((new Date()).getTime() - finish_time >= 0 && !quickdone);
 			
 			//건물인 경우
 			if(target instanceof ModelWaitList_Building){
@@ -266,7 +279,14 @@ public class Engine {
 		private boolean order_return = false;
 		private boolean status_isAttacking = false;
 		private ModelHeroTable target = null;
+		private long timeleft = 999999999; // 남은시간 반환
 		
+		public MarchThread() {
+			super();
+			this.order_return = false;
+			this.status_isAttacking = false;
+		}
+
 		public void setFinish_time(long finish_time) {
 			this.finish_time = finish_time;
 		}
@@ -275,8 +295,8 @@ public class Engine {
 			this.target = target;
 		}
 		
-		public void setIsAttacking(boolean isAttacking){
-			this.status_isAttacking = isAttacking;
+		public boolean getIsAttacking(){
+			return status_isAttacking;
 		}
 		
 		public void returnOrderToHero(boolean order_return){
@@ -285,14 +305,37 @@ public class Engine {
 		
 		@Override
 		public void run() {
+			long startTime = (new Date()).getTime();
+			long currentTime = startTime;
+
+			status_isAttacking = true;			
 			//wait until time elapsed or quick done
-			while((new Date()).getTime() - finish_time >= 0 || !order_return);
+			while(timeleft >= 0 && !order_return){
+				currentTime = (new Date()).getTime();
+				timeleft = currentTime - finish_time; 
+			}
 			
+			//arrived war location
 			if(!order_return){
 				//뒤돌아가는 상태가 아니면
+				//1.전투 쾅
+				
+				//2.로그파일 쓰기
+				
+				//2.로그정보를 DB에 넣기
 				
 			}
 			
+			status_isAttacking = false;			
+			//회군명령 또는 전투쾅 후 회군중
+			//지나갔던 시간만큼 되돌아오기.
+			long 가던시간 = currentTime - startTime + (new Date()).getTime();
+			while(timeleft >= 0 && !order_return){
+				currentTime = (new Date()).getTime();
+				timeleft = currentTime - 가던시간;
+			}
+			//도착은 페이지 새로고침될 때 이 쓰레드를 isAlive()를 호출함으로 알 수 있을걸?
+			//end of method
 		}
 	}
 	

@@ -153,4 +153,15 @@ public class ServiceGame extends DaoGame{
 		return ERROR_NOT_MAKE_YET;
 	}
 
+	//x와 y값으로 xyval을 리턴
+	public ModelXYval getModelXYval(int x, int y) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	//로케이션id로 xyval을 리턴
+	public ModelXYval getModelXYval(Integer locationID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
