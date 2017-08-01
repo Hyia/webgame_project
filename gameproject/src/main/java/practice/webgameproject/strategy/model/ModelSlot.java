@@ -5,36 +5,36 @@ public class ModelSlot {
 	private Integer SlotUID;// 	unit id
 	private Integer SlotAmount;//	amount of units
 
-	public Integer getSoltID() {
+	public Integer getSlotID() {
 		return SlotID;
 	}
 	
-	public void setSoltID(Integer soltID) {
-		SlotID = soltID;
+	public void setSlotID(Integer SlotID) {
+		SlotID = SlotID;
 	}
 
-	public Integer getSoltUID() {
+	public Integer getSlotUID() {
 		return SlotUID;
 	}
-	public void setSoltUID(Integer soltUID) {
-		SlotUID = soltUID;
+	public void setSlotUID(Integer SlotUID) {
+		SlotUID = SlotUID;
 	}
-	public Integer getSoltAmount() {
+	public Integer getSlotAmount() {
 		return SlotAmount;
 	}
-	public void setSoltAmount(Integer soltAmount) {
-		SlotAmount = soltAmount;
+	public void setSlotAmount(Integer SlotAmount) {
+		SlotAmount = SlotAmount;
 	}
-	public ModelSlot(Integer soltUID, Integer soltAmount) {
-		SlotUID = soltUID;
-		SlotAmount = soltAmount;
+	public ModelSlot(Integer SlotUID, Integer SlotAmount) {
+		SlotUID = SlotUID;
+		SlotAmount = SlotAmount;
 	}
 	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof ModelSlot){
 			ModelSlot target = (ModelSlot) obj;
-			return target.getSoltID().intValue() == SlotID.intValue();
+			return target.getSlotID().intValue() == SlotID.intValue();
 		}
 		return false;
 	}

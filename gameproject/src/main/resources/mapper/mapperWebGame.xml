@@ -15,8 +15,8 @@
     <!-- Castle Insert -->
     <insert id="InsertCastle" parameterType="ModelCastle">        
         Insert into Castle
-        	('UserID', 'Name', 'Kind', 'LocationID')
-        		values (#{UserID}, #{Name}, #{Kind}, #{LocationID})
+        	('UserID', 'Name', 'Kind', 'LocationID','Production')
+        		values (#{UserID}, #{Name}, #{Kind}, #{LocationID},#(Production))
     </insert>
     
     <!-- xyval Insert -->
@@ -24,13 +24,6 @@
         Insert into xyval
         	('LocationID', 'CastleX', 'CastleY', 'Kind')
         		values (#{LocationID}, #{CastleX}, #{CastleY}, #{Kind})
-    </insert>
-    
-    <!-- resource Insert -->
-    <insert id="InsertResource" parameterType="ModelResource">        
-        Insert into resource
-        	('LocationID', 'Production')
-        		values (#{LocationID}, #{Production})
     </insert>
     
     <!-- OutResource Insert -->
@@ -47,6 +40,22 @@
         		values (#{LocationID}, #{Kind}, #{Level}, #{RoomNumber})
     </insert>
     
+    <!-- 성의 건설중인 건물리스트  목록 추가 -->
+    <insert id="InsertWaitBuildingList" parameterType="ModelWaitList_Building">      
+ 			Insert into 
+ 				WaitList_Building
+ 					('WaitTime','LocationID','Kind','RoomNumber')
+ 						values (#(WaitTime),#(LocationID),#(Kind),#(RoomNumber))
+    </insert>
+    
+    <!-- 성의 건설중인 유닛리스트  목록 추가 -->
+    <insert id="InsertWaitUnitList" parameterType="ModelWaitList_Unit">      
+ 			Insert into 
+ 				WaitList_Unit
+ 					('WaitTime','LocationID','UnitID','Amount')
+ 						values (#(WaitTime),#(LocationID),#(UnitID),#(Amount))
+    </insert>
+    
     <!-- Castletroop Insert -->
     <insert id="InsertCastletroop" parameterType="ModelCastletroop">        
         Insert into Castletroop
@@ -55,7 +64,7 @@
     </insert>
     
     <!-- Herotable Insert -->
-    <insert id="InsertHerotable" parameterType="ModelHerotable">        
+    <insert id="InsertHerotable" parameterType="ModelHeroTable">        
         Insert into Herotable
         	('HeroID', 'STR', 'AGI', 'CON', 'Owner', 'LocationID','Statuus', 'Specialty', 'Potrait', 'Sex')
         		values (#{HeroID}, #{STR}, #{AGI}, #{CON}, #{Owner}, #{LocationID}, #{Statuus}, #{Specialty}, #{Potrait}, #{Sex} )
@@ -108,6 +117,13 @@
          		 
     </select>
     
+    <!-- 모든 좌표 정보 가져오기 -->
+    <select id="getXYvalAll">        
+  		 SELECT * FROM
+      		  xyval
+      		  
+    </select>
+    
     <!-- 성에병력 슬롯ID 정보 가져오기 -->
     <select id="getCatleTroopData" parameterType="ModelCastle"  resultType="ModelSlot">        
  		select SlotID,SoltUID,SoltAmount from
@@ -117,20 +133,20 @@
     </select>
     
     <!-- 성의 건물 레벨 정보   가져오기 -->
-    <select id="getUnit" parameterType="ModelCastle"  resultType="ModelBuilding">        
+    <select id="getBuildingLevel" parameterType="ModelCastle"  resultType="ModelBuilding">        
  		SELECT * FROM building where LocationID=#{LocationID}
       		  
     </select>
     
     <!-- 성자원지+야외자원지   가져오기 -->
-    <select id="getUnit" parameterType="ModelMembers" resultType="int">      
+    <select id="getAllProduction" parameterType="ModelCastle" resultType="int">      
  			select sum(ap.Production) from
 
 			(select Production from castle  where castle.UserID = #{UserID}
 
 				union
 
-			 select Production from outresource  where outresource.UserID = #{UserID}) as ap  
+			 select Production from outresource  where outresource.UserID = #{UserID}) as ap
     </select>
     
     <!-- 성의 건설중인 건물리스트   가져오기 -->
@@ -148,14 +164,14 @@
     </select>
     
     <!-- 영웅 정보 가져오기 -->
-    <select id="getHero" parameterType="ModelHerotable"  resultType="ModelHerotable">        
+    <select id="getHero" parameterType="ModelHeroTable"  resultType="ModelHeroTable">        
  		select * from
 			Herotable
 				where LocationID=#{LocationID}
     </select>
     
     <!-- 영웅의병력 슬롯ID 정보 가져오기 -->
-    <select id="getHeroTroopData" parameterType="ModelHerotable"  resultType="ModelHerotable">        
+    <select id="getHeroTroopData" parameterType="ModelHeroTable"  resultType="ModelHeroTable">        
  		select SlotID,SoltUID,SoltAmount from
 			herotroop_SlotUnit
 				where HeroID=#{HeroID}
@@ -168,7 +184,7 @@
     </select>
     
     <!-- 유닛  건설정보 가져오기 -->
-    <select id="getUnit"  resultType="ModelUnitBuild">        
+    <select id="getUnitBuild"  resultType="ModelUnitBuild">        
  		SELECT * FROM unitbuild
     </select>
     

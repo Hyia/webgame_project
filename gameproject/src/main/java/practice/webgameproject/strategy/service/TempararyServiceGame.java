@@ -12,7 +12,7 @@ import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelHeroTroop;
 import practice.webgameproject.strategy.model.ModelMembers;
-import practice.webgameproject.strategy.model.ModelOutResources;
+import practice.webgameproject.strategy.model.ModelOutResource;
 import practice.webgameproject.strategy.model.ModelSlot;
 import practice.webgameproject.strategy.model.ModelStructures;
 import practice.webgameproject.strategy.model.ModelUnit;
@@ -34,7 +34,7 @@ public class TempararyServiceGame extends ServiceGame{
 	private List<ModelHeroTable> heros;
 	private List<ModelHeroTroop> troops_of_heros;
 	private List<ModelMembers> users;
-	private List<ModelOutResources> resource_outplace;
+	private List<ModelOutResource> resource_outplace;
 	private List<ModelSlot> unitSolts;
 	private List<ModelStructures> structures;
 	private List<ModelUnit> units;

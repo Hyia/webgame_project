@@ -5,8 +5,16 @@ public class ModelCastle {
 	private String	Name 		 ;//VARCHAR(20)
 	private Integer	Kind 		 ;//INT(11) 
 	private Integer	LocationID	 ;//INT(11) 	AUTO_INCREMENT
+	private Integer Production	 ;//INT(11)		NOT NULL DEFAULT '0'
+	
 	public String getUserID() {
 		return UserID;
+	}
+	public Integer getProduction() {
+		return Production;
+	}
+	public void setProduction(Integer production) {
+		Production = production;
 	}
 	public void setUserID(String userID) {
 		UserID = userID;
@@ -29,11 +37,14 @@ public class ModelCastle {
 	public void setLocationID(Integer locationID) {
 		LocationID = locationID;
 	}
-	public ModelCastle(String userID, String name, Integer kind, Integer locationID) {
+	
+	public ModelCastle(String userID, String name, Integer kind, Integer locationID, Integer production) {
+		super();
 		UserID = userID;
 		Name = name;
 		Kind = kind;
 		LocationID = locationID;
+		Production = production;
 	}
 	
 	@Override

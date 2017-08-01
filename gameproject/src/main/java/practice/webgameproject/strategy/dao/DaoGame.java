@@ -39,6 +39,7 @@ public class DaoGame implements IServices{
 		return 0;
 	}
 	
+	
 	//Castle 관련 Get Methods
 	@Override
 	public List<ModelCastle> getCastleList(ModelMembers targetUser) {
@@ -72,8 +73,6 @@ public class DaoGame implements IServices{
 		return session.selectOne("mapper.mysql.mapperWebGame.getWaitUnitList",targetWitList);
 	}
 
-	
-	
 	@Override
 	public List<ModelWaitList_Building> getModelWaitList_Building(ModelCastle targetWitList) {
 		// ModelCastle의 LocationID로  ModelWaitList_Building Return

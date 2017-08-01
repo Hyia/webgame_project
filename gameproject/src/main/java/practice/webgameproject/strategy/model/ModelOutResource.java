@@ -1,6 +1,6 @@
 package practice.webgameproject.strategy.model;
 
-public class ModelOutResources {
+public class ModelOutResource {
 	private Integer LocationID;//AUTO_INCREMENT
 	private String UserID; 
 	private Integer Production; 
@@ -27,12 +27,12 @@ public class ModelOutResources {
 	public Integer getLocationID() {
 		return LocationID;
 	}
-	public ModelOutResources(String userID, Integer production, Integer kind) {
+	public ModelOutResource(String userID, Integer production, Integer kind) {
 		UserID = userID;
 		Production = production;
 		Kind = kind;
 	}
-	public ModelOutResources(Integer locationID, String userID, Integer production, Integer kind) {
+	public ModelOutResource(Integer locationID, String userID, Integer production, Integer kind) {
 		LocationID = locationID;
 		UserID = userID;
 		Production = production;

@@ -8,6 +8,8 @@ import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelHeroTroop;
 import practice.webgameproject.strategy.model.ModelMembers;
+import practice.webgameproject.strategy.model.ModelOutResourc;
+import practice.webgameproject.strategy.model.ModelOutResource;
 import practice.webgameproject.strategy.model.ModelSlot;
 import practice.webgameproject.strategy.model.ModelWaitList_Building;
 import practice.webgameproject.strategy.model.ModelWaitList_Unit;
@@ -53,25 +55,65 @@ public interface IServices {
 
 
 
-	//general methods - members
-	public int insertMember(ModelMembers member);	
-	public ModelMembers getMember(ModelMembers member);	
+	//general methods - members -GET
+	public ModelMembers getMember(ModelMembers targetMember);
 	
-	//general methods - castles
-	public List<ModelCastle> getCastleList(ModelMembers targetUser);
-	public List<ModelHeroTable> getHeroList_InCastle(ModelCastle targetCastle);
-	public List<ModelSlot> getCastleTroop_SlotList(ModelCastle targetTroop);
-	public ModelXYval getModelXYval(ModelCastle targetXYval);
-	public List<ModelWaitList_Building> getModelWaitList_Building(ModelCastle targetWitList);
-	public List<ModelWaitList_Unit> getModelWaitList_Unit(ModelCastle targetWitList);
 
-	//general methods - hero
+	//general methods - members -INSERT
+	public int insertMember(ModelMembers newMember);	
+	
+	
+	//general methods - Others Information -GET
+	
+	//general methods - castles - GET
+	public List<ModelCastle> 			 getCastleList(ModelMembers targetUser);
+	
+	public List<ModelHeroTable> 		 getHeroList_InCastle(ModelCastle targetCastle);
+	
+	public List<ModelSlot> 				 getCastleTroop_SlotList(ModelCastle targetTroop);
+	
+	public ModelXYval					 getModelXYval(ModelCastle targetXYval);
+	
+	public List<ModelWaitList_Building>  getModelWaitList_Building(ModelCastle targetWitList);
+	
+	public List<ModelWaitList_Unit>		 getModelWaitList_Unit(ModelCastle targetWitList);
+	
+	public List<ModelBuilding>			 getBuilding(ModelCastle targetBuilding);
+	
+	public int							 getAllProduction(ModelCastle targetCastleProduction);
+	
+	
+	
+
+	//general methods - castles - INSERT
+	public int 		insertCastle(ModelCastle newCastle);
+	
+	public int 		insertXYval(ModelXYval newXYval);
+	
+	public int		insertHero(ModelHeroTable newHero);
+	
+	public int 		insertBuilding(ModelBuilding newBuilding);
+	
+	public int		insertWaitBuildingList(ModelWaitList_Building newBuildingList);
+	
+	public int 		insertWaitUnitgList(ModelWaitList_Unit newUnitList);
+	
+	public int 		insertCastletroop(ModelCastleTroop newCastleTroop);
+	
+	public int insertSlot(ModelSlot newSlot);
+	
+	public int insertOutResource(ModelOutResource newOutResource);
+	
+	
+	
+	//general methods - hero - GET
 	public List<ModelHeroTroop> getHeroTroop_SlotList(ModelHeroTable targetTroop);
 	
 	
-	//general methods - castles - buildings
-	public int insertBuilding(ModelBuilding building);
-
+	//general methods - hero - INSERT
+	public int insertHerotable(ModelHeroTable newHero);
+	
+	public int insertHerotroop(ModelHeroTroop newHeroTroop);
 	
 	
 }
