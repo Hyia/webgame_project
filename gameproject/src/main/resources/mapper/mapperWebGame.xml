@@ -92,10 +92,12 @@
     <!-- ========================== select Mappers ============================== -->
     
     <!-- 아이디와 비밀번호로 정보조회 -->
-    <select id="getMembersLogin" parameterType="ModelMembers"  resultType="int">        
+    <select id="getMembersLogin" parameterType="ModelMembers"  resultType="ModelMembers">        
         SELECT * FROM members
-         WHERE UserID = #{UserID} and UserPW =#{UserPW}
+         WHERE UserID = #{UserID}
     </select>
+    
+    
     
     <!-- 유저 성 정보 가져오기 -->
     <select id="getCastle" parameterType="ModelMembers"  resultType="ModelCastle">        
@@ -111,9 +113,16 @@
     </select>
     
     <!-- 성좌표 정보 가져오기 -->
-    <select id="getXYval" parameterType="ModelCastle"  resultType="ModelXYval">        
+    <select id="getXYval" parameterType="int"  resultType="ModelXYval">        
   		 SELECT * FROM
       		  xyval where LocationID=#{LocationID}
+         		 
+    </select>
+    
+    <!-- 성좌표 정보 가져오기 ver 2 -->
+    <select id="getXYval2" parameterType="ModelXYval"  resultType="ModelXYval">        
+  		 SELECT * FROM
+      		  xyval where CastleX=#{CastleX} and CastleY=#{CastleY}
          		 
     </select>
     
@@ -167,7 +176,7 @@
     <select id="getHero" parameterType="ModelHeroTable"  resultType="ModelHeroTable">        
  		select * from
 			Herotable
-				where LocationID=#{LocationID}
+				where HeroID=#{HeroID}
     </select>
     
     <!-- 영웅의병력 슬롯ID 정보 가져오기 -->
@@ -178,9 +187,9 @@
     </select>
     
     <!-- 유닛  스탯정보 가져오기 -->
-    <select id="getUnit"  resultType="ModelUnit">        
+    <select id="getUnit" parameterType="int" resultType="ModelUnit">        
  		SELECT * FROM unit
-      		  unitbuild
+      		  	where UnitID=#{UnitID}
     </select>
     
     <!-- 유닛  건설정보 가져오기 -->
@@ -189,7 +198,7 @@
     </select>
     
     <!-- 건물 건설정보  가져오기 -->
-    <select id="getUnit"  resultType="ModelStructures">        
+    <select id="getStructures"  resultType="ModelStructures">        
  		SELECT * FROM structures
       		  
     </select>
@@ -201,7 +210,7 @@
     
     <!-- ========================== update Mappers ============================== -->
     
-    <!-- 유저정보 업데이트 -->
+    <!-- Member Update -->
     <update id="updateMembers" parameterType="ModelMembers">
     	update members 
        		SET  UserPW			=	#{UserPW}
@@ -210,36 +219,30 @@
        			,UserEmail		=	#{UserEmail}
        			,UserLevel		=	#{UserLevel}
        			,SaveProduction	=	#{SaveProduction}
-       	WHERE UserID	=	#{UserID}
+       	WHERE 	 UserID			=	#{UserID}
     
     </update>
     
-    <!-- 유저의 세이브 자원 업데이트 -->
+    <!-- User SaveProduction Update-->
     <update id="updateMembersProduction" parameterType="ModelMembers">
     	update castle 
        		SET  Production	=	#{Production}
-       	WHERE UserID	=	#{UserID}
+       	WHERE 	 UserID		=	#{UserID}
     
     </update>
     
-    <!-- 성의 이름 업데이트 -->
-    <update id="updateCastleName" parameterType="ModelCastle">
-    	update castle 
-       		SET  Name	=	#{Name}
-       	WHERE LocationID	=	#{LocationID}
+    <!-- ModelCastle Update -->
+    <update id="updateCastle" parameterType="ModelCastle">
+    	update
+    		castle SET
+    			 Name			=	#{Name}
+    			,SaveProduction	=	#{SaveProduction}
+    			,Kind			=	#{Kind}
+       	WHERE	 LocationID		=	#{LocationID}
     
     </update>
     
-    <!-- 성의 자원 업데이트 -->
-    <update id="updateCastleProduction" parameterType="ModelCastle">
-    	update castle 
-       		SET  SaveProduction	=	#{SaveProduction}
-       	WHERE LocationID	=	#{LocationID}
-    
-    </update>
-    
-    
-    <!-- 성의 건물 정보 업데이트 -->
+    <!-- Catle Building Update -->
     <update id="updateBuilding" parameterType="ModelBuilding">
     	update Building 
        		SET  level		=	#{Level}
@@ -247,6 +250,8 @@
        	WHERE LocationID	=	#{LocationID}
     
     </update>
+    
+
     
     <!-- 영웅 정보 업데이트 -->
     <update id="updateHero" parameterType="ModelHeroTable">
@@ -260,7 +265,7 @@
 				,Specialty  = #{Specialty}
 				,Potrait    = #{Potrait}
 				,Sex        = #{Sex}
-       	WHERE HeroID=#{HeroID}
+       	WHERE HeroID		= #{HeroID}
     
     </update>
     
@@ -269,13 +274,16 @@
     	update slot 
        		SET  SoltUID		=	#{SoltUID}
        			,SoltAmount		=	#{SoltAmount}
-       	WHERE SoltID	=	#{SoltID}
+       	WHERE 	 SoltID			=	#{SoltID}
     
     </update>
     
     
     
     <!-- ========================== update Mappers ============================== -->
+    
+    
+    
     
     <select id="getPhoneList"              resultType="ModelPhone">
         SELECT *  FROM TB_Phone 

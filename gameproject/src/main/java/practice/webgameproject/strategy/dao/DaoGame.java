@@ -16,7 +16,9 @@ import practice.webgameproject.strategy.model.ModelHeroTroop;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelOutResource;
 import practice.webgameproject.strategy.model.ModelSlot;
+import practice.webgameproject.strategy.model.ModelStructures;
 import practice.webgameproject.strategy.model.ModelUnit;
+import practice.webgameproject.strategy.model.ModelUnitBuild;
 import practice.webgameproject.strategy.model.ModelWaitList_Building;
 import practice.webgameproject.strategy.model.ModelWaitList_Unit;
 import practice.webgameproject.strategy.model.ModelXYval;
@@ -67,6 +69,11 @@ public class DaoGame implements IServices{
 	public ModelXYval getModelXYval(ModelCastle targetXYval) {
 		// ModelCastle의 LocationID로 조회하여서 ModelXYval으로 Return
 		return session.selectOne("mapper.mysql.mapperWebGame.getXYval",targetXYval);
+	}
+	
+	public ModelXYval getModelXYval(ModelXYval targetXYval) {
+		// ModelXYval의 X,Y로 조회하여서 ModelXYval으로 Return
+		return session.selectOne("mapper.mysql.mapperWebGame.getXYval2",targetXYval);
 	}
 	
 	@Override
@@ -132,11 +139,6 @@ public class DaoGame implements IServices{
 		return 0;
 	}
 
-	@Override
-	public int insertHero(ModelHeroTable newHero) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 	@Override
 	public int insertWaitBuildingList(ModelWaitList_Building newBuildingList) {
@@ -179,15 +181,29 @@ public class DaoGame implements IServices{
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
-	
 
-	
+	@Override
+	public List<ModelUnitBuild> getUnitBuild(ModelUnitBuild targetUnitBuild) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	
+	@Override
+	public List<ModelStructures> getStructures(ModelStructures targetStructures) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-	
+	@Override
+	public List<ModelXYval> getAllXYval() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public ModelHeroTable getHero(ModelHeroTable targetHero) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
-
 }
