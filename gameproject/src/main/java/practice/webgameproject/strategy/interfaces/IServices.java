@@ -8,9 +8,9 @@ import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelHeroTroop;
 import practice.webgameproject.strategy.model.ModelMembers;
-import practice.webgameproject.strategy.model.ModelOutResourc;
 import practice.webgameproject.strategy.model.ModelOutResource;
 import practice.webgameproject.strategy.model.ModelSlot;
+import practice.webgameproject.strategy.model.ModelUnit;
 import practice.webgameproject.strategy.model.ModelWaitList_Building;
 import practice.webgameproject.strategy.model.ModelWaitList_Unit;
 import practice.webgameproject.strategy.model.ModelXYval;
@@ -64,6 +64,8 @@ public interface IServices {
 	
 	
 	//general methods - Others Information -GET
+	public List<ModelUnit> getUnitInformation(ModelUnit targetUnit);
+	
 	
 	//general methods - castles - GET
 	public List<ModelCastle> 			 getCastleList(ModelMembers targetUser);

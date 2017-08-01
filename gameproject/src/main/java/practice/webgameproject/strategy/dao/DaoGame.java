@@ -14,7 +14,9 @@ import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelHeroTroop;
 import practice.webgameproject.strategy.model.ModelMembers;
+import practice.webgameproject.strategy.model.ModelOutResource;
 import practice.webgameproject.strategy.model.ModelSlot;
+import practice.webgameproject.strategy.model.ModelUnit;
 import practice.webgameproject.strategy.model.ModelWaitList_Building;
 import practice.webgameproject.strategy.model.ModelWaitList_Unit;
 import practice.webgameproject.strategy.model.ModelXYval;
@@ -98,6 +100,84 @@ public class DaoGame implements IServices{
 	public List<ModelHeroTroop> getHeroTroop_SlotList(ModelHeroTable targetTroop) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<ModelUnit> getUnitInformation(ModelUnit targetUnit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ModelBuilding> getBuilding(ModelCastle targetBuilding) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getAllProduction(ModelCastle targetCastleProduction) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int insertCastle(ModelCastle newCastle) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int insertXYval(ModelXYval newXYval) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int insertHero(ModelHeroTable newHero) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int insertWaitBuildingList(ModelWaitList_Building newBuildingList) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int insertWaitUnitgList(ModelWaitList_Unit newUnitList) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int insertCastletroop(ModelCastleTroop newCastleTroop) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int insertSlot(ModelSlot newSlot) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int insertOutResource(ModelOutResource newOutResource) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int insertHerotable(ModelHeroTable newHero) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int insertHerotroop(ModelHeroTroop newHeroTroop) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	
