@@ -247,11 +247,15 @@ public class Engine {
 		//유닛 이동속도 보정
 		List<ModelHeroTroop> herosUnits = service.getHeroTroop_SlotList(hero);
 		double average_unitmove_speed = 0;
+		int speed_sum = 0;
 		for(int i=0; i<herosUnits.size();i++){
-			average_unitmove_speed += service.getUnitInformation(service.getSlot(herosUnits.get(i).getSlotID()).getSlotUID());
+			//TODO : 나중에 이거 간소화좀 시켜봐
+			speed_sum += service.getUnitInformation(service.getSlot(herosUnits.get(i).getSlotID()).getSlotUID()).getSPD().intValue();
 		}
-		
+		average_unitmove_speed = speed_sum / herosUnits.size();
 		int heroAGI = hero.getAGI();
+		
+		travelTime = (long) (travelTime	/average_unitmove_speed);
 		
 		
 		//쓰레드 시작
@@ -259,7 +263,7 @@ public class Engine {
 		ModelMembers owner = new ModelMembers(hero.getOwner(), null, null, null);
 		if(service.hasAddableMarch(owner)){
 			//병력을 보낼 수 있으면 쓰레드를 붙여주고 성공 리턴
-			
+			//TODO 만들어야된다!!!!!!!!
 			return IServices.SUCCESS;
 		}
 		

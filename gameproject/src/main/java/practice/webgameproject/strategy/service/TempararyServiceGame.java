@@ -287,10 +287,35 @@ public class TempararyServiceGame extends ServiceGame{
 			return ERROR_INVAILD_ACCESS;
 		}
 	}
-	
 
-	
-	
+
+	@Override
+	public ModelXYval getModelXYval(int x, int y) {
+		ModelXYval xy = new ModelXYval(null, x, y, null);
+		int index = locations.indexOf(xy);
+		if(index != -1){
+			return locations.get(index);
+		}
+		return null;
+	}
+
+
+	@Override
+	public ModelXYval getModelXYval(Integer locationID) {
+		int index = locations.indexOf(locationID);
+		if(index != -1){
+			return locations.get(index);
+		}
+		return null;
+	}
+
+
+	@Override
+	public boolean hasAddableMarch(ModelMembers owner) {
+		// TODO Auto-generated method stub
+		return super.hasAddableMarch(owner);
+	}
+
 	
 	
 

@@ -164,4 +164,9 @@ public class ServiceGame extends DaoGame{
 		return null;
 	}
 
+	public boolean hasAddableMarch(ModelMembers owner) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
