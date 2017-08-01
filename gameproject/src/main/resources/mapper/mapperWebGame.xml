@@ -95,21 +95,21 @@
     </select>
     
     <!-- 성에 있는 영웅 정보 가져오기 -->
-    <select id="getherotable" parameterType="ModelCastle"  resultType="">        
+    <select id="getherotable" parameterType="ModelCastle"  resultType="ModelHeroTable">        
   		 SELECT * FROM
       		  herotable where LocationID=#{LocationID}
          		 
     </select>
     
     <!-- 성좌표 정보 가져오기 -->
-    <select id="getherotable" parameterType="ModelCastle"  resultType="ModelCastle">        
+    <select id="getXYval" parameterType="ModelCastle"  resultType="ModelXYval">        
   		 SELECT * FROM
-      		  herotable where LocationID=#{LocationID}
+      		  xyval where LocationID=#{LocationID}
          		 
     </select>
     
     <!-- 성에병력 슬롯ID 정보 가져오기 -->
-    <select id="getCatleTroopData" parameterType="ModelCastle"  resultType="ModelCastle">        
+    <select id="getCatleTroopData" parameterType="ModelCastle"  resultType="ModelSlot">        
  		select SlotID,SoltUID,SoltAmount from
 			castletroop_SlotUnit
 				where LocationID=#{LocationID}
@@ -131,6 +131,20 @@
 				union
 
 			 select Production from outresource  where outresource.UserID = #{UserID}) as ap  
+    </select>
+    
+    <!-- 성의 건설중인 건물리스트   가져오기 -->
+    <select id="getWaitBuildingList" parameterType="ModelCastle" resultType="ModelWaitList_Building">      
+ 			select * from
+ 				WaitList_Building
+ 					where LocationID=#{LocationID}
+    </select>
+    
+    <!-- 성의 건설중인 유닛리스트   가져오기 -->
+    <select id="getWaitUnitList" parameterType="ModelCastle" resultType="ModelWaitList_Unit">      
+ 			select * from
+ 				WaitList_Unit
+ 					where LocationID=#{LocationID}
     </select>
     
     <!-- 영웅 정보 가져오기 -->

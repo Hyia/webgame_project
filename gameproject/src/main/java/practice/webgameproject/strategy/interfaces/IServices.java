@@ -4,8 +4,14 @@ import java.util.List;
 
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
+import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
+import practice.webgameproject.strategy.model.ModelHeroTroop;
 import practice.webgameproject.strategy.model.ModelMembers;
+import practice.webgameproject.strategy.model.ModelSlot;
+import practice.webgameproject.strategy.model.ModelWaitList_Building;
+import practice.webgameproject.strategy.model.ModelWaitList_Unit;
+import practice.webgameproject.strategy.model.ModelXYval;
 
 public interface IServices {
 	//success code
@@ -54,7 +60,15 @@ public interface IServices {
 	//general methods - castles
 	public List<ModelCastle> getCastleList(ModelMembers targetUser);
 	public List<ModelHeroTable> getHeroList_InCastle(ModelCastle targetCastle);
+	public List<ModelSlot> getCastleTroop_SlotList(ModelCastle targetTroop);
+	public ModelXYval getModelXYval(ModelCastle targetXYval);
+	public List<ModelWaitList_Building> getModelWaitList_Building(ModelCastle targetWitList);
+	public List<ModelWaitList_Unit> getModelWaitList_Unit(ModelCastle targetWitList);
 
+	//general methods - hero
+	public List<ModelHeroTroop> getHeroTroop_SlotList(ModelHeroTable targetTroop);
+	
+	
 	//general methods - castles - buildings
 	public int insertBuilding(ModelBuilding building);
 
