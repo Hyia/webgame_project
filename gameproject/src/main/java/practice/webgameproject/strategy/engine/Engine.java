@@ -9,6 +9,7 @@ import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelCastleTroop;
+import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelSlot;
 import practice.webgameproject.strategy.model.ModelStructures;
@@ -242,9 +243,9 @@ public class Engine {
 				//이미 해당 유닛종류가 성에 있는 경우.
 				for(int i=0; i< troops.size();i++){
 					ModelSlot slot = service.getSlot(troops.get(i).getSlotID());
-					if(slot.getSoltUID().intValue() == ((ModelWaitList_Unit) target).getUnitID().intValue()){
+					if(slot.getSlotUID().intValue() == ((ModelWaitList_Unit) target).getUnitID().intValue()){
 						//수량 증가시키고 나감
-						slot.setSoltAmount(slot.getSoltAmount() + ((ModelWaitList_Unit) target).getAmount());
+						slot.setSlotAmount(slot.getSlotAmount() + ((ModelWaitList_Unit) target).getAmount());
 						isAdded = true;
 						break;
 					}
@@ -257,6 +258,41 @@ public class Engine {
 				}
 				return;
 			}
+		}
+	}
+	
+	private class MarchThread extends Thread{
+		private long finish_time = -1;
+		private boolean order_return = false;
+		private boolean status_isAttacking = false;
+		private ModelHeroTable target = null;
+		
+		public void setFinish_time(long finish_time) {
+			this.finish_time = finish_time;
+		}
+		
+		public void setHero(ModelHeroTable target){
+			this.target = target;
+		}
+		
+		public void setIsAttacking(boolean isAttacking){
+			this.status_isAttacking = isAttacking;
+		}
+		
+		public void returnOrderToHero(boolean order_return){
+			this.order_return = order_return;
+		}
+		
+		@Override
+		public void run() {
+			//wait until time elapsed or quick done
+			while((new Date()).getTime() - finish_time >= 0 || !order_return);
+			
+			if(!order_return){
+				//뒤돌아가는 상태가 아니면
+				
+			}
+			
 		}
 	}
 	
