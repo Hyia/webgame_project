@@ -10,6 +10,7 @@ import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
+import practice.webgameproject.strategy.model.ModelHeroTroop;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelSlot;
 import practice.webgameproject.strategy.model.ModelStructures;
@@ -58,13 +59,21 @@ public class Engine {
 	 * @param member
 	 * @return
 	 */
-	public boolean IsValidLogin(ModelMembers member){
+	public boolean isValidLogin(ModelMembers member){
 		ModelMembers result = null;
 		result = service.getMember(member);
 		if(result == null){
 			//이거 없는 유저야!
 			return false;
 		}
+		
+		//있는 경우 패스워드 비교
+		if(!member.getUserPW().equals(result.getUserPW())){
+			//패스워드가 달라!
+			return false;
+		}
+		
+		//정상 로그인
 		return true;
 	}
 	
@@ -175,6 +184,16 @@ public class Engine {
 		}
 	}
 	
+	public int refreshResource(){
+		/**
+		 * 반영해야하는 것
+		 * 		자원 변화
+		 * 		공격/회군/건설 남은시간 표기
+		 */
+		
+		return -1;
+	}
+	
 	
 	public int productUnit(ModelMembers who, Integer locationID, int kind, int amount){
 		ModelUnitBuild unit_build_info = service.getUnitBuild(kind);
@@ -208,11 +227,45 @@ public class Engine {
 		return goBattle(hero, targetLocation.getLocationID());
 	}
 	public int goBattle(ModelHeroTable hero, int x, int y){
-		ModelXYval xy = new ModelXYval(null, x, y, null);
-		return -1;
+		ModelXYval xy = service.getModelXYval(x,y);
+		return goBattle(hero,xy);
 	}
 	public int goBattle(ModelHeroTable hero, Integer locationID){
-		return goBattle(hero);
+		//지금 좌표랑 공격목표 좌표랑 이동시간 계산
+		ModelXYval startPoint = service.getModelXYval(hero.getLacationID());
+		int startX = startPoint.getCastleX();
+		int startY = startPoint.getCastleY();
+		
+		ModelXYval endPoint = service.getModelXYval(locationID);
+		int endX = endPoint.getCastleX();
+		int endY = endPoint.getCastleY();
+		
+		//HELP ME PYTHAGORAS!!!
+		double travelLength = Math.sqrt(Math.pow((startX-endX), 2)-Math.pow((startY-endY), 2));
+		long travelTime = (long) (travelLength * IServices.TRAVEL_UNIT_TIME);
+		
+		//유닛 이동속도 보정
+		List<ModelHeroTroop> herosUnits = service.getHeroTroop_SlotList(hero);
+		double average_unitmove_speed = 0;
+		for(int i=0; i<herosUnits.size();i++){
+			average_unitmove_speed += service.getUnitInformation(service.getSlot(herosUnits.get(i).getSlotID()).getSlotUID());
+		}
+		
+		int heroAGI = hero.getAGI();
+		
+		
+		//쓰레드 시작
+		//보내는 놈의 유저정보 조회
+		ModelMembers owner = new ModelMembers(hero.getOwner(), null, null, null);
+		if(service.hasAddableMarch(owner)){
+			//병력을 보낼 수 있으면 쓰레드를 붙여주고 성공 리턴
+			
+			return IServices.SUCCESS;
+		}
+		
+		//공격 도착은 리플레시할 때 되도록 만들것. 이 메서드는 전투를 보내는 것 까지만.
+		// TODO 에러 종류 "더 보낼 수 없는 상태"를 IServices에 추가.
+		return IServices.ERROR_UNHANDLED_EXCEPTION;
 	}
 	
 	
