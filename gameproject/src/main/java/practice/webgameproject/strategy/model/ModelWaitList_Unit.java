@@ -53,6 +53,14 @@ public class ModelWaitList_Unit {
 		LocationID = locationID;
 		Amount = amount;
 	}
+	public Integer getRoomNumber() {
+		return RoomNumber;
+	}
+	public void setRoomNumber(Integer roomNumber) {
+		RoomNumber = roomNumber;
+	}
+	
+	
 	
 	
 	
