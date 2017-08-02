@@ -3,10 +3,6 @@ package practice.webgameproject.strategy.engine;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-import practice.webgameproject.strategy.engine.GameThreads.MarchThread;
-import practice.webgameproject.strategy.engine.GameThreads.ProductThread;
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
@@ -30,8 +26,6 @@ public class Engine {
 	private static final int STARTING_USER_RESOURCE_AMOUNT = 0;// 신규유저 시작자원량
 	private static final int BASIC_BUILDING_LEVEL = 1;// 신규 건물 초기레벨
 	
-	private GameThreads threads;
-
 	//엔진 초기화
 	public Engine(ServiceGame service){
 		//서비스를 가져옴
@@ -267,7 +261,6 @@ public class Engine {
 		ModelMembers owner = new ModelMembers(hero.getOwner(), null, null, null);
 		if(hasAddableMarch(hero.getLacationID())){
 			//병력을 보낼 수 있으면 쓰레드를 붙여주고 성공 리턴
-			//TODO 만들어야된다!!!!!!!!
 			/**
 			 * 필요사항
 			 * ㅁ.쓰레드를 누군가 잡고있어야함 - holder 필요
