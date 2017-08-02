@@ -282,6 +282,7 @@ public class Engine {
 			 */
 			MarchThread march = new MarchThread();
 			march.setHero(hero);
+			march.setDestination(locationID);
 			march.setFinish_time(travelTime + (new Date()).getTime());//이동시간에 현재시간을 더해서 이동완료시간으로 변환
 			march.start();
 			threadsHolder.add(new ThreadHolder(hero.getLacationID(), march));
@@ -316,6 +317,14 @@ public class Engine {
 		return false;
 	}
 
+	private void makeBattle(ModelHeroTable target, Integer targetLocationID) {
+		// TODO 1.전투쾅
+		
+		// TODO 2.로그파일 쓰기
+		
+		// TODO 2.로그정보를 DB에 넣기
+		
+	}
 
 	private class ThreadHolder{
 		Integer locationID;
@@ -450,6 +459,7 @@ public class Engine {
 		private boolean status_isAttacking = false;
 		private ModelHeroTable target = null;
 		private long timeleft = 999999999; // 남은시간 반환
+		private Integer targetLocationID;
 		
 		public MarchThread() {
 			super();
@@ -469,9 +479,18 @@ public class Engine {
 			return target;
 		}
 		
+		public long getTimeLeft(){
+			return timeleft;
+		}
 		
 		public boolean getIsAttacking(){
 			return status_isAttacking;
+		}
+		public void setDestination(Integer locationID){
+			targetLocationID = locationID;
+		}
+		public Integer getDestication(){
+			return targetLocationID;
 		}
 		
 		/**
@@ -487,6 +506,7 @@ public class Engine {
 			long currentTime = startTime;
 
 			status_isAttacking = true;			
+			timeleft = currentTime - finish_time; 
 			//wait until time elapsed or quick done
 			while(timeleft >= 0 && !order_return){
 				currentTime = (new Date()).getTime();
@@ -496,11 +516,8 @@ public class Engine {
 			//arrived war location
 			if(!order_return){
 				//뒤돌아가는 상태가 아니면
-				// TODO 1.전투 쾅
-				
-				// TODO 2.로그파일 쓰기
-				
-				// TODO 2.로그정보를 DB에 넣기
+				// 전투 쾅
+				makeBattle(target, targetLocationID);
 				
 			}
 			status_isAttacking = false;			
@@ -516,6 +533,7 @@ public class Engine {
 			//도착은 페이지 새로고침될 때 이 쓰레드를 isAlive()를 호출함으로 알 수 있을걸?
 			//end of method
 		}
+
 	}
 
 
