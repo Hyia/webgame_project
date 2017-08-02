@@ -1,9 +1,11 @@
 package practice.webgameproject.strategy.engine;
 
-import java.util.Date;
-import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
@@ -28,10 +30,17 @@ public class Engine {
 	private static final int STARTING_USER_RESOURCE_AMOUNT = 0;// 신규유저 시작자원량
 	private static final int BASIC_BUILDING_LEVEL = 1;// 신규 건물 초기레벨
 
+	private static final int MAX_MARCH_PER_CASTLE = 3;// 한 성에서 최대로 전투보낼 수 있는 영웅 수
+
+	private List<ThreadHolder> threadsHolder;
+	
 	//엔진 초기화
 	public Engine(ServiceGame service){
 		//서비스를 가져옴
 		this.service = service;
+		//쓰레드 홀더 초기화
+		threadsHolder = new ArrayList<ThreadHolder>();
+		
 		//나은 제조시간을 가져옴
 		List<Object> producions = this.service.getProducingList();
 		for(int i=0 ; i < producions.size(); i++){
@@ -43,6 +52,7 @@ public class Engine {
 				tr.setFinish_time(((ModelWaitList_Building) target).getWaitTime().getTime());
 				tr.setTarget(target);
 				tr.start();
+				threadsHolder.add(new ThreadHolder(((ModelWaitList_Building) target).getLocationID(), tr));
 			}
 			//유닛인 경우
 			if(target instanceof ModelWaitList_Unit){
@@ -50,6 +60,7 @@ public class Engine {
 				tr.setFinish_time(((ModelWaitList_Unit) target).getWaitTime().getTime());
 				tr.setTarget(target);
 				tr.start();
+				threadsHolder.add(new ThreadHolder(((ModelWaitList_Unit) target).getLocationID(), tr));
 			}
 		}
 	}
@@ -176,6 +187,7 @@ public class Engine {
 			tr.setTarget(queueBuilding);
 			tr.setFinish_time(queueBuilding.getWaitTime().getTime());
 			tr.start();
+			threadsHolder.add(new ThreadHolder(queueBuilding.getLocationID(), tr));
 			
 			return IServices.SUCCESS;
 		}else{
@@ -216,7 +228,7 @@ public class Engine {
 			tr.setTarget(queueUnit);
 			tr.setFinish_time(queueUnit.getWaitTime().getTime());
 			tr.start();
-			
+			threadsHolder.add(new ThreadHolder(locationID, tr));
 			return IServices.SUCCESS;
 		}else{
 			return IServices.ERROR_INVAILD_ACCESS;
@@ -261,9 +273,18 @@ public class Engine {
 		//쓰레드 시작
 		//보내는 놈의 유저정보 조회
 		ModelMembers owner = new ModelMembers(hero.getOwner(), null, null, null);
-		if(service.hasAddableMarch(owner)){
+		if(hasAddableMarch(hero.getLacationID())){
 			//병력을 보낼 수 있으면 쓰레드를 붙여주고 성공 리턴
-			//TODO 만들어야된다!!!!!!!!
+			/**
+			 * 필요사항
+			 * ㅁ.쓰레드를 누군가 잡고있어야함 - holder 필요
+			 * ㅁ.여기서 start까지 해야함. 왜냐하면 메서드 이름이 goBattle이니까.
+			 */
+			MarchThread march = new MarchThread();
+			march.setHero(hero);
+			march.setFinish_time(travelTime + (new Date()).getTime());//이동시간에 현재시간을 더해서 이동완료시간으로 변환
+			march.start();
+			threadsHolder.add(new ThreadHolder(hero.getLacationID(), march));
 			return IServices.SUCCESS;
 		}
 		
@@ -271,10 +292,58 @@ public class Engine {
 		// TODO 에러 종류 "더 보낼 수 없는 상태"를 IServices에 추가.
 		return IServices.ERROR_UNHANDLED_EXCEPTION;
 	}
-	
-	
-	
-	
+
+	/**
+	 * 해당 성에서 추가적으로 병력을 파견할 수 있는지를 리턴.
+	 * @param locationID
+	 * @return
+	 */
+	private boolean hasAddableMarch(Integer locationID) {
+		int counter = 0;
+		for(int i=0; i< threadsHolder.size(); i++){
+			ThreadHolder holder =threadsHolder.get(i); 
+			if(holder.thread instanceof MarchThread){
+				if( ((MarchThread)holder.thread).target.getLacationID() == locationID){
+					counter++;
+				}
+			}
+		}
+		
+		if(counter < MAX_MARCH_PER_CASTLE){
+			return true;
+		}
+		
+		return false;
+	}
+
+
+	private class ThreadHolder{
+		Integer locationID;
+		Thread thread;
+		
+		public ThreadHolder(Integer locationID, Thread thread) {
+			this.locationID = locationID;
+			this.thread = thread;
+		}
+		public ThreadHolder(Integer locationID) {
+			this.locationID = locationID;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if(obj instanceof ThreadHolder){
+				ThreadHolder target = (ThreadHolder) obj;
+				if(locationID.intValue() == target.locationID.intValue()){
+						return target.equals(thread);
+				}else{
+					return false;
+				}
+			}
+			
+			return false;
+		}
+	}
+
+
 	private class ProductThread extends Thread{
 		private long finish_time = -1;
 		private boolean quickdone = false;
@@ -329,6 +398,50 @@ public class Engine {
 				return;
 			}
 		}
+		@Override
+		public boolean equals(Object obj) {
+			//로케이션 아이디만 주거나 프로덕트 쓰레드로 주면
+			//로케이션 아이디가 같으면 같은 쓰레드로 취급?
+			//한 성에서 여러 건물을 짓는 경우가 발생할 수 있기때문에 건물의 경우 룸넘버도 같아야함
+			//한 성에서 여러 유닛을 만드는 경우가 발생할 수 있기때문에 
+			if(obj instanceof Integer){
+				Integer integer = (Integer) obj;
+				if(target instanceof ModelWaitList_Building){
+					return ((ModelWaitList_Building) target).getLocationID().intValue() == integer.intValue();
+				}
+				if(target instanceof ModelWaitList_Unit){
+					return ((ModelWaitList_Unit) target).getLocationID().intValue() == integer.intValue();
+				}
+			}
+			if(obj instanceof ProductThread){
+				ProductThread thread = (ProductThread) obj;
+				if(thread.target instanceof ModelWaitList_Building){
+					int intvalue = ((ModelWaitList_Building) thread.target).getLocationID();
+					if( intvalue != ((ModelWaitList_Building) this.target).getLocationID()){
+						return false;
+					}
+					intvalue = ((ModelWaitList_Building) thread.target).getRoomNumber();
+					if( intvalue != ((ModelWaitList_Building) this.target).getRoomNumber()){
+						return false;
+					}
+					return true;
+				}
+				if(target instanceof ModelWaitList_Unit){
+					int intvalue = ((ModelWaitList_Unit) thread.target).getLocationID();
+					if( intvalue != ((ModelWaitList_Unit) this.target).getLocationID()){
+						return false;
+					}
+					intvalue = ((ModelWaitList_Unit) thread.target).getRoomNumber();
+					intvalue = ((ModelWaitList_Unit) thread.target).getRoomNumber();
+					if( intvalue != ((ModelWaitList_Unit) this.target).getRoomNumber()){
+						return false;
+					}
+					return true;
+					
+				}
+			}
+			return super.equals(obj);
+		}
 	}
 	
 	private class MarchThread extends Thread{
@@ -352,12 +465,20 @@ public class Engine {
 			this.target = target;
 		}
 		
+		public ModelHeroTable getHero(){
+			return target;
+		}
+		
+		
 		public boolean getIsAttacking(){
 			return status_isAttacking;
 		}
 		
-		public void returnOrderToHero(boolean order_return){
-			this.order_return = order_return;
+		/**
+		 * order hero to return base
+		 */
+		public void returnOrderToHero(){
+			this.order_return = true;
 		}
 		
 		@Override
@@ -375,18 +496,19 @@ public class Engine {
 			//arrived war location
 			if(!order_return){
 				//뒤돌아가는 상태가 아니면
-				//1.전투 쾅
+				// TODO 1.전투 쾅
 				
-				//2.로그파일 쓰기
+				// TODO 2.로그파일 쓰기
 				
-				//2.로그정보를 DB에 넣기
+				// TODO 2.로그정보를 DB에 넣기
 				
 			}
-			
 			status_isAttacking = false;			
 			//회군명령 또는 전투쾅 후 회군중
 			//지나갔던 시간만큼 되돌아오기.
 			long 가던시간 = currentTime - startTime + (new Date()).getTime();
+			//이 order_return이 다시 true가 되면 즉시회군(과금아이템?).
+			order_return = false;
 			while(timeleft >= 0 && !order_return){
 				currentTime = (new Date()).getTime();
 				timeleft = currentTime - 가던시간;
@@ -395,6 +517,6 @@ public class Engine {
 			//end of method
 		}
 	}
-	
+
 
 }
