@@ -160,5 +160,11 @@ public class ServiceGame extends DaoGame{
 		return null;
 	}
 
+	//히당 위치의 병력을 리턴. 성이든 야외자원지이든....
+	public List<ModelSlot> getLocalArmySlotList(Integer targetLocationID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
