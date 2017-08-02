@@ -1,5 +1,6 @@
 package practice.webgameproject.strategy.engine;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,7 +29,9 @@ public class Engine {
 	
 	private static final int STARTING_USER_RESOURCE_AMOUNT = 0;// 신규유저 시작자원량
 	private static final int BASIC_BUILDING_LEVEL = 1;// 신규 건물 초기레벨
-	
+
+	private static final int MAX_MARCH_PER_CASTLE = 3;// 한 성에서 최대로 전투보낼 수 있는 영웅 수
+
 	private List<ThreadHolder> threadsHolder;
 	
 	//엔진 초기화
@@ -289,10 +292,27 @@ public class Engine {
 		// TODO 에러 종류 "더 보낼 수 없는 상태"를 IServices에 추가.
 		return IServices.ERROR_UNHANDLED_EXCEPTION;
 	}
-	
-	private boolean hasAddableMarch(Integer lacationID) {
-		// TODO Auto-generated method stub
-//		threadsHolder.get(key)
+
+	/**
+	 * 해당 성에서 추가적으로 병력을 파견할 수 있는지를 리턴.
+	 * @param locationID
+	 * @return
+	 */
+	private boolean hasAddableMarch(Integer locationID) {
+		int counter = 0;
+		for(int i=0; i< threadsHolder.size(); i++){
+			ThreadHolder holder =threadsHolder.get(i); 
+			if(holder.thread instanceof MarchThread){
+				if( ((MarchThread)holder.thread).target.getLacationID() == locationID){
+					counter++;
+				}
+			}
+		}
+		
+		if(counter < MAX_MARCH_PER_CASTLE){
+			return true;
+		}
+		
 		return false;
 	}
 
