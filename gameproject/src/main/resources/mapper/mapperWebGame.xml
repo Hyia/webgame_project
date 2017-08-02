@@ -122,6 +122,12 @@
          castle where UserID=#{UserID}
     </select>
     
+    <!-- 유저 성 정보 하나 가져오기 -->
+    <select id="getCastleOne" parameterType="Integer"  resultType="ModelCastle">        
+        SELECT * FROM
+         castle where LocationID=#{locationID}
+    </select>
+    
     <!-- 성에 있는 영웅 정보 가져오기 -->
     <select id="getherotable" parameterType="ModelCastle"  resultType="ModelHeroTable">        
   		 SELECT * FROM
@@ -197,7 +203,7 @@
     </select>
     
     <!-- 영웅의병력 슬롯ID 정보 가져오기 -->
-    <select id="getHeroTroopData" parameterType="ModelHeroTable"  resultType="ModelHeroTable">        
+    <select id="getHeroTroopData" parameterType="ModelHeroTable"  resultType="ModelSlot">        
  		select SlotID,SoltUID,SoltAmount from
 			herotroop_SlotUnit
 				where HeroID=#{HeroID}
@@ -337,8 +343,18 @@
     
     <!-- ========================== Delete Mappers ============================== -->
     
-    <delete id="deleteAllMemberData" parameterType="">
+    <delete id="deleteCastleTroop" parameterType="ModelCastlep">
+    	delete from
+    		castletroop
+    			where LocationID=#{LocationID}
+    	
+    </delete>
     
+    <delete id="deleteCastleTroop" parameterType="ModelCastlep">
+    	delete from
+    		castletroop
+    			where LocationID=#{LocationID}
+    	
     </delete>
         
  </mapper>

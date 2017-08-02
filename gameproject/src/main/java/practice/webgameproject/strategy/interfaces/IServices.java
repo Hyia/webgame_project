@@ -80,11 +80,14 @@ public interface IServices {
 	//general methods - castles - GET
 	public List<ModelCastle> 			 getCastleList				(ModelMembers targetUser);
 	
+	public ModelCastle 			 		 getCastleOne				(Integer locationID);
+	
 	public List<ModelHeroTable> 		 getHeroList_InCastle		(ModelCastle targetCastle);
 	
 	public List<ModelSlot> 				 getCastleTroop_SlotList	(ModelCastle targetTroop);
 	
 	public ModelXYval					 getModelXYval				(ModelCastle targetXYval);
+	
 	
 	public List<ModelWaitList_Building>  getModelWaitList_Building	(ModelCastle targetWitList);
 	
