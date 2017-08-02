@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import practice.webgameproject.strategy.interfaces.IServices;
+import practice.webgameproject.strategy.model.ModelBattleResult;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelCastleTroop;
@@ -334,7 +335,8 @@ public class Engine {
 	
 	//전투 및 로그작성
 	private String fight(ModelHeroTable target, Integer targetLocationID){
-		
+		//초기화
+		ModelBattleResult battleResult = null;
 		//병력 정보 불러오기
 		//공격측 병력정보 + 보정
 		List<ModelHeroTroop> myTroops =  service.getHeroTroop_SlotList(target);
@@ -362,28 +364,49 @@ public class Engine {
 		List<ModelSlot> defenders = null;
 		int defAtkSum = 0;
 		int defHpSum = 0;
-		if(defHeros == null || defHeros.size() == 0){
-			//영웅 없는경우
-			defenders = service.getLocalArmySlotList(targetLocationID);
-			List<ModelSlot> defSlots = new ArrayList<ModelSlot>();
-			for(int i=0; i<defenders.size();i++){
-				ModelSlot slot = service.getSlot(defenders.get(i).getSlotID());
-				ModelUnit unit = service.getUnitInformation(slot.getSlotUID());
-				
-				int amount = slot.getSlotAmount();
-				int atk = unit.getATK();
-				int hp = unit.getHP();
-
-				defSlots.add(slot);
-
-				defAtkSum += (atk*amount);
-				defHpSum += (hp*amount);
-			}
-		}else{
+		List<ModelUnit> defSlots = new ArrayList<ModelUnit>();
+		
+		if(defHeros != null && defHeros.size() != 0){
 			//영웅 있는 경우
 			// TODO 만들어야한다!!
-			
+			//영웅 루프
+			for(int i=0; i< defHeros.size();i++){
+				ModelHeroTable hero = defHeros.get(i);
+				List<ModelHeroTroop> heroTroops =  service.getHeroTroop_SlotList(hero);
+				for(int j=0; j< heroTroops.size();j++){
+					ModelSlot slot = service.getSlot(heroTroops.get(i).getSlotID());
+					ModelUnit unit = service.getUnitInformation(slot.getSlotUID());
+					int amount = slot.getSlotAmount();
+					int atk = correction(unit.getATK(), hero.getSTR().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
+					int hp = correction(unit.getHP(), hero.getCON().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
+
+					unit.setATK(atk);
+					unit.setHP(hp);
+					defSlots.add(unit);
+					
+					defAtkSum += (atk*amount);
+					defHpSum += (hp*amount);
+				}
+			}
 		}
+			
+		//영웅이 배정되지 않은 병력들.
+		defenders = service.getLocalArmySlotList(targetLocationID);
+		for(int i=0; i<defenders.size();i++){
+			ModelSlot slot = service.getSlot(defenders.get(i).getSlotID());
+			ModelUnit unit = service.getUnitInformation(slot.getSlotUID());
+			
+			int amount = slot.getSlotAmount();
+			int atk = unit.getATK();
+			int hp = unit.getHP();
+
+			defSlots.add(unit);
+
+			defAtkSum += (atk*amount);
+			defHpSum += (hp*amount);
+		}
+			
+			
 		
 		
 		/**
