@@ -15,8 +15,8 @@
     <!-- Castle Insert -->
     <insert id="InsertCastle" parameterType="ModelCastle">        
         Insert into Castle
-        	('UserID', 'Name', 'Kind', 'LocationID')
-        		values (#{UserID}, #{Name}, #{Kind}, #{LocationID})
+        	('UserID', 'Name', 'Kind', 'LocationID','Production')
+        		values (#{UserID}, #{Name}, #{Kind}, #{LocationID},#(Production))
     </insert>
     
     <!-- xyval Insert -->
@@ -24,13 +24,6 @@
         Insert into xyval
         	('LocationID', 'CastleX', 'CastleY', 'Kind')
         		values (#{LocationID}, #{CastleX}, #{CastleY}, #{Kind})
-    </insert>
-    
-    <!-- resource Insert -->
-    <insert id="InsertResource" parameterType="ModelResource">        
-        Insert into resource
-        	('LocationID', 'Production')
-        		values (#{LocationID}, #{Production})
     </insert>
     
     <!-- OutResource Insert -->
@@ -47,6 +40,22 @@
         		values (#{LocationID}, #{Kind}, #{Level}, #{RoomNumber})
     </insert>
     
+    <!-- 성의 건설중인 건물리스트  목록 추가 -->
+    <insert id="InsertWaitBuildingList" parameterType="ModelWaitList_Building">      
+ 			Insert into 
+ 				WaitList_Building
+ 					('WaitTime','LocationID','Kind','RoomNumber')
+ 						values (#(WaitTime),#(LocationID),#(Kind),#(RoomNumber))
+    </insert>
+    
+    <!-- 성의 건설중인 유닛리스트  목록 추가 -->
+    <insert id="InsertWaitUnitList" parameterType="ModelWaitList_Unit">      
+ 			Insert into 
+ 				WaitList_Unit
+ 					('WaitTime','LocationID','UnitID','Amount')
+ 						values (#(WaitTime),#(LocationID),#(UnitID),#(Amount))
+    </insert>
+    
     <!-- Castletroop Insert -->
     <insert id="InsertCastletroop" parameterType="ModelCastletroop">        
         Insert into Castletroop
@@ -55,7 +64,7 @@
     </insert>
     
     <!-- Herotable Insert -->
-    <insert id="InsertHerotable" parameterType="ModelHerotable">        
+    <insert id="InsertHerotable" parameterType="ModelHeroTable">        
         Insert into Herotable
         	('HeroID', 'STR', 'AGI', 'CON', 'Owner', 'LocationID','Statuus', 'Specialty', 'Potrait', 'Sex')
         		values (#{HeroID}, #{STR}, #{AGI}, #{CON}, #{Owner}, #{LocationID}, #{Statuus}, #{Specialty}, #{Potrait}, #{Sex} )
@@ -75,6 +84,23 @@
         		values (#{SlotID}, #{SoltUID}, #{SoltAmount})
     </insert>
     
+    <insert id="mInsertWaitList_Building" parameterType="java.util.List">
+        INSERT INTO  waitlist_building (   WaitTime  ,   LocationID   ,   Kind	,	RoomNumber  )
+        VALUES
+            <foreach collection="list" item="item" index="index" open="(" separator="),(" close=")">
+                #{item.WaitTime} , #{item.LocationID} , #{item.Kind} , #{RoomNumber}
+            </foreach>
+    </insert>
+    
+    <insert id="mInsertWaitList_Unit" parameterType="java.util.List">
+        INSERT INTO  waitlist_unit (  WaitTime ,  LocationID  ,  UnitID	, RoomNumber ,	Amount )
+        VALUES
+            <foreach collection="list" item="item" index="index" open="(" separator="),(" close=")">
+                #{item.WaitTime} , #{item.LocationID} , #{item.UnitID} , #{RoomNumber} , #{Amount}
+            </foreach>
+    </insert>
+    
+    
     <!-- ========================== Insert Mappers ============================== -->
     
     
@@ -82,16 +108,24 @@
     
     <!-- ========================== select Mappers ============================== -->
     
-    <!-- 아이디와 비밀번호로 정보조회 -->
-    <select id="getMembersLogin" parameterType="ModelMembers"  resultType="int">        
+    <!-- 아이디와 비밀번호로 정보조회 --> <!--CHECK-->
+    <select id="getMembersLogin" parameterType="ModelMembers"  resultType="ModelMembers">        
         SELECT * FROM members
-         WHERE UserID = #{UserID} and UserPW =#{UserPW}
+         WHERE UserID = #{UserID}
     </select>
+    
+    
     
     <!-- 유저 성 정보 가져오기 -->
     <select id="getCastle" parameterType="ModelMembers"  resultType="ModelCastle">        
         SELECT * FROM
          castle where UserID=#{UserID}
+    </select>
+    
+    <!-- 유저 성 정보 하나 가져오기 -->
+    <select id="getCastleOne" parameterType="Integer"  resultType="ModelCastle">        
+        SELECT * FROM
+         castle where LocationID=#{locationID}
     </select>
     
     <!-- 성에 있는 영웅 정보 가져오기 -->
@@ -102,10 +136,24 @@
     </select>
     
     <!-- 성좌표 정보 가져오기 -->
-    <select id="getXYval" parameterType="ModelCastle"  resultType="ModelXYval">        
+    <select id="getXYval" parameterType="int"  resultType="ModelXYval">        
   		 SELECT * FROM
       		  xyval where LocationID=#{LocationID}
          		 
+    </select>
+    
+    <!-- 성좌표 정보 가져오기 ver 2 -->
+    <select id="getXYval2" parameterType="ModelXYval"  resultType="ModelXYval">        
+  		 SELECT * FROM
+      		  xyval where CastleX=#{CastleX} and CastleY=#{CastleY}
+         		 
+    </select>
+    
+    <!-- 모든 좌표 정보 가져오기 -->
+    <select id="getXYvalAll">        
+  		 SELECT * FROM
+      		  xyval
+      		  
     </select>
     
     <!-- 성에병력 슬롯ID 정보 가져오기 -->
@@ -117,20 +165,26 @@
     </select>
     
     <!-- 성의 건물 레벨 정보   가져오기 -->
-    <select id="getUnit" parameterType="ModelCastle"  resultType="ModelBuilding">        
+    <select id="getBuildingLevel" parameterType="ModelCastle"  resultType="ModelBuilding">        
  		SELECT * FROM building where LocationID=#{LocationID}
       		  
     </select>
     
+    <!-- OutResource  가져오기 -->
+    <select id="getOutResource" parameterType="Integer"  resultType="ModelOutResource">        
+ 		SELECT * FROM outresource where LocationID=#{locationID}
+      		  
+    </select>
+    
     <!-- 성자원지+야외자원지   가져오기 -->
-    <select id="getUnit" parameterType="ModelMembers" resultType="int">      
+    <select id="getAllProduction" parameterType="ModelCastle" resultType="int">      
  			select sum(ap.Production) from
 
 			(select Production from castle  where castle.UserID = #{UserID}
 
 				union
 
-			 select Production from outresource  where outresource.UserID = #{UserID}) as ap  
+			 select Production from outresource  where outresource.UserID = #{UserID}) as ap
     </select>
     
     <!-- 성의 건설중인 건물리스트   가져오기 -->
@@ -148,32 +202,32 @@
     </select>
     
     <!-- 영웅 정보 가져오기 -->
-    <select id="getHero" parameterType="ModelHerotable"  resultType="ModelHerotable">        
+    <select id="getHero" parameterType="ModelHeroTable"  resultType="ModelHeroTable">        
  		select * from
 			Herotable
-				where LocationID=#{LocationID}
+				where HeroID=#{HeroID}
     </select>
     
     <!-- 영웅의병력 슬롯ID 정보 가져오기 -->
-    <select id="getHeroTroopData" parameterType="ModelHerotable"  resultType="ModelHerotable">        
+    <select id="getHeroTroopData" parameterType="ModelHeroTable"  resultType="ModelSlot">        
  		select SlotID,SoltUID,SoltAmount from
 			herotroop_SlotUnit
 				where HeroID=#{HeroID}
     </select>
     
     <!-- 유닛  스탯정보 가져오기 -->
-    <select id="getUnit"  resultType="ModelUnit">        
+    <select id="getUnit" parameterType="int" resultType="ModelUnit">        
  		SELECT * FROM unit
-      		  unitbuild
+      		  	where UnitID=#{UnitID}
     </select>
     
     <!-- 유닛  건설정보 가져오기 -->
-    <select id="getUnit"  resultType="ModelUnitBuild">        
+    <select id="getUnitBuild"  resultType="ModelUnitBuild">        
  		SELECT * FROM unitbuild
     </select>
     
     <!-- 건물 건설정보  가져오기 -->
-    <select id="getUnit"  resultType="ModelStructures">        
+    <select id="getStructures"  resultType="ModelStructures">        
  		SELECT * FROM structures
       		  
     </select>
@@ -185,45 +239,31 @@
     
     <!-- ========================== update Mappers ============================== -->
     
-    <!-- 유저정보 업데이트 -->
+    <!-- Member Update -->
     <update id="updateMembers" parameterType="ModelMembers">
     	update members 
-       		SET  UserPW			=	#{UserPW}
-       			,UserPW			=	#{UserPW}
+       		SET 
+       			 UserPW			=	#{UserPW}
        			,UserNicName	=	#{UserNicName}
        			,UserEmail		=	#{UserEmail}
        			,UserLevel		=	#{UserLevel}
        			,SaveProduction	=	#{SaveProduction}
-       	WHERE UserID	=	#{UserID}
+       	WHERE 	 UserID			=	#{UserID}
     
     </update>
     
-    <!-- 유저의 세이브 자원 업데이트 -->
-    <update id="updateMembersProduction" parameterType="ModelMembers">
-    	update castle 
-       		SET  Production	=	#{Production}
-       	WHERE UserID	=	#{UserID}
+    <!-- ModelCastle Update -->
+    <update id="updateCastle" parameterType="ModelCastle">
+    	update
+    		castle SET
+    			 Name			=	#{Name}
+    			,SaveProduction	=	#{SaveProduction}
+    			,Kind			=	#{Kind}
+       	WHERE	 LocationID		=	#{LocationID}
     
     </update>
     
-    <!-- 성의 이름 업데이트 -->
-    <update id="updateCastleName" parameterType="ModelCastle">
-    	update castle 
-       		SET  Name	=	#{Name}
-       	WHERE LocationID	=	#{LocationID}
-    
-    </update>
-    
-    <!-- 성의 자원 업데이트 -->
-    <update id="updateCastleProduction" parameterType="ModelCastle">
-    	update castle 
-       		SET  SaveProduction	=	#{SaveProduction}
-       	WHERE LocationID	=	#{LocationID}
-    
-    </update>
-    
-    
-    <!-- 성의 건물 정보 업데이트 -->
+    <!-- Catle Building Update -->
     <update id="updateBuilding" parameterType="ModelBuilding">
     	update Building 
        		SET  level		=	#{Level}
@@ -231,6 +271,8 @@
        	WHERE LocationID	=	#{LocationID}
     
     </update>
+    
+
     
     <!-- 영웅 정보 업데이트 -->
     <update id="updateHero" parameterType="ModelHeroTable">
@@ -244,7 +286,7 @@
 				,Specialty  = #{Specialty}
 				,Potrait    = #{Potrait}
 				,Sex        = #{Sex}
-       	WHERE HeroID=#{HeroID}
+       	WHERE HeroID		= #{HeroID}
     
     </update>
     
@@ -253,37 +295,115 @@
     	update slot 
        		SET  SoltUID		=	#{SoltUID}
        			,SoltAmount		=	#{SoltAmount}
-       	WHERE SoltID	=	#{SoltID}
+       	WHERE 	 SoltID			=	#{SoltID}
+    
+    </update>
+    
+    <!-- 야외자원지 점령유저 정보 업데이트 -->
+    <update id="updateOutResource" parameterType="ModelOutResource">
+    	update outresource 
+     		 SET 
+     		 	 UserID	 =	#{UserID}
+     			,Kind	 = 	case when #{Kind} is not null and #{Kind}!=0 then #{Kind} 
+			                                               				 else Kind 
+					  													 end
+       	
+				WHERE 	 LocationID		=	#{LocationID}
+    
+    </update>
+    
+    <!-- 건물 건설 리스트 시간 업데이트 -->
+    <update id="updateWaitList_Building" parameterType="ModelWaitList_Building">
+    	update
+    	WaitList_Building SET 
+     		 		 WaitTime		=	#{WaitTime}
+			WHERE 	 LocationID		=	#{LocationID}
+    
+    </update>
+    
+    <!-- 유닛 생산 리스트 시간 업데이트 -->
+    <update id="updateWaitList_Unit" parameterType="ModelWaitList_Unit">
+    	update
+    	waitlist_unit SET 
+     		 		 WaitTime		=	#{WaitTime}
+			WHERE 	 LocationID		=	#{LocationID}
+    
+    </update>
+    
+    <!-- XY 좌표 업데이트 -->
+    <update id="updateXYval" parameterType="ModelXYval">
+    	update
+    	xyval SET 
+     		 		 CastleX		=	#{CastleX}
+     		 		 CastleY		=	#{CastleY}
+     		 		 Kind			=	#{Kind}
+			WHERE 	 LocationID		=	#{LocationID}
     
     </update>
     
     
     
+    
     <!-- ========================== update Mappers ============================== -->
     
-    <select id="getPhoneList"              resultType="ModelPhone">
-        SELECT *  FROM TB_Phone 
-    </select>
     
-    <insert id="insertPhone" parameterType="ModelPhone">
-        INSERT INTO 
-        TB_phone (   name  ,   manufacturer   ,   price  )
-        VALUES   ( #{name} , #{manufacturer}  , #{price} )
-    </insert>
+    <!-- ========================== Delete Mappers ============================== -->
     
-    <!-- mysql multi insert
-        INSERT INTO t (col1, col2, col3) 
-               VALUES ('val1_1', 'val1_2', 'val1_3')
-                    , ('val2_1', 'val2_2', 'val2_3')
-                    , ('val3_1', 'val3_2', 'val3_3')
-        ;
-     -->
-    <insert id="insertPhoneList" parameterType="java.util.List">
-        INSERT INTO  TB_Phone (   name  ,   manufacturer   ,   price  )
-        VALUES
-            <foreach collection="list" item="item" index="index" open="(" separator="),(" close=")">
-                #{item.name} , #{item.manufacturer} , #{item.price}
-            </foreach>
-    </insert>
+    <delete id="deleteCastleTroop" parameterType="Integer">
+    	delete from
+    		castletroop
+    			where LocationID=#{locationID}
+    	
+    </delete>
     
+    <delete id="deleteHeroTroop" parameterType="Integer">
+    	delete from
+    		herotable
+    			where HeroID=#{heroID}
+    	
+    </delete>
+    
+    <delete id="deleteSlot" parameterType="Integer">
+    	delete from
+    		slot
+    			where SlotID=#{slotID}
+    </delete>
+    
+    <delete id="deleteCastleBuildings" parameterType="Integer">
+    	delete from
+    		building
+    			where LocationID=#{locationID}
+    </delete>
+    
+    <delete id="deleteOutResource" parameterType="Integer">
+    	delete from
+    		outresource
+    			where LocationID=#{locationID}
+    </delete>
+    
+     <delete id="deleteXYval" parameterType="Integer">
+    	delete from
+    		xyval
+    			where LocationID=#{locationID}
+    </delete>
+    
+    <delete id="deleteCastle" parameterType="Integer">
+    	delete from
+    		castle
+    			where UserID=#{userID}
+    </delete>
+    
+    <delete id="deleteMembers" parameterType="ModelMembers">
+    	delete from
+    		members
+    			where UserID=#{UserID} and UserPW=#{UserPW} 
+    </delete>
+    
+    <!-- ========================== Delete Mappers ============================== -->
+    
+    <!-- ========================== Create&Drop Mappers ============================== -->
+
+    <!-- ========================== Create&Drop Mappers ============================== -->
+    
+        
  </mapper>

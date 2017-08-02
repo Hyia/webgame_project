@@ -19,40 +19,40 @@ import practice.webgameproject.strategy.model.ModelXYval;
 
 public interface IServices {
 	//success code
-	public static final int SUCCESS = 100;
+	public static final Integer SUCCESS = 100;
 
 	//error codes
-	public static final int ERROR_GENERAL_EXCEPTION = -1;
-	public static final int ERROR_NOT_MAKE_YET = -100;
-	public static final int ERROR_UNHANDLED_EXCEPTION = -10;
-	public static final int ERROR_CANNOT_FIND_USER = -20;
-	public static final int ERROR_INVAILD_ACCESS = -30;
-	public static final int ERROR_CANNOT_BUILD_THIS_PLACE = -40;
+	public static final Integer ERROR_GENERAL_EXCEPTION = -1;
+	public static final Integer ERROR_NOT_MAKE_YET = -100;
+	public static final Integer ERROR_UNHANDLED_EXCEPTION = -10;
+	public static final Integer ERROR_CANNOT_FIND_USER = -20;
+	public static final Integer ERROR_INVAILD_ACCESS = -30;
+	public static final Integer ERROR_CANNOT_BUILD_THIS_PLACE = -40;
 	
 	//types - location
-	public static final int LOCATION_TYPE_INVAILD = -1;
-	public static final int LOCATION_TYPE_NORMAL = 1;
-	public static final int LOCATION_TYPE_CASTLE = 2;
-	public static final int LOCATION_TYPE_EXTERNALRESOURCE = 3;
+	public static final Integer LOCATION_TYPE_INVAILD = -1;
+	public static final Integer LOCATION_TYPE_NORMAL = 1;
+	public static final Integer LOCATION_TYPE_CASTLE = 2;
+	public static final Integer LOCATION_TYPE_EXTERNALRESOURCE = 3;
 
 	//types - buildings
-	public static final int BUILDING_TYPE_INVALID = -1;
-	public static final int BUILDING_TYPE_BLANK = 0;
-	public static final int BUILDING_TYPE_CENTER = 1;
-	public static final int BUILDING_TYPE_RESOURCECENTER = 2;
-	public static final int BUILDING_TYPE_BARRACKS = 3;
-	public static final int BUILDING_TYPE_TAVERN = 4;
+	public static final Integer BUILDING_TYPE_INVALID = -1;
+	public static final Integer BUILDING_TYPE_BLANK = 0;
+	public static final Integer BUILDING_TYPE_CENTER = 1;
+	public static final Integer BUILDING_TYPE_RESOURCECENTER = 2;
+	public static final Integer BUILDING_TYPE_BARRACKS = 3;
+	public static final Integer BUILDING_TYPE_TAVERN = 4;
 	
-	public static final int BUILDING_BASIC_LEVEL = 1;
+	public static final Integer BUILDING_BASIC_LEVEL = 1;
 
 	//types - units
-	public static final int UNIT_TYPE_LV1 = 0;
-	public static final int UNIT_TYPE_LV2 = 1;
-	public static final int UNIT_TYPE_LV3 = 2;
+	public static final Integer UNIT_TYPE_LV1 = 0;
+	public static final Integer UNIT_TYPE_LV2 = 1;
+	public static final Integer UNIT_TYPE_LV3 = 2;
 
 	//location mapsize
-	public static final int MAP_MAX_HEIGHT = 50;
-	public static final int MAP_MAX_WIDTH = 50;
+	public static final Integer MAP_MAX_HEIGHT = 50;
+	public static final Integer MAP_MAX_WIDTH = 50;
 
 	public static final long TRAVEL_UNIT_TIME = 5000;
 
@@ -64,11 +64,11 @@ public interface IServices {
 	
 
 	//general methods - members -INSERT
-	public int insertMember(ModelMembers newMember);	
+	public Integer insertMembers(ModelMembers newMember);	
 	
 	
 	//general methods - Others Information -GET
-	public ModelUnit 		 	 getUnitInformation	(int UnitID);
+	public ModelUnit 		 	 getUnitInformation	(Integer UnitID);
 	
 	public List<ModelUnitBuild>  getUnitBuild		(ModelUnitBuild targetUnitBuild);
 	
@@ -88,47 +88,67 @@ public interface IServices {
 	
 	public List<ModelSlot> 				 getCastleTroop_SlotList	(ModelCastle targetTroop);
 	
-	public ModelXYval					 getModelXYval				(ModelCastle targetXYval);
+	public ModelXYval					 getXYval_LocationID		(Integer locationID);
 	
-	public List<ModelWaitList_Building>  getModelWaitList_Building	(ModelCastle targetWitList);
+	public ModelXYval					 getXYval_XY				(ModelXYval targetXYval);
 	
-	public List<ModelWaitList_Unit>		 getModelWaitList_Unit		(ModelCastle targetWitList);
+	public List<ModelWaitList_Building>  getWaitList_Building		(ModelCastle targetWitList);
+	
+	public List<ModelWaitList_Unit>		 getWaitList_Unit			(ModelCastle targetWitList);
 	
 	public List<ModelBuilding>			 getBuilding				(ModelCastle targetBuilding);
 	
-	public int							 getAllProduction			(ModelCastle targetCastleProduction);
+	public Integer						 getAllProduction			(ModelCastle targetCastleProduction);
 	
 	
 	
 
 	//general methods - castles - INSERT
-	public int 		insertCastle(ModelCastle newCastle);
+	public Integer 		insertCastle				(ModelCastle newCastle);
 	
-	public int 		insertXYval				(ModelXYval newXYval);
+	public Integer 		insertXYval					(ModelXYval newXYval);
 	
-	public int 		insertBuilding			(ModelBuilding newBuilding);
+	public Integer 		insertBuilding				(ModelBuilding newBuilding);
 	
-	public int		insertWaitBuildingList	(ModelWaitList_Building newBuildingList);
+	public Integer		insertWaitBuildingList		(ModelWaitList_Building newBuildingList);
 	
-	public int 		insertWaitUnitgList		(ModelWaitList_Unit newUnitList);
+	public Integer 		insertWaitUnitgList			(ModelWaitList_Unit newUnitList);
 	
-	public int 		insertCastletroop		(ModelCastleTroop newCastleTroop);
+	public Integer 		insertCastletroop			(ModelCastleTroop newCastleTroop);
+		
+	public Integer		insertSlot					(ModelSlot newSlot);
 	
-	public int		insertSlot				(ModelSlot newSlot);
+	public Integer 		insertOutResource			(ModelOutResource newOutResource);
 	
-	public int 		insertOutResource		(ModelOutResource newOutResource);
+	public Integer		mInsertWaitList_Building	(List<ModelWaitList_Building> list);
+	
+	public Integer		mInsertWaitList_Unit		(List<ModelWaitList_Unit> list);
+	
+	
+	//general methods - castles - UPDATE	
+	public Integer		updateMembers				(ModelMembers members);
+	public Integer		updateCastle				(ModelCastle castle);
+	public Integer		updateBuilding				(ModelBuilding building);
+	public Integer		updateHero					(ModelHeroTable heroTable);
+	public Integer		updateSlot					(ModelSlot slot);
+	public Integer		updateOutResource			(ModelOutResource outResource);
+	public Integer		updateWaitList_Building		(ModelWaitList_Building slot);
+	public Integer		updateWaitList_Unit			(ModelWaitList_Unit slot);
+	public Integer		updateXYval					(ModelWaitList_Unit slot);
+	public Integer		updateWaitList_Unit			(ModelWaitList_Unit slot);
+	public Integer		updateWaitList_Unit			(ModelWaitList_Unit slot);
 	
 	
 	
 	//general methods - hero - GET
-	public ModelHeroTable getHero(ModelHeroTable targetHero);
-	public List<ModelHeroTroop> getHeroTroop_SlotList(ModelHeroTable targetTroop);
+	public ModelHeroTable 		getHero					(ModelHeroTable targetHero);
+	public List<ModelHeroTroop> getHeroTroop_SlotList	(ModelHeroTable targetTroop);
 	
 	
 	//general methods - hero - INSERT
-	public int insertHerotable		(ModelHeroTable newHero);
+	public Integer insertHerotable		(ModelHeroTable newHero);
 	
-	public int insertHerotroop		(ModelHeroTroop newHeroTroop);
+	public Integer insertHerotroop		(ModelHeroTroop newHeroTroop);
 	
 	
 }

@@ -28,158 +28,23 @@ public class DaoGame implements IServices{
 	 @Autowired
 	 @Qualifier("sqlSession")
 	 SqlSession session;
-	
-	//Member 관련 Methods
-	@Override
-	public ModelMembers getMember(ModelMembers member) {
-		
-		// 1이 Return 로그인, 0이 Return 무언가 틀림  Member 일치 정보 없음.
-		return session.selectOne("mapper.mysql.mapperWebGame.getMembersLogin",member);
-	}
 
 	@Override
-	public int insertMember(ModelMembers member) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
-	//Castle 관련 Get Methods
-	@Override
-	public List<ModelCastle> getCastleList(ModelMembers targetUser) {
-		
-		// targetUser의 UserID로 Castle 조회 Return(ModelCastle).
-		return session.selectList("mapper.mysql.mapperWebGame.getCastle",targetUser);
-	}
-
-	@Override
-	public List<ModelHeroTable> getHeroList_InCastle(ModelCastle targetCastle) {
-		
-		// ModelCastle 의 LocationID로 HeroTable 조회해서 Hero 성에 소속된 Hero Return
-		return session.selectList("mapper.mysql.mapperWebGame.getherotable",targetCastle);
-	}
-
-	@Override
-	public List<ModelSlot> getCastleTroop_SlotList(ModelCastle targetTroop) {
-		// ModelCastle의 LocationID로 조회하여서 ModelSlot으로 Return
-		return session.selectList("mapper.mysql.mapperWebGame.getCatleTroopData",targetTroop);
-	}
-	
-	@Override
-	public ModelXYval getModelXYval(ModelCastle targetXYval) {
-		// ModelCastle의 LocationID로 조회하여서 ModelXYval으로 Return
-		return session.selectOne("mapper.mysql.mapperWebGame.getXYval",targetXYval);
-	}
-	
-	public ModelXYval getModelXYval(ModelXYval targetXYval) {
-		// ModelXYval의 X,Y로 조회하여서 ModelXYval으로 Return
-		return session.selectOne("mapper.mysql.mapperWebGame.getXYval2",targetXYval);
-	}
-	
-	@Override
-	public List<ModelWaitList_Unit> getModelWaitList_Unit(ModelCastle targetWitList) {
-		// ModelCastle의 LocationID로  ModelWaitList_Unit Return 
-		return session.selectOne("mapper.mysql.mapperWebGame.getWaitUnitList",targetWitList);
-	}
-
-	@Override
-	public List<ModelWaitList_Building> getModelWaitList_Building(ModelCastle targetWitList) {
-		// ModelCastle의 LocationID로  ModelWaitList_Building Return
-		return session.selectOne("mapper.mysql.mapperWebGame.getWaitBuildingList",targetWitList);
-	}
-	
-	
-	//Castle 관련 Insert Methods
-	
-
-	@Override
-	public int insertBuilding(ModelBuilding building) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
-	
-	
-	//Hero 관련 Get Methods
-
-	@Override
-	public List<ModelHeroTroop> getHeroTroop_SlotList(ModelHeroTable targetTroop) {
+	public ModelMembers getMember(ModelMembers targetMember) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ModelUnit getUnitInformation(int UnitID) {
+	public Integer insertMembers(ModelMembers newMember) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<ModelBuilding> getBuilding(ModelCastle targetBuilding) {
+	public ModelUnit getUnitInformation(Integer UnitID) {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public int getAllProduction(ModelCastle targetCastleProduction) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertCastle(ModelCastle newCastle) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertXYval(ModelXYval newXYval) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public int insertWaitBuildingList(ModelWaitList_Building newBuildingList) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertWaitUnitgList(ModelWaitList_Unit newUnitList) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertCastletroop(ModelCastleTroop newCastleTroop) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertSlot(ModelSlot newSlot) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertOutResource(ModelOutResource newOutResource) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertHerotable(ModelHeroTable newHero) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int insertHerotroop(ModelHeroTroop newHeroTroop) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override
@@ -201,7 +66,13 @@ public class DaoGame implements IServices{
 	}
 
 	@Override
-	public ModelHeroTable getHero(ModelHeroTable targetHero) {
+	public ModelOutResource getOutResource(Integer locationID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ModelCastle> getCastleList(ModelMembers targetUser) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -209,13 +80,141 @@ public class DaoGame implements IServices{
 	@Override
 	public ModelCastle getCastleOne(Integer locationID) {
 		// TODO Auto-generated method stub
-		return session.selectOne("mapper.mysql.mapperWebGame.getModelCastleOne",locationID);
+		return null;
 	}
 
 	@Override
-	public ModelOutResource getOutResource(Integer locationID) {
+	public List<ModelHeroTable> getHeroList_InCastle(ModelCastle targetCastle) {
 		// TODO Auto-generated method stub
-		return session.selectOne("mapper.mysql.mapperWebGame.getOutResource",locationID);
+		return null;
 	}
+
+	@Override
+	public List<ModelSlot> getCastleTroop_SlotList(ModelCastle targetTroop) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ModelXYval getXYval_LocationID(Integer targetXYval) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public ModelXYval getXYval_XY(ModelCastle targetXYval) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ModelWaitList_Building> getWaitList_Building(ModelCastle targetWitList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ModelWaitList_Unit> getWaitList_Unit(ModelCastle targetWitList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ModelBuilding> getBuilding(ModelCastle targetBuilding) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer getAllProduction(ModelCastle targetCastleProduction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer insertCastle(ModelCastle newCastle) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer insertXYval(ModelXYval newXYval) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer insertBuilding(ModelBuilding newBuilding) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer insertWaitBuildingList(ModelWaitList_Building newBuildingList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer insertWaitUnitgList(ModelWaitList_Unit newUnitList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer insertCastletroop(ModelCastleTroop newCastleTroop) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer insertSlot(ModelSlot newSlot) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer insertOutResource(ModelOutResource newOutResource) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer mInsertWaitList_Building(List<ModelWaitList_Building> list) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer mInsertWaitList_Unit(List<ModelWaitList_Unit> list) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ModelHeroTable getHero(ModelHeroTable targetHero) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<ModelHeroTroop> getHeroTroop_SlotList(ModelHeroTable targetTroop) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer insertHerotable(ModelHeroTable newHero) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer insertHerotroop(ModelHeroTroop newHeroTroop) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
 	
 }
