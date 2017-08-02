@@ -68,13 +68,15 @@ public interface IServices {
 	
 	
 	//general methods - Others Information -GET
-	public ModelUnit 		 getUnitInformation	(int UnitID);
+	public ModelUnit 		 	 getUnitInformation	(int UnitID);
 	
 	public List<ModelUnitBuild>  getUnitBuild		(ModelUnitBuild targetUnitBuild);
 	
 	public List<ModelStructures> getStructures		(ModelStructures targetStructures);
 	
 	public List<ModelXYval>		 getAllXYval		();
+	
+	public ModelOutResource 	 getOutResource		(Integer locationID);
 	
 	
 	//general methods - castles - GET
@@ -87,7 +89,6 @@ public interface IServices {
 	public List<ModelSlot> 				 getCastleTroop_SlotList	(ModelCastle targetTroop);
 	
 	public ModelXYval					 getModelXYval				(ModelCastle targetXYval);
-	
 	
 	public List<ModelWaitList_Building>  getModelWaitList_Building	(ModelCastle targetWitList);
 	

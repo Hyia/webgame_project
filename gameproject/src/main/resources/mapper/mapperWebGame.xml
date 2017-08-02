@@ -170,6 +170,12 @@
       		  
     </select>
     
+    <!-- OutResource  가져오기 -->
+    <select id="getOutResource" parameterType="Integer"  resultType="ModelOutResource">        
+ 		SELECT * FROM outresource where LocationID=#{locationID}
+      		  
+    </select>
+    
     <!-- 성자원지+야외자원지   가져오기 -->
     <select id="getAllProduction" parameterType="ModelCastle" resultType="int">      
  			select sum(ap.Production) from

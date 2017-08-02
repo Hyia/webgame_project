@@ -211,5 +211,11 @@ public class DaoGame implements IServices{
 		// TODO Auto-generated method stub
 		return session.selectOne("mapper.mysql.mapperWebGame.getModelCastleOne",locationID);
 	}
+
+	@Override
+	public ModelOutResource getOutResource(Integer locationID) {
+		// TODO Auto-generated method stub
+		return session.selectOne("mapper.mysql.mapperWebGame.getOutResource",locationID);
+	}
 	
 }
