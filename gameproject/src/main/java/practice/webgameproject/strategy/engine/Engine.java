@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import practice.webgameproject.strategy.engine.GameThreads.MarchThread;
+import practice.webgameproject.strategy.engine.GameThreads.ProductThread;
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
@@ -27,6 +29,8 @@ public class Engine {
 	
 	private static final int STARTING_USER_RESOURCE_AMOUNT = 0;// 신규유저 시작자원량
 	private static final int BASIC_BUILDING_LEVEL = 1;// 신규 건물 초기레벨
+	
+	private GameThreads threads;
 
 	//엔진 초기화
 	public Engine(ServiceGame service){
@@ -261,9 +265,20 @@ public class Engine {
 		//쓰레드 시작
 		//보내는 놈의 유저정보 조회
 		ModelMembers owner = new ModelMembers(hero.getOwner(), null, null, null);
-		if(service.hasAddableMarch(owner)){
+		if(hasAddableMarch(hero.getLacationID())){
 			//병력을 보낼 수 있으면 쓰레드를 붙여주고 성공 리턴
 			//TODO 만들어야된다!!!!!!!!
+			/**
+			 * 필요사항
+			 * ㅁ.쓰레드를 누군가 잡고있어야함 - holder 필요
+			 * ㅁ.여기서 start까지 해야함. 왜냐하면 메서드 이름이 goBattle이니까.
+			 */
+			MarchThread march = new MarchThread();
+			march.setHero(hero);
+			march.setFinish_time(travelTime + (new Date()).getTime());//이동시간에 현재시간을 더해서 이동완료시간으로 변환
+			march.start();
+			addMarch(hero.getLacationID(),march);
+			
 			return IServices.SUCCESS;
 		}
 		
@@ -272,13 +287,24 @@ public class Engine {
 		return IServices.ERROR_UNHANDLED_EXCEPTION;
 	}
 	
-	
-	
-	
+	private void addMarch(Integer lacationID, MarchThread march) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private boolean hasAddableMarch(Integer lacationID) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+
 	private class ProductThread extends Thread{
 		private long finish_time = -1;
 		private boolean quickdone = false;
 		private Object target = null;
+		private ServiceGame service;
 		
 		public void setFinish_time(long finish_time) {
 			this.finish_time = finish_time;
@@ -286,6 +312,10 @@ public class Engine {
 		
 		public void setTarget(Object target){
 			this.target = target;
+		}
+		
+		public void setService(ServiceGame service){
+			this.service = service;
 		}
 		
 		@Override
@@ -352,12 +382,20 @@ public class Engine {
 			this.target = target;
 		}
 		
+		public ModelHeroTable getHero(){
+			return target;
+		}
+		
+		
 		public boolean getIsAttacking(){
 			return status_isAttacking;
 		}
 		
-		public void returnOrderToHero(boolean order_return){
-			this.order_return = order_return;
+		/**
+		 * order hero to return base
+		 */
+		public void returnOrderToHero(){
+			this.order_return = true;
 		}
 		
 		@Override
@@ -395,6 +433,6 @@ public class Engine {
 			//end of method
 		}
 	}
-	
+
 
 }

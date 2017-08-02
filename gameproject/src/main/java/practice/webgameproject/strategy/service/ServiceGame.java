@@ -6,15 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import practice.webgameproject.strategy.dao.DaoGame;
-import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
-import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelCastleTroop;
-import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelSlot;
 import practice.webgameproject.strategy.model.ModelStructures;
-import practice.webgameproject.strategy.model.ModelUnit;
 import practice.webgameproject.strategy.model.ModelUnitBuild;
 import practice.webgameproject.strategy.model.ModelXYval;
 
@@ -164,9 +160,5 @@ public class ServiceGame extends DaoGame{
 		return null;
 	}
 
-	public boolean hasAddableMarch(ModelMembers owner) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }

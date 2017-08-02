@@ -309,14 +309,4 @@ public class TempararyServiceGame extends ServiceGame{
 		return null;
 	}
 
-
-	@Override
-	public boolean hasAddableMarch(ModelMembers owner) {
-		// TODO Auto-generated method stub
-		return super.hasAddableMarch(owner);
-	}
-
-	
-	
-
 }
