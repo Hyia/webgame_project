@@ -503,11 +503,12 @@ public class Engine {
 				// TODO 2.로그정보를 DB에 넣기
 				
 			}
-			
 			status_isAttacking = false;			
 			//회군명령 또는 전투쾅 후 회군중
 			//지나갔던 시간만큼 되돌아오기.
 			long 가던시간 = currentTime - startTime + (new Date()).getTime();
+			//이 order_return이 다시 true가 되면 즉시회군(과금아이템?).
+			order_return = false;
 			while(timeleft >= 0 && !order_return){
 				currentTime = (new Date()).getTime();
 				timeleft = currentTime - 가던시간;
