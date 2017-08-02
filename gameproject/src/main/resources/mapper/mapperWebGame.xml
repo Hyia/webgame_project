@@ -84,6 +84,23 @@
         		values (#{SlotID}, #{SoltUID}, #{SoltAmount})
     </insert>
     
+    <insert id="mInsertWaitList_Building" parameterType="java.util.List">
+        INSERT INTO  waitlist_building (   WaitTime  ,   LocationID   ,   Kind	,	RoomNumber  )
+        VALUES
+            <foreach collection="list" item="item" index="index" open="(" separator="),(" close=")">
+                #{item.WaitTime} , #{item.LocationID} , #{item.Kind} , #{RoomNumber}
+            </foreach>
+    </insert>
+    
+    <insert id="mInsertWaitList_Unit" parameterType="java.util.List">
+        INSERT INTO  waitlist_unit (  WaitTime ,  LocationID  ,  UnitID	, RoomNumber ,	Amount )
+        VALUES
+            <foreach collection="list" item="item" index="index" open="(" separator="),(" close=")">
+                #{item.WaitTime} , #{item.LocationID} , #{item.UnitID} , #{RoomNumber} , #{Amount}
+            </foreach>
+    </insert>
+    
+    
     <!-- ========================== Insert Mappers ============================== -->
     
     
@@ -213,21 +230,13 @@
     <!-- Member Update -->
     <update id="updateMembers" parameterType="ModelMembers">
     	update members 
-       		SET  UserPW			=	#{UserPW}
-       			,UserPW			=	#{UserPW}
+       		SET 
+       			 UserPW			=	#{UserPW}
        			,UserNicName	=	#{UserNicName}
        			,UserEmail		=	#{UserEmail}
        			,UserLevel		=	#{UserLevel}
        			,SaveProduction	=	#{SaveProduction}
        	WHERE 	 UserID			=	#{UserID}
-    
-    </update>
-    
-    <!-- User SaveProduction Update-->
-    <update id="updateMembersProduction" parameterType="ModelMembers">
-    	update castle 
-       		SET  Production	=	#{Production}
-       	WHERE 	 UserID		=	#{UserID}
     
     </update>
     
@@ -278,36 +287,58 @@
     
     </update>
     
+    <!-- 야외자원지 점령유저 정보 업데이트 -->
+    <update id="updateOutResource" parameterType="ModelOutResource">
+    	update outresource 
+     		 SET 
+     		 	 UserID	 =	#{UserID}
+     			,Kind	 = 	case when #{Kind} is not null and #{Kind}!=0 then #{Kind} 
+			                                               				 else Kind 
+					  													 end
+       	
+				WHERE 	 LocationID		=	#{LocationID}
+    
+    </update>
+    
+    <!-- 건물 건설 리스트 시간 업데이트 -->
+    <update id="updateWaitList_Building" parameterType="ModelWaitList_Building">
+    	update
+    	WaitList_Building SET 
+     		 		 WaitTime		=	#{WaitTime}
+			WHERE 	 LocationID		=	#{LocationID}
+    
+    </update>
+    
+    <!-- 유닛 생산 리스트 시간 업데이트 -->
+    <update id="updateWaitList_Unit" parameterType="ModelWaitList_Unit">
+    	update
+    	waitlist_unit SET 
+     		 		 WaitTime		=	#{WaitTime}
+			WHERE 	 LocationID		=	#{LocationID}
+    
+    </update>
+    
+    <!-- XY 좌표 업데이트 -->
+    <update id="updateXYval" parameterType="ModelXYval">
+    	update
+    	xyval SET 
+     		 		 CastleX		=	#{CastleX}
+     		 		 CastleY		=	#{CastleY}
+     		 		 Kind			=	#{Kind}
+			WHERE 	 LocationID		=	#{LocationID}
+    
+    </update>
+    
+    
     
     
     <!-- ========================== update Mappers ============================== -->
     
     
+    <!-- ========================== Delete Mappers ============================== -->
     
+    <delete id="deleteAllMemberData" parameterType="">
     
-    <select id="getPhoneList"              resultType="ModelPhone">
-        SELECT *  FROM TB_Phone 
-    </select>
-    
-    <insert id="insertPhone" parameterType="ModelPhone">
-        INSERT INTO 
-        TB_phone (   name  ,   manufacturer   ,   price  )
-        VALUES   ( #{name} , #{manufacturer}  , #{price} )
-    </insert>
-    
-    <!-- mysql multi insert
-        INSERT INTO t (col1, col2, col3) 
-               VALUES ('val1_1', 'val1_2', 'val1_3')
-                    , ('val2_1', 'val2_2', 'val2_3')
-                    , ('val3_1', 'val3_2', 'val3_3')
-        ;
-     -->
-    <insert id="insertPhoneList" parameterType="java.util.List">
-        INSERT INTO  TB_Phone (   name  ,   manufacturer   ,   price  )
-        VALUES
-            <foreach collection="list" item="item" index="index" open="(" separator="),(" close=")">
-                #{item.name} , #{item.manufacturer} , #{item.price}
-            </foreach>
-    </insert>
-    
+    </delete>
+        
  </mapper>

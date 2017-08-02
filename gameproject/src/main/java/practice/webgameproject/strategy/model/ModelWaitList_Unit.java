@@ -8,6 +8,8 @@ public class ModelWaitList_Unit {
 	private Integer UnitID	 	;//	UnitID	 	INT(11) NULL DEFAULT NULL,
 	private Integer LocationID	;//	LocationID	INT(11) NOT NULL,
 	private Integer Amount	 	;//	Amount	 	INT(11) NULL DEFAULT NULL,
+	private Integer RoomNumber	;// RoomNumber  INT(11)
+	
 	public Date getWaitTime() {
 		return WaitTime;
 	}
