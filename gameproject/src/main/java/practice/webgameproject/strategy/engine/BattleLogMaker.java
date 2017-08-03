@@ -1,9 +1,12 @@
-package practice.webgameproject.strategy.model;
+package practice.webgameproject.strategy.engine;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import practice.webgameproject.strategy.model.ModelHeroTable;
+import practice.webgameproject.strategy.model.ModelUnit;
 
 public class ModelBattleResult {
 	
@@ -181,6 +184,9 @@ public class ModelBattleResult {
 		public boolean equals(Object obj) {
 			// FIXME 만약 이게 무조건 false가 리턴되는 버그가 있다면 instanceof로 몽땅 바꿀것.
 			//그 경우 Integer, ModelHeroTable, ModelHeroTroop, 그리고 NULL에 대하여 처리.
+			if(obj instanceof Integer){
+				return this.HeroID.intValue() ==( (Integer)obj).intValue(); 
+			}
 			try {
 				Class<?> someClass = obj.getClass();
 				Field field = someClass.getField("HeroID");
