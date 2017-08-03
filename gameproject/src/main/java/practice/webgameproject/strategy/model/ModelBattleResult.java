@@ -147,6 +147,7 @@ public class ModelBattleResult {
 	public class Army{
 		Integer HeroID;
 		List<ModelUnit> units;
+		List<Integer> unitAmountList;
 		
 		public Integer getHeroID() {
 			return HeroID;
@@ -159,8 +160,9 @@ public class ModelBattleResult {
 			this.units = units;
 		}
 		
-		public void addUnit(ModelUnit unit){
+		public void addUnit(ModelUnit unit, Integer amount){
 			this.units.add(unit);
+			this.unitAmountList.add(amount);
 		}
 		
 		public Army(Integer heroID, List<ModelUnit> units) {
@@ -172,6 +174,7 @@ public class ModelBattleResult {
 			super();
 			HeroID = heroID;
 			this.units = new ArrayList<ModelUnit>();
+			this.unitAmountList = new ArrayList<Integer>();
 		}
 		
 		@Override
