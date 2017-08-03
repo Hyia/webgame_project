@@ -7,6 +7,7 @@ public class ModelCastle {
 	private Integer	LocationID	 ;//INT(11) 	AUTO_INCREMENT
 	private Integer Production	 ;//INT(11)		NOT NULL DEFAULT '0'
 	
+	
 	public String getUserID() {
 		return UserID;
 	}

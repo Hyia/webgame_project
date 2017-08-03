@@ -8,8 +8,8 @@
     <!-- Members Insert --><!--CHECK-->
     <insert id="insertMembers" parameterType="ModelMembers">        
         Insert into Members
-        	('UserID', 'UserPW', 'UserNicName', 'UserEmail', 'UserLevel', 'SaveProduction')
-        		values (#{UserID}, #{UserPW}, #{UserNicName}, #{UserEmail}, #{UserLevel}, #{SaveProduction})
+        	('UserID', 'UserPW', 'UserNicName', 'UserEmail')
+        		values (#{UserID}, #{UserPW}, #{UserNicName}, #{UserEmail})
     </insert>
     
     <!-- Castle Insert --><!--CHECK-->
@@ -84,6 +84,13 @@
         		values (#{SlotID}, #{SoltUID}, #{SoltAmount})
     </insert>
     
+    <!-- Log Insert --><!--CHECK-->
+    <insert id="insertLog" parameterType="ModelLog">        
+        Insert into Log
+        	('AttackUserID', 'DefenseUserID', 'AttackUserUseYN','DefenseUserUseYN','WhoWins','BattleDate')
+        		values (#{AttackUserID}, #{DefenseUserID}, #{AttackUserUseYN},#{DefenseUserUseYN},#{WhoWins},#{BattleDate})
+    </insert>
+    
     <!-- Multi Insert WaitList_Building --><!--CHECK-->
     <insert id="mInsertWaitList_Building" parameterType="java.util.List">
         INSERT INTO  waitlist_building (   WaitTime  ,   LocationID   ,   Kind	,	RoomNumber  )
@@ -111,7 +118,14 @@
     <!-- ========================== select Mappers ============================== -->
     
     <!-- 아이디와 비밀번호로 정보조회 --> <!--CHECK-->
-    <select id="getMembersLogin" parameterType="ModelMembers"  resultType="ModelMembers">        
+    <select id="getMembersLogin" parameterType="ModelMembers" resultType="int">        
+        SELECT count(*)
+         	FROM members
+        		 WHERE UserID = #{UserID} and UserPW=#{UserPW}
+    </select>
+    
+    <!-- 아이디로 정보조회 --> <!--CHECK-->
+    <select id="getMember" parameterType="ModelMembers"  resultType="ModelMembers">        
         SELECT * FROM members
          WHERE UserID = #{UserID}
     </select>
@@ -241,18 +255,57 @@
     
     <!-- ========================== update Mappers ============================== -->
     
-    <!-- Member Update --><!--CHECK-->
-    <update id="updateMembers" parameterType="hashmap">
+    <!-- Member Update Level --><!--CHECK-->
+    <update id="updateMembers_Level" parameterType="hashmap">
     	update members 
        		SET 
-       			 UserPW			=	#{updateValue.UserPW}
-       			,UserNicName	=	#{updateValue.UserNicName}
-       			,UserEmail		=	#{updateValue.UserEmail}
-       			,UserLevel		=	#{updateValue.UserLevel}
-       			,SaveProduction	=	#{updateValue.SaveProduction}
+       			 UserLevel		=	#{updateValue.UserLevel}
        	WHERE 	 UserID			=	#{serchValue.UserID}
     
     </update>
+    
+    <!-- Member Update EXP --><!--CHECK-->
+    <update id="updateMembers_EXP" parameterType="hashmap">
+    	update members 
+       		SET 
+       			 UserEXP	=	#{updateValue.UserEXP}
+       	WHERE 	 UserID		=	#{serchValue.UserID}
+    
+    </update>
+    
+    <!-- Member Update SaveProduction --><!--CHECK-->
+    <update id="updateMembers_SaveProduction" parameterType="hashmap">
+    	update members 
+       		SET 
+       			 SaveProduction	=	#{updateValue.SaveProduction}
+       	WHERE 	 UserID			=	#{serchValue.UserID}
+    
+    </update>
+    
+    <!-- Member Update UserData --><!--CHECK-->
+    <update id="updateMembers_UserData" parameterType="hashmap">
+    	update members
+  					set UserEmail = case
+                 	when #{updateValue.UserEmail} is not null
+					and  #{updateValue.UserEmail} !=''  then #{updateValue.UserEmail}
+                  	else UserEmail
+                	end,
+   		UserNicName = case
+                  	when #{updateValue.UserNicName} is not null
+					and  #{updateValue.UserNicName} !=''  then #{updateValue.UserNicName}
+                  	else UserNicName
+                 	end,
+   		UserPW = case
+                 	when #{updateValue.UserPW} is not null
+					and  #{updateValue.UserPW} !=''  then #{updateValue.UserPW}
+                  	else UserPW
+                 	end
+		where	UserID=#{serchValue.UserID}
+       	
+    </update>
+    
+    
+    
     
     <!-- ModelCastle Update --><!--CHECK-->
     <update id="updateCastle" parameterType="hashmap">

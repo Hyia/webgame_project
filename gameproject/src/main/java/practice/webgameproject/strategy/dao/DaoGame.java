@@ -7,6 +7,8 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
@@ -24,6 +26,7 @@ import practice.webgameproject.strategy.model.ModelWaitList_Building;
 import practice.webgameproject.strategy.model.ModelWaitList_Unit;
 import practice.webgameproject.strategy.model.ModelXYval;
 
+@Repository("daogame")
 public class DaoGame implements IServices{
 	
 	 @Autowired
@@ -37,6 +40,13 @@ public class DaoGame implements IServices{
 	public ModelMembers getMember(ModelMembers targetMember) {
 		
 		return session.selectOne("mapper.mysql.mapperWebGame.getMember",targetMember);
+	}
+	
+	@Override
+	public Integer getMembersLogin(ModelMembers targetMember){
+		
+		return session.selectOne("mapper.mysql.mapperWebGame.getMembersLogin",targetMember);
+		
 	}
 
 	@Override
