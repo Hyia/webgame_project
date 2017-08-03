@@ -17,6 +17,7 @@ public class BattleLogMaker {
 	private int logID;
 	private String logName;
 	private int currentRound;
+	private Date logDate;
 	
 	//공격측 병력정보
 	List<ModelHeroTable> attacker;
@@ -32,7 +33,8 @@ public class BattleLogMaker {
 			List<ModelHeroTable> defender, List<Army> defenderArmy) {
 		serialNumber++;
 		logID = serialNumber;
-		logName = (new Date()).toString()+"-"+logID;
+		logDate = new Date();
+		logName = logDate.toString()+"-"+logID;
 		this.attacker = attacker;
 		this.attackerArmy = attackerArmy;
 		this.defender = defender;
@@ -41,7 +43,10 @@ public class BattleLogMaker {
 		round = new ArrayList<Round>();
 		currentRound = 0;
 	}
-	
+
+	public Date getLogDate() {
+		return logDate;
+	}
 	
 
 
