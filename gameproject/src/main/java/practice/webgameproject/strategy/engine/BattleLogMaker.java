@@ -1,5 +1,8 @@
 package practice.webgameproject.strategy.engine;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +14,7 @@ import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelUnit;
 
 public class BattleLogMaker {
+	private static final String LOGFILEROOT = "$LOGFILEROOT";//로그파일의 루트 디렉토리
 	
 	public static final int MAX_ROUND = 6;
 	private static int serialNumber = 0;
@@ -140,6 +144,27 @@ public class BattleLogMaker {
 		return round;
 	}
 
+	public void writeLog() {
+		BufferedWriter out = null;
+	    try {
+	        out = new BufferedWriter(new FileWriter(LOGFILEROOT+"/"+logName+".log"));
+	        //헤더만듬
+	        out.write(makeHeader());
+	        //각 라운드 기록함
+	        for(int i = 0; i< round.size(); i++){
+		        out.write(round.get(i).toString());
+		        //out.newLine();
+	        }
+	        out.close();
+	      } catch (IOException e) {
+	      }
+	}
+	
+	private String makeHeader(){
+		//TODO 초기병력 정보를 담는 가장 위쪽을 만들 것
+		String str = "<div name='log_title'>    </div>";
+		return str;
+	}
 	
 	
 	public class Round{
@@ -159,6 +184,14 @@ public class BattleLogMaker {
 		}
 		public List<Army> getDefenderArmy() {
 			return defenderArmy;
+		}
+		
+		@Override
+		public String toString() {
+			//TODO 각 라운드 정보를 작성할것.
+			String str= "만들지 않은 라운드("+round+")";
+			
+			return str;
 		}
 	}
 	
@@ -229,5 +262,4 @@ public class BattleLogMaker {
 			return true;
 		}
 	}
-
 }
