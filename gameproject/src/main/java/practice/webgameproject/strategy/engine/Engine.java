@@ -586,14 +586,14 @@ public class Engine {
 		 * 어차피 승패는 로그보면 암;
 		 */
 		
-		// TODO 2.로그파일 쓰기
+		//로그파일 쓰기
 		logMaker.writeLog();
 		// TODO 2.로그정보를 DB에 넣기
 //		service.inser
 		
 		
 		
-		
+		//로그 이름을 반환하여 찾을 수 있도록 함
 		return logMaker.getLogName();
 	}
 	
