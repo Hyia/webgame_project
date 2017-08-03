@@ -9,6 +9,7 @@ import java.util.Map;
 
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBattleResult;
+import practice.webgameproject.strategy.model.ModelBattleResult.Army;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelCastleTroop;
@@ -435,6 +436,107 @@ public class Engine {
 		return null;
 	}
 
+	private String fight(List<ModelHeroTable> attacker, Integer destination){
+		//로그 생성 준비
+		ModelBattleResult result = new ModelBattleResult();
+		
+		//공격자측 정보+보정
+		List<Army> attackerArms = new ArrayList<Army>();
+		int myAtkSum = 0;
+		int myHpSum = 0;
+		for(int i=0; i<attacker.size(); i++){
+			//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장
+			ModelHeroTable hero = attacker.get(i);
+			List<ModelHeroTroop> heroUnits = service.getHeroTroop_SlotList(hero);
+			Army heroArmy = result.new Army(attacker.get(i).getHeroID());
+			for(int j=0; j< heroUnits.size(); j++){
+				ModelSlot slot = service.getSlot(heroUnits.get(j).getSlotID());
+				ModelUnit unitInfo = service.getUnitInformation(slot.getSlotUID());
+				ModelUnit unit = new ModelUnit(unitInfo);
+				int amount = slot.getSlotAmount();
+				int atk = correction(unit.getATK(), hero.getSTR().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
+				int hp = correction(unit.getHP(), hero.getCON().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
+
+				unit.setATK(atk);
+				unit.setHP(hp);
+				heroArmy.addUnit(unit, amount);
+				
+				myAtkSum += (atk*amount);
+				myHpSum += (hp*amount);
+				
+			}
+			attackerArms.add(heroArmy);
+		}
+		//전투 직전의 공격자 영웅들 상태를 저장
+		result.setAttacker(attacker);
+		//전투 직전 공격자 영웅들 휘하병력 상태를 저장.
+		result.setAttackerArmy(attackerArms);
+
+		//공격자측 정보+보정
+		List<Army> defenderArms = new ArrayList<Army>();
+		result.setDefender(null);
+		int defAtkSum = 0;
+		int defHpSum = 0;
+		//방어측에 영웅이 있는지 확인
+		List<ModelHeroTable> defHeros = service.getHeroList_InCastle(new ModelCastle(null, null, null, destination, null));
+		//영웅 있는 경우
+		if(defHeros != null && defHeros.size() != 0){
+			//영웅 루프
+			for(int i=0; i<defHeros.size(); i++){
+				//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장				
+				ModelHeroTable hero = defHeros.get(i);
+				List<ModelHeroTroop> heroUnits = service.getHeroTroop_SlotList(hero);
+				Army heroArmy = result.new Army(attacker.get(i).getHeroID());
+				for(int j=0; j< heroUnits.size(); j++){
+					ModelSlot slot = service.getSlot(heroUnits.get(j).getSlotID());
+					ModelUnit unitInfo = service.getUnitInformation(slot.getSlotUID());
+					ModelUnit unit = new ModelUnit(unitInfo);
+					int amount = slot.getSlotAmount();
+					int atk = correction(unit.getATK(), hero.getSTR().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
+					int hp = correction(unit.getHP(), hero.getCON().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
+
+					unit.setATK(atk);
+					unit.setHP(hp);
+					heroArmy.addUnit(unit, amount);
+
+					defAtkSum += (atk*amount);
+					defHpSum += (hp*amount);
+				}
+				defenderArms.add(heroArmy);
+			}
+			result.setDefender(defHeros);
+		}
+		//영웅이 배정되지 않은 병력들.
+		List<ModelSlot> defenders = new ArrayList<ModelSlot>();
+		defenders = service.getLocalArmySlotList(destination);
+		Army localArmy = result.new Army(0);//FIXME 0 to IServices.HEROID_NO_HERO_TROOPS
+		for(int i=0; i<defenders.size();i++){
+			ModelSlot slot = service.getSlot(defenders.get(i).getSlotID());
+			ModelUnit unit = service.getUnitInformation(slot.getSlotUID());
+			
+			int amount = slot.getSlotAmount();
+			int atk = unit.getATK();
+			int hp = unit.getHP();
+			localArmy.addUnit(unit, amount);
+
+			defAtkSum += (atk*amount);
+			defHpSum += (hp*amount);
+
+		}
+		defenderArms.add(localArmy);
+
+		result.setDefenderArmy(defenderArms);
+		//정보저장 끝
+		
+		//이제 전투
+		
+		
+		
+		
+		
+		return null;
+	}
+	
 	//진격지 도착
 	private void makeBattle(ModelHeroTable target, Integer targetLocationID) {
 		// 도착한 곳은 어떤곳인가
