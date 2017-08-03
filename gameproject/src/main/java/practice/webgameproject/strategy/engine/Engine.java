@@ -565,7 +565,7 @@ public class Engine {
 			fight(target, targetLocationID);			
 			break;
 		case IServices.LOCATION_TYPE_EXTERNALRESOURCE://야외자원지
-//			ModelOutResource ourResource = service.getRe
+			//			ModelOutResource ourResource = service.getRe
 			
 			fight(target, targetLocationID);
 			break;
