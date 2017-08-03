@@ -112,7 +112,7 @@ public class TempararyServiceGame extends ServiceGame{
 	}
 
 	@Override
-	public int insertBuilding(ModelBuilding building) {
+	public Integer insertBuilding(ModelBuilding building) {
 		
 		int result = IServices.ERROR_UNHANDLED_EXCEPTION;
 		
