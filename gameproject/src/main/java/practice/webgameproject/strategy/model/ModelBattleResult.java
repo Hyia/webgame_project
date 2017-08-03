@@ -15,16 +15,16 @@ public class ModelBattleResult {
 	
 	//공격측 병력정보
 	List<ModelHeroTable> attacker;
-	List<ModelUnit> attackerArmy;
+	List<Army> attackerArmy;
 	
 	//방어측 병력정보
 	List<ModelHeroTable> defender;
-	List<ModelUnit> defenderArmy;
+	List<Army> defenderArmy;
 	
 	List<Round> round;
 	
-	public ModelBattleResult(List<ModelHeroTable> attacker, List<ModelUnit> attackerArmy,
-			List<ModelHeroTable> defender, List<ModelUnit> defenderArmy) {
+	public ModelBattleResult(List<ModelHeroTable> attacker, List<Army> attackerArmy,
+			List<ModelHeroTable> defender, List<Army> defenderArmy) {
 		serialNumber++;
 		logID = serialNumber;
 		logName = (new Date()).toString()+"-"+logID;
@@ -36,6 +36,76 @@ public class ModelBattleResult {
 		round = new ArrayList<Round>();
 		currentRound = 0;
 	}
+	
+	
+
+
+	public ModelBattleResult() {
+		serialNumber++;
+		logID = serialNumber;
+		logName = (new Date()).toString()+"-"+logID;
+		round = new ArrayList<Round>();
+		currentRound = 0;
+	}
+
+	
+
+
+
+	public List<ModelHeroTable> getAttacker() {
+		return attacker;
+	}
+
+
+
+
+	public void setAttacker(List<ModelHeroTable> attacker) {
+		this.attacker = attacker;
+	}
+
+
+
+
+	public List<Army> getAttackerArmy() {
+		return attackerArmy;
+	}
+
+
+
+
+	public void setAttackerArmy(List<Army> attackerArmy) {
+		this.attackerArmy = attackerArmy;
+	}
+
+
+
+
+	public List<ModelHeroTable> getDefender() {
+		return defender;
+	}
+
+
+
+
+	public void setDefender(List<ModelHeroTable> defender) {
+		this.defender = defender;
+	}
+
+
+
+
+	public List<Army> getDefenderArmy() {
+		return defenderArmy;
+	}
+
+
+
+
+	public void setDefenderArmy(List<Army> defenderArmy) {
+		this.defenderArmy = defenderArmy;
+	}
+
+
 
 
 	public int getLogID() {
@@ -83,6 +153,25 @@ public class ModelBattleResult {
 		}
 		public List<ModelUnit> getUnits() {
 			return units;
+		}
+		
+		public void setUnits(List<ModelUnit> units){
+			this.units = units;
+		}
+		
+		public void addUnit(ModelUnit unit){
+			this.units.add(unit);
+		}
+		
+		public Army(Integer heroID, List<ModelUnit> units) {
+			super();
+			HeroID = heroID;
+			this.units = units;
+		}
+		public Army(Integer heroID) {
+			super();
+			HeroID = heroID;
+			this.units = new ArrayList<ModelUnit>();
 		}
 		
 		@Override
