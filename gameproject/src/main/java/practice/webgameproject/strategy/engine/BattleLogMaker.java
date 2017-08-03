@@ -1,17 +1,27 @@
-package practice.webgameproject.strategy.model;
+package practice.webgameproject.strategy.engine;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ModelBattleResult {
+import org.hibernate.action.internal.UnresolvedEntityInsertActions;
+
+import practice.webgameproject.strategy.model.ModelHeroTable;
+import practice.webgameproject.strategy.model.ModelUnit;
+
+public class BattleLogMaker {
+	private static final String LOGFILEROOT = "$LOGFILEROOT";//로그파일의 루트 디렉토리
 	
 	public static final int MAX_ROUND = 6;
 	private static int serialNumber = 0;
 	private int logID;
 	private String logName;
 	private int currentRound;
+	private Date logDate;
 	
 	//공격측 병력정보
 	List<ModelHeroTable> attacker;
@@ -23,11 +33,12 @@ public class ModelBattleResult {
 	
 	List<Round> round;
 	
-	public ModelBattleResult(List<ModelHeroTable> attacker, List<Army> attackerArmy,
+	public BattleLogMaker(List<ModelHeroTable> attacker, List<Army> attackerArmy,
 			List<ModelHeroTable> defender, List<Army> defenderArmy) {
 		serialNumber++;
 		logID = serialNumber;
-		logName = (new Date()).toString()+"-"+logID;
+		logDate = new Date();
+		logName = logDate.toString()+"-"+logID;
 		this.attacker = attacker;
 		this.attackerArmy = attackerArmy;
 		this.defender = defender;
@@ -36,11 +47,14 @@ public class ModelBattleResult {
 		round = new ArrayList<Round>();
 		currentRound = 0;
 	}
-	
+
+	public Date getLogDate() {
+		return logDate;
+	}
 	
 
 
-	public ModelBattleResult() {
+	public BattleLogMaker() {
 		serialNumber++;
 		logID = serialNumber;
 		logName = (new Date()).toString()+"-"+logID;
@@ -130,6 +144,27 @@ public class ModelBattleResult {
 		return round;
 	}
 
+	public void writeLog() {
+		BufferedWriter out = null;
+	    try {
+	        out = new BufferedWriter(new FileWriter(LOGFILEROOT+"/"+logName+".log"));
+	        //헤더만듬
+	        out.write(makeHeader());
+	        //각 라운드 기록함
+	        for(int i = 0; i< round.size(); i++){
+		        out.write(round.get(i).toString());
+		        //out.newLine();
+	        }
+	        out.close();
+	      } catch (IOException e) {
+	      }
+	}
+	
+	private String makeHeader(){
+		//TODO 초기병력 정보를 담는 가장 위쪽을 만들 것
+		String str = "<div name='log_title'>    </div>";
+		return str;
+	}
 	
 	
 	public class Round{
@@ -141,7 +176,23 @@ public class ModelBattleResult {
 			this.attackerArmy = attackerArmy;
 			this.defenderArmy = defenderArmy;
 		}
+		public int getRound() {
+			return round;
+		}
+		public List<Army> getAttackerArmy() {
+			return attackerArmy;
+		}
+		public List<Army> getDefenderArmy() {
+			return defenderArmy;
+		}
 		
+		@Override
+		public String toString() {
+			//TODO 각 라운드 정보를 작성할것.
+			String str= "만들지 않은 라운드("+round+")";
+			
+			return str;
+		}
 	}
 	
 	public class Army{
@@ -165,6 +216,13 @@ public class ModelBattleResult {
 			this.unitAmountList.add(amount);
 		}
 		
+		
+		public List<Integer> getUnitAmountList() {
+			return unitAmountList;
+		}
+		public void setUnitAmountList(List<Integer> unitAmountList) {
+			this.unitAmountList = unitAmountList;
+		}
 		public Army(Integer heroID, List<ModelUnit> units) {
 			super();
 			HeroID = heroID;
@@ -181,6 +239,9 @@ public class ModelBattleResult {
 		public boolean equals(Object obj) {
 			// FIXME 만약 이게 무조건 false가 리턴되는 버그가 있다면 instanceof로 몽땅 바꿀것.
 			//그 경우 Integer, ModelHeroTable, ModelHeroTroop, 그리고 NULL에 대하여 처리.
+			if(obj instanceof Integer){
+				return this.HeroID.intValue() ==( (Integer)obj).intValue(); 
+			}
 			try {
 				Class<?> someClass = obj.getClass();
 				Field field = someClass.getField("HeroID");
@@ -192,6 +253,13 @@ public class ModelBattleResult {
 			}
 			return false;
 		}
+		public boolean isDefeat() {
+			for(int i=0; i<unitAmountList.size();i++){
+				if(unitAmountList.get(i).intValue() > 0){
+					return false;
+				}
+			}
+			return true;
+		}
 	}
-
 }
