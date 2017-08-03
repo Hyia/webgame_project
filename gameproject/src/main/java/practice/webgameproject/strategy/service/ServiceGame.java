@@ -66,7 +66,7 @@ public class ServiceGame extends DaoGame{
 		// TODO Auto-generated method stub
 		int result = ERROR_UNHANDLED_EXCEPTION;
 		try{
-			result = dao.insertMember(member);
+			result = dao.insertMembers(member);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -75,7 +75,7 @@ public class ServiceGame extends DaoGame{
 	}
 
 	//건물을 추가함
-	public int insertBuilding(ModelBuilding building) {
+	public Integer insertBuilding(ModelBuilding building) {
 		// TODO Auto-generated method stub
 		return ERROR_NOT_MAKE_YET;
 	}

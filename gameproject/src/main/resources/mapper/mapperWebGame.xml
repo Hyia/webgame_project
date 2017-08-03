@@ -242,106 +242,98 @@
     <!-- ========================== update Mappers ============================== -->
     
     <!-- Member Update --><!--CHECK-->
-    <update id="updateMembers" parameterType="ModelMembers">
+    <update id="updateMembers" parameterType="hashmap">
     	update members 
        		SET 
-       			 UserPW			=	#{UserPW}
-       			,UserNicName	=	#{UserNicName}
-       			,UserEmail		=	#{UserEmail}
-       			,UserLevel		=	#{UserLevel}
-       			,SaveProduction	=	#{SaveProduction}
-       	WHERE 	 UserID			=	#{UserID}
+       			 UserPW			=	#{updateValue.UserPW}
+       			,UserNicName	=	#{updateValue.UserNicName}
+       			,UserEmail		=	#{updateValue.UserEmail}
+       			,UserLevel		=	#{updateValue.UserLevel}
+       			,SaveProduction	=	#{updateValue.SaveProduction}
+       	WHERE 	 UserID			=	#{serchValue.UserID}
     
     </update>
     
     <!-- ModelCastle Update --><!--CHECK-->
-    <update id="updateCastle" parameterType="ModelCastle">
+    <update id="updateCastle" parameterType="hashmap">
     	update
     		castle SET
-    			 Name			=	#{Name}
-    			,SaveProduction	=	#{SaveProduction}
-    			,Kind			=	#{Kind}
-       	WHERE	 LocationID		=	#{LocationID}
+    			 Name			=	#{updateValue.Name}
+    			,SaveProduction	=	#{updateValue.SaveProduction}
+    			,Kind			=	#{updateValue.Kind}
+       	WHERE	 LocationID		=	#{serchValue.LocationID}
     
     </update>
     
     <!-- Catle Building Update --><!--CHECK-->
-    <update id="updateBuilding" parameterType="ModelBuilding">
+    <update id="updateBuilding" parameterType="hashmap">
     	update Building 
-       		SET  level		=	#{Level}
-       			,RoomNumber	=	#{RoomNumber}
-       	WHERE LocationID	=	#{LocationID}
+       		SET  level		=	#{updateValue.Level}
+       			,RoomNumber	=	#{updateValue.RoomNumber}
+       	WHERE LocationID	=	#{serchValue.LocationID}
     
     </update>
     
 
     
     <!-- 영웅 정보 업데이트 --><!--CHECK-->
-    <update id="updateHero" parameterType="ModelHeroTable">
+    <update id="updateHero" parameterType="hashmap">
     	update updateHero 
-       		SET	 STR		= #{STR}
-				,AGI        = #{AGI}
-				,CON        = #{CON}
-				,Owner      = #{Owner}
-				,LacationID = #{LacationID}
-				,Statuus    = #{Statuus}
-				,Specialty  = #{Specialty}
-				,Potrait    = #{Potrait}
-				,Sex        = #{Sex}
-       	WHERE HeroID		= #{HeroID}
+       		SET	 STR		= #{updateValue.STR}
+				,AGI        = #{updateValue.AGI}
+				,CON        = #{updateValue.CON}
+				,Owner      = #{updateValue.Owner}
+				,LacationID = #{updateValue.LacationID}
+				,Statuus    = #{updateValue.Statuus}
+				,Specialty  = #{updateValue.Specialty}
+				,Potrait    = #{updateValue.Potrait}
+				,Sex        = #{updateValue.Sex}
+       	WHERE HeroID		= #{serchValue.HeroID}
     
     </update>
     
     <!-- 영웅 슬롯 유닛 정보 업데이트 --><!--CHECK-->
-    <update id="updateSlot" parameterType="ModelSlot">
+    <update id="updateSlot" parameterType="hashmap">
     	update slot 
-       		SET  SoltUID		=	#{SoltUID}
-       			,SoltAmount		=	#{SoltAmount}
-       	WHERE 	 SoltID			=	#{SoltID}
+       		SET  SoltUID		=	#{updateValue.SoltUID}
+       			,SoltAmount		=	#{updateValue.SoltAmount}
+       	WHERE 	 SoltID			=	#{serchValue.SoltID}
     
     </update>
     
     <!-- 야외자원지 점령유저 정보 업데이트 --><!--CHECK-->
-    <update id="updateOutResource" parameterType="ModelOutResource">
+    <update id="updateOutResource" parameterType="hashmap">
     	update outresource 
      		 SET 
-     		 	 UserID	 =	#{UserID}
-     			,Kind	 = 	case when #{Kind} is not null and #{Kind}!=0 then #{Kind} 
-			                                               				 else Kind 
-					  													 end
+     		 	 UserID	 =	#{updateValue.UserID}
+     			,Kind	 = 	case when #{updateValue.Kind} is not null
+     							  and #{updateValue.Kind}!=0 then #{Kind} 
+			                                               		  else Kind 
+					  										      end
        	
-				WHERE 	 LocationID		=	#{LocationID}
+				WHERE 	 LocationID		=	#{serchValue.LocationID}
     
     </update>
     
     <!-- 건물 건설 리스트 시간 업데이트 --><!--CHECK-->
-    <update id="updateWaitList_Building" parameterType="ModelWaitList_Building">
+    <update id="updateWaitList_Building" parameterType="hashmap">
     	update
     	WaitList_Building SET 
-     		 		 WaitTime		=	#{WaitTime}
-			WHERE 	 LocationID		=	#{LocationID}
+     		 		 WaitTime		=	#{updateValue.WaitTime}
+			WHERE 	 LocationID		=	#{serchValue.LocationID}
     
     </update>
     
     <!-- 유닛 생산 리스트 시간 업데이트 --><!--CHECK-->
-    <update id="updateWaitList_Unit" parameterType="ModelWaitList_Unit">
+    <update id="updateWaitList_Unit" parameterType="hashmap">
     	update
     	waitlist_unit SET 
-     		 		 WaitTime		=	#{WaitTime}
-			WHERE 	 LocationID		=	#{LocationID}
+     		 		 WaitTime		=	#{updateValue.WaitTime}
+			WHERE 	 LocationID		=	#{serchValue.LocationID}
     
     </update>
     
-    <!-- XY 좌표 업데이트 --><!--CHECK-->
-    <update id="updateXYval" parameterType="ModelXYval">
-    	update
-    	xyval SET 
-     		 		 CastleX		=	#{CastleX}
-     		 		 CastleY		=	#{CastleY}
-     		 		 Kind			=	#{Kind}
-			WHERE 	 LocationID		=	#{LocationID}
     
-    </update>
     
     
     
@@ -351,6 +343,7 @@
     
     <!-- ========================== Delete Mappers ============================== -->
     
+    <!-- DELETE Castle Troops --><!--CHECK-->
     <delete id="deleteCastleTroop" parameterType="Integer">
     	delete from
     		castletroop
@@ -358,43 +351,58 @@
     	
     </delete>
     
+    <!-- DELETE Hero Troops --><!--CHECK-->
     <delete id="deleteHeroTroop" parameterType="Integer">
+    	delete from
+    		herotroop
+    			where HeroID=#{heroID}
+    	
+    </delete>
+    
+    <!-- DELETE Hero Table --><!--CHECK-->
+    <delete id="deleteHeroTable" parameterType="Integer">
     	delete from
     		herotable
     			where HeroID=#{heroID}
     	
     </delete>
     
+    <!-- DELETE Slots --><!--CHECK-->
     <delete id="deleteSlot" parameterType="Integer">
     	delete from
     		slot
     			where SlotID=#{slotID}
     </delete>
     
+    <!-- DELETE Castle Buildings --><!--CHECK-->
     <delete id="deleteCastleBuildings" parameterType="Integer">
     	delete from
     		building
     			where LocationID=#{locationID}
     </delete>
     
+    <!-- DELETE Castle OutResources --><!--CHECK-->
     <delete id="deleteOutResource" parameterType="Integer">
     	delete from
     		outresource
     			where LocationID=#{locationID}
     </delete>
     
+    <!-- DELETE  X,Y Values --><!--CHECK-->
      <delete id="deleteXYval" parameterType="Integer">
     	delete from
     		xyval
     			where LocationID=#{locationID}
     </delete>
     
+    <!-- DELETE  Castle --><!--CHECK-->
     <delete id="deleteCastle" parameterType="Integer">
     	delete from
     		castle
     			where UserID=#{userID}
     </delete>
     
+    <!-- DELETE  Member --><!--CHECK-->
     <delete id="deleteMembers" parameterType="ModelMembers">
     	delete from
     		members

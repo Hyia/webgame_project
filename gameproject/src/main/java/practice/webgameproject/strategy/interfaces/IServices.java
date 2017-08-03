@@ -19,40 +19,40 @@ import practice.webgameproject.strategy.model.ModelXYval;
 
 public interface IServices {
 	//success code
-	public static final Integer SUCCESS = 100;
-
-	//error codes
-	public static final Integer ERROR_GENERAL_EXCEPTION = -1;
-	public static final Integer ERROR_NOT_MAKE_YET = -100;
-	public static final Integer ERROR_UNHANDLED_EXCEPTION = -10;
-	public static final Integer ERROR_CANNOT_FIND_USER = -20;
-	public static final Integer ERROR_INVAILD_ACCESS = -30;
-	public static final Integer ERROR_CANNOT_BUILD_THIS_PLACE = -40;
-	
-	//types - location
-	public static final Integer LOCATION_TYPE_INVAILD = -1;
-	public static final Integer LOCATION_TYPE_NORMAL = 1;
-	public static final Integer LOCATION_TYPE_CASTLE = 2;
-	public static final Integer LOCATION_TYPE_EXTERNALRESOURCE = 3;
-
+	public static final int SUCCESS = 100;
+                        
+	//error codes       
+	public static final int ERROR_GENERAL_EXCEPTION = -1;
+	public static final int ERROR_NOT_MAKE_YET = -100;
+	public static final int ERROR_UNHANDLED_EXCEPTION = -10;
+	public static final int ERROR_CANNOT_FIND_USER = -20;
+	public static final int ERROR_INVAILD_ACCESS = -30;
+	public static final int ERROR_CANNOT_BUILD_THIS_PLACE = -40;
+	                   
+	//types - location 
+	public static final int LOCATION_TYPE_INVAILD = -1;
+	public static final int LOCATION_TYPE_NORMAL = 1;
+	public static final int LOCATION_TYPE_CASTLE = 2;
+	public static final int LOCATION_TYPE_EXTERNALRESOURCE = 3;
+                       
 	//types - buildings
-	public static final Integer BUILDING_TYPE_INVALID = -1;
-	public static final Integer BUILDING_TYPE_BLANK = 0;
-	public static final Integer BUILDING_TYPE_CENTER = 1;
-	public static final Integer BUILDING_TYPE_RESOURCECENTER = 2;
-	public static final Integer BUILDING_TYPE_BARRACKS = 3;
-	public static final Integer BUILDING_TYPE_TAVERN = 4;
-	
-	public static final Integer BUILDING_BASIC_LEVEL = 1;
-
-	//types - units
-	public static final Integer UNIT_TYPE_LV1 = 0;
-	public static final Integer UNIT_TYPE_LV2 = 1;
-	public static final Integer UNIT_TYPE_LV3 = 2;
-
+	public static final int BUILDING_TYPE_INVALID = -1;
+	public static final int BUILDING_TYPE_BLANK = 0;
+	public static final int BUILDING_TYPE_CENTER = 1;
+	public static final int BUILDING_TYPE_RESOURCECENTER = 2;
+	public static final int BUILDING_TYPE_BARRACKS = 3;
+	public static final int BUILDING_TYPE_TAVERN = 4;
+	                  
+	public static final int BUILDING_BASIC_LEVEL = 1;
+                      
+	//types - units   
+	public static final int UNIT_TYPE_LV1 = 0;
+	public static final int UNIT_TYPE_LV2 = 1;
+	public static final int UNIT_TYPE_LV3 = 2;
+                      
 	//location mapsize
-	public static final Integer MAP_MAX_HEIGHT = 50;
-	public static final Integer MAP_MAX_WIDTH = 50;
+	public static final int MAP_MAX_HEIGHT = 50;
+	public static final int MAP_MAX_WIDTH = 50;
 
 	public static final long TRAVEL_UNIT_TIME = 5000;
 
@@ -64,7 +64,15 @@ public interface IServices {
 	
 
 	//general methods - members -INSERT
-	public Integer insertMembers(ModelMembers newMember);	
+	public Integer insertMembers(ModelMembers newMember);
+
+	
+	//general methods - members -UPDATE
+	public Integer		updateMembers				(ModelMembers updateMembers,ModelMembers searchMembers);
+
+	
+	//general methods - members -DELETE
+	public Integer		deleteMembers				(ModelMembers members);
 	
 	
 	//general methods - Others Information -GET
@@ -76,7 +84,18 @@ public interface IServices {
 	
 	public List<ModelXYval>		 getAllXYval		();
 	
-	public ModelOutResource 	 getOutResource		(Integer locationID);
+	
+	
+	//general methods - Others Information -UPDATE
+	public Integer		updateSlot					(ModelSlot updateSlot			, ModelSlot serchSlot);
+	
+	
+
+	
+	//general methods - Others Information -DELETE
+	public Integer		deleteXYval					(Integer locationID);
+	
+	public Integer		deleteSlot					(Integer slotID);
 	
 	
 	//general methods - castles - GET
@@ -99,6 +118,8 @@ public interface IServices {
 	public List<ModelBuilding>			 getBuilding				(ModelCastle targetBuilding);
 	
 	public Integer						 getAllProduction			(ModelCastle targetCastleProduction);
+	
+	public ModelOutResource 			 getOutResource				(Integer locationID);
 	
 	
 	
@@ -126,29 +147,50 @@ public interface IServices {
 	
 	
 	//general methods - castles - UPDATE	
-	public Integer		updateMembers				(ModelMembers members);
-	public Integer		updateCastle				(ModelCastle castle);
-	public Integer		updateBuilding				(ModelBuilding building);
-	public Integer		updateHero					(ModelHeroTable heroTable);
-	public Integer		updateSlot					(ModelSlot slot);
-	public Integer		updateOutResource			(ModelOutResource outResource);
-	public Integer		updateWaitList_Building		(ModelWaitList_Building slot);
-	public Integer		updateWaitList_Unit			(ModelWaitList_Unit slot);
-	public Integer		updateXYval					(ModelWaitList_Unit slot);
-	//public Integer		updateWaitList_Unit			(ModelWaitList_Unit slot);
-	//public Integer		updateWaitList_Unit			(ModelWaitList_Unit slot);
+	public Integer		updateCastle				(ModelCastle updateCastle					, ModelCastle serchCastle);
+	
+	public Integer		updateBuilding				(ModelBuilding updateBuilding				, ModelBuilding serchBuilding);
+	
+	public Integer		updateOutResource			(ModelOutResource updateOutResource			, ModelOutResource serchOutResource);
+	
+	public Integer		updateWaitList_Building		(ModelWaitList_Building updateBudingList	, ModelWaitList_Building serchBudingList);
+	
+	public Integer		updateWaitList_Unit			(ModelWaitList_Unit updateUnitList			, ModelWaitList_Unit serchUnitList);
+	
+	
+	//general methods - castles - DELETE
+	public Integer		deleteCastleTroop			(Integer locationID);
+	
+	public Integer		deleteCastleBuildings		(Integer locationID);
+	
+	public Integer		deleteOutResource			(Integer locationID);
+	
+	public Integer		deleteCastle				(Integer userID);
+	
+	
+	
 	
 	
 	
 	//general methods - hero - GET
 	public ModelHeroTable 		getHero					(ModelHeroTable targetHero);
+	
 	public List<ModelHeroTroop> getHeroTroop_SlotList	(ModelHeroTable targetTroop);
 	
 	
 	//general methods - hero - INSERT
-	public Integer insertHerotable		(ModelHeroTable newHero);
+	public Integer 		insertHerotable				(ModelHeroTable newHero);
 	
-	public Integer insertHerotroop		(ModelHeroTroop newHeroTroop);
+	public Integer 		insertHerotroop				(ModelHeroTroop newHeroTroop);
 	
+	
+	//general methods - hero - UPDATE
+	public Integer		updateHero					(ModelHeroTable updateHero	, ModelHeroTable serchHero);
+	
+	
+	//general methods - hero - DELETE
+	public Integer		deleteHeroTable				(Integer heroID);
+	
+	public Integer		deleteHeroTroop				(Integer heroID);
 	
 }
