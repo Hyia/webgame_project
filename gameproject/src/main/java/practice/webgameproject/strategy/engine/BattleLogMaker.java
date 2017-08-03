@@ -8,7 +8,7 @@ import java.util.List;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelUnit;
 
-public class ModelBattleResult {
+public class BattleLogMaker {
 	
 	public static final int MAX_ROUND = 6;
 	private static int serialNumber = 0;
@@ -26,7 +26,7 @@ public class ModelBattleResult {
 	
 	List<Round> round;
 	
-	public ModelBattleResult(List<ModelHeroTable> attacker, List<Army> attackerArmy,
+	public BattleLogMaker(List<ModelHeroTable> attacker, List<Army> attackerArmy,
 			List<ModelHeroTable> defender, List<Army> defenderArmy) {
 		serialNumber++;
 		logID = serialNumber;
@@ -43,7 +43,7 @@ public class ModelBattleResult {
 	
 
 
-	public ModelBattleResult() {
+	public BattleLogMaker() {
 		serialNumber++;
 		logID = serialNumber;
 		logName = (new Date()).toString()+"-"+logID;
@@ -144,7 +144,15 @@ public class ModelBattleResult {
 			this.attackerArmy = attackerArmy;
 			this.defenderArmy = defenderArmy;
 		}
-		
+		public int getRound() {
+			return round;
+		}
+		public List<Army> getAttackerArmy() {
+			return attackerArmy;
+		}
+		public List<Army> getDefenderArmy() {
+			return defenderArmy;
+		}
 	}
 	
 	public class Army{
