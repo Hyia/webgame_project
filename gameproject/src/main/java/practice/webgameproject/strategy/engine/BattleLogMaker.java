@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.action.internal.UnresolvedEntityInsertActions;
+
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelUnit;
 
@@ -176,6 +178,13 @@ public class BattleLogMaker {
 			this.unitAmountList.add(amount);
 		}
 		
+		
+		public List<Integer> getUnitAmountList() {
+			return unitAmountList;
+		}
+		public void setUnitAmountList(List<Integer> unitAmountList) {
+			this.unitAmountList = unitAmountList;
+		}
 		public Army(Integer heroID, List<ModelUnit> units) {
 			super();
 			HeroID = heroID;
@@ -205,6 +214,14 @@ public class BattleLogMaker {
 			} catch (IllegalAccessException e) {
 			}
 			return false;
+		}
+		public boolean isDefeat() {
+			for(int i=0; i<unitAmountList.size();i++){
+				if(unitAmountList.get(i).intValue() > 0){
+					return false;
+				}
+			}
+			return true;
 		}
 	}
 
