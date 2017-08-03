@@ -7,9 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import practice.webgameproject.strategy.engine.BattleLogMaker.Army;
+import practice.webgameproject.strategy.engine.BattleLogMaker.Round;
 import practice.webgameproject.strategy.interfaces.IServices;
-import practice.webgameproject.strategy.model.ModelBattleResult;
-import practice.webgameproject.strategy.model.ModelBattleResult.Army;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelCastleTroop;
@@ -344,7 +344,7 @@ public class Engine {
 	//전투 및 로그작성
 	private String fight(List<ModelHeroTable> attacker, Integer destination){
 		//로그 생성 준비
-		ModelBattleResult result = new ModelBattleResult();
+		BattleLogMaker logMaker = new BattleLogMaker();
 		
 		//공격자측 정보+보정
 		List<Army> attackerArms = new ArrayList<Army>();
@@ -354,7 +354,7 @@ public class Engine {
 			//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장
 			ModelHeroTable hero = attacker.get(i);
 			List<ModelHeroTroop> heroUnits = service.getHeroTroop_SlotList(hero);
-			Army heroArmy = result.new Army(attacker.get(i).getHeroID());
+			Army heroArmy = logMaker.new Army(attacker.get(i).getHeroID());
 			for(int j=0; j< heroUnits.size(); j++){
 				ModelSlot slot = service.getSlot(heroUnits.get(j).getSlotID());
 				ModelUnit unitInfo = service.getUnitInformation(slot.getSlotUID());
@@ -374,13 +374,13 @@ public class Engine {
 			attackerArms.add(heroArmy);
 		}
 		//전투 직전의 공격자 영웅들 상태를 저장
-		result.setAttacker(attacker);
+		logMaker.setAttacker(attacker);
 		//전투 직전 공격자 영웅들 휘하병력 상태를 저장.
-		result.setAttackerArmy(attackerArms);
+		logMaker.setAttackerArmy(attackerArms);
 
 		//공격자측 정보+보정
 		List<Army> defenderArms = new ArrayList<Army>();
-		result.setDefender(null);
+		logMaker.setDefender(null);
 		int defAtkSum = 0;
 		int defHpSum = 0;
 		//방어측에 영웅이 있는지 확인
@@ -392,7 +392,7 @@ public class Engine {
 				//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장				
 				ModelHeroTable hero = defHeros.get(i);
 				List<ModelHeroTroop> heroUnits = service.getHeroTroop_SlotList(hero);
-				Army heroArmy = result.new Army(attacker.get(i).getHeroID());
+				Army heroArmy = logMaker.new Army(attacker.get(i).getHeroID());
 				for(int j=0; j< heroUnits.size(); j++){
 					ModelSlot slot = service.getSlot(heroUnits.get(j).getSlotID());
 					ModelUnit unitInfo = service.getUnitInformation(slot.getSlotUID());
@@ -410,12 +410,12 @@ public class Engine {
 				}
 				defenderArms.add(heroArmy);
 			}
-			result.setDefender(defHeros);
+			logMaker.setDefender(defHeros);
 		}
 		//영웅이 배정되지 않은 병력들.
 		List<ModelSlot> defenders = new ArrayList<ModelSlot>();
 		defenders = service.getLocalArmySlotList(destination);
-		Army localArmy = result.new Army(IServices.HEROID_NO_HERO_TROOPS);
+		Army localArmy = logMaker.new Army(IServices.HEROID_NO_HERO_TROOPS);
 		for(int i=0; i<defenders.size();i++){
 			ModelSlot slot = service.getSlot(defenders.get(i).getSlotID());
 			ModelUnit unit = service.getUnitInformation(slot.getSlotUID());
@@ -431,13 +431,13 @@ public class Engine {
 		}
 		defenderArms.add(localArmy);
 
-		result.setDefenderArmy(defenderArms);
+		logMaker.setDefenderArmy(defenderArms);
 		//정보저장 끝
 		
 		//이제 전투
 		/**
-		 * mySlots : 공격 가는 영웅의 슬롯정보List
-		 * defSlots: 방어자 슬롯정보 List
+		 * attackerArms : 공격 가는 영웅들의 슬롯정보. List<Army>
+		 * defenderArms : 방어자 슬롯정보 List.  List<Army>
 		 * 
 		 * myAtkSum: 공격자 병력의 총공격력
 		 * myHpSum: 공격자 병력의 총체력
@@ -448,15 +448,153 @@ public class Engine {
 		 * 최대 회합수가 넘거나 어느 한 쪽의 총체력이 0 이하가 되면 전투종료.
 		 * 
 		 */
+		boolean isContinusBattle = false;
+		do{
+			//라운드가 진행되면서 점차 깎일 공격력
+			int tempMyAtk = myAtkSum;
+			int tempDefAtk = defAtkSum;
+			//일단 공격자측 피해입음
+			/**
+			 * 이 루프를 다 돌게되었을 때 생길 수 있는 경우
+			 * 모든 제대를 다 돌지 못한 채 잔여딜 소멸(딜부족)	-	루프를 빠져나간다.
+			 * 모든 제대를 다 돌고도 상대 공격력이 여전히 양수인 경우(오버딜) - 루프를 빠져나가고 패배
+			 */
+			for(int i=0; i<attackerArms.size(); i++){
+				Army arm = attackerArms.get(i);
+				List<ModelUnit> units = arm.getUnits();
+				List<Integer> unitAmount = arm.getUnitAmountList();
+				
+				if(tempDefAtk <= 0){
+					//딜부족이면 루프를 더이상 돌 필요가 없음
+					break;
+				}
+				//공격력이 남으면 다음 슬롯을 돌게됨
+				/**
+				 * 이 루프를 다 돌게되었을 때 생길 수 있는 경우
+				 * 영웅 슬롯을 다 돌지 못한 채 잔여딜 소멸(딜부족)	-	루프를 빠져나간다.
+				 * 영웅의 모든 슬롯을 돌았지만 상대 공격력이 여전히 양수인 경우(모든 줄 1개씩 까고도 오버딜) - 다시 슬롯 처음부터 루프를 돈다
+				 * 전멸하고도 오버딜인 경우 - 다음 영웅이 피해를 입는다.
+				 * 						다음 영웅이 없는 경우 - 패배하는거지 뭐
+				 */
+				for(int j=0; j < units.size(); j++){
+					ModelUnit unit = units.get(j);
+					int amount = unitAmount.get(j);
+					//저념ㄹ한 경우 다음 슬롯을 본다.
+					if(amount <= 0 ) continue;
+					
+					int unithp = unit.getHP().intValue();
+					
+					//딜 다 받아냈고, 잔여딜은 무효화.
+					if(unithp > tempDefAtk){
+						tempDefAtk = tempDefAtk - unithp;//음수로 만들어서 루프를 빠져나가도록 함.
+						break;
+					}
+
+					//유닛이 죽어야하는 경우
+					//죽은 유닛 체력만큼 상대 공격력을 깎고 유닛수를 1기 줄임.
+					tempDefAtk = tempDefAtk - unithp;
+					myHpSum = myHpSum - unithp;
+					myAtkSum = myAtkSum - unit.getATK().intValue();
+					unitAmount.set(j, amount-1);
+					
+					//한줄이 모두 1씩 감소했는데 여전히 오버딜을 받은 상태인 경우
+					if(tempDefAtk > 0 && j == units.size()-1){
+						//다시 첫번째 슬롯부터 딜을 받는다.
+						//이 경우 이 영웅네가 전멸인 경우랑 그렇지 않은 경우가 있는데
+						if(arm.isDefeat()){
+							//전멸인 경우 루프를 나가야함
+							break;
+						}else{
+							//전멸이 아닌 경우 다시 첫 슬롯부터 깜.
+							j=0;
+						}
+					}
+				}//한 영웅이 쳐맞는 딜.
+			}//방어측 공격종료
+				
+			//방어자측 피해입음
+			/**
+			 * 이 루프를 다 돌게되었을 때 생길 수 있는 경우
+			 * 모든 제대를 다 돌지 못한 채 잔여딜 소멸(딜부족)	-	루프를 빠져나간다.
+			 * 모든 제대를 다 돌고도 상대 공격력이 여전히 양수인 경우(오버딜) - 루프를 빠져나가고 패배
+			 */
+			for(int i=0; i<defenderArms.size(); i++){
+				Army arm = defenderArms.get(i);
+				List<ModelUnit> units = arm.getUnits();
+				List<Integer> unitAmount = arm.getUnitAmountList();
+				
+				if(tempMyAtk <= 0){
+					//딜부족이면 루프를 더이상 돌 필요가 없음
+					break;
+				}
+				//공격력이 남으면 다음 슬롯을 돌게됨
+				/**
+				 * 이 루프를 다 돌게되었을 때 생길 수 있는 경우
+				 * 영웅 슬롯을 다 돌지 못한 채 잔여딜 소멸(딜부족)	-	루프를 빠져나간다.
+				 * 영웅의 모든 슬롯을 돌았지만 상대 공격력이 여전히 양수인 경우(모든 줄 1개씩 까고도 오버딜) - 다시 슬롯 처음부터 루프를 돈다
+				 * 전멸하고도 오버딜인 경우 - 다음 영웅이 피해를 입는다.
+				 * 						다음 영웅이 없는 경우 - 패배하는거지 뭐
+				 */
+				for(int j=0; j < units.size(); j++){
+					ModelUnit unit = units.get(j);
+					int amount = unitAmount.get(j);
+					//저념ㄹ한 경우 다음 슬롯을 본다.
+					if(amount <= 0 ) continue;
+					
+					int unithp = unit.getHP().intValue();
+					
+					//딜 다 받아냈고, 잔여딜은 무효화.
+					if(unithp > tempMyAtk){
+						tempMyAtk = tempMyAtk - unithp;//음수로 만들어서 루프를 빠져나가도록 함.
+						break;
+					}
+
+					//유닛이 죽어야하는 경우
+					//죽은 유닛 체력만큼 상대 공격력을 깎고 유닛수를 1기 줄임.
+					tempMyAtk = tempMyAtk - unithp;
+					defHpSum = defHpSum - unithp;
+					defAtkSum = defAtkSum - unit.getATK().intValue();
+					unitAmount.set(j, amount-1);
+					
+					//한줄이 모두 1씩 감소했는데 여전히 오버딜을 받은 상태인 경우
+					if(tempMyAtk > 0 && j == units.size()-1){
+						//다시 첫번째 슬롯부터 딜을 받는다.
+						//이 경우 이 영웅네가 전멸인 경우랑 그렇지 않은 경우가 있는데
+						if(arm.isDefeat()){
+							//전멸인 경우 루프를 나가야함
+							break;
+						}else{
+							//전멸이 아닌 경우 다시 첫 슬롯부터 깜.
+							j=0;
+						}
+					}
+				}//한 영웅이 쳐맞는 딜.
+			}//공격측 공격종료
+			
+			//라운드 종료. 저장할것.
+			//addRound는 라운드 추가에 성공시 TRUE를 리턴
+			isContinusBattle =  logMaker.addRound(attackerArms, defenderArms);
+		}while(myHpSum>0 && defHpSum>0 && isContinusBattle);
+		
+		/**
+		 * 양측 전멸
+		 * 양측 모두 딜부족으로 무승부
+		 * 공격자만 전멸
+		 * 방어자만 전멸
+		 * 
+		 * 그런데 어느 쪽이든 병력 소모된 양을 구해서 DB갱신하면 되잖아?
+		 * 어차피 승패는 로그보면 암;
+		 */
+		
 		// TODO 2.로그파일 쓰기
-		
+		logMaker.writeLog();
 		// TODO 2.로그정보를 DB에 넣기
+//		service.inser
 		
 		
 		
 		
-		
-		return null;
+		return logMaker.getLogName();
 	}
 	
 	//진격지 도착
