@@ -54,6 +54,10 @@ public class ModelUnit {
 		HP = hP;
 	}
 	
+	public ModelUnit(ModelUnit unitInfo) {
+		this(unitInfo.UnitID,unitInfo.Name,unitInfo.ATK,unitInfo.SPD,unitInfo.HP);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
