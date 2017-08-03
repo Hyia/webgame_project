@@ -135,8 +135,8 @@ public interface IServices {
 	public Integer		updateWaitList_Building		(ModelWaitList_Building slot);
 	public Integer		updateWaitList_Unit			(ModelWaitList_Unit slot);
 	public Integer		updateXYval					(ModelWaitList_Unit slot);
-	public Integer		updateWaitList_Unit			(ModelWaitList_Unit slot);
-	public Integer		updateWaitList_Unit			(ModelWaitList_Unit slot);
+	//public Integer		updateWaitList_Unit			(ModelWaitList_Unit slot);
+	//public Integer		updateWaitList_Unit			(ModelWaitList_Unit slot);
 	
 	
 	
