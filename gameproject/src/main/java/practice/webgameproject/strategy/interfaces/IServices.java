@@ -49,13 +49,13 @@ public interface IServices {
 	public static final int UNIT_TYPE_LV1 = 0;
 	public static final int UNIT_TYPE_LV2 = 1;
 	public static final int UNIT_TYPE_LV3 = 2;
+	public static final int HEROID_NO_HERO_TROOPS = 0; // troops no hero had.
                       
 	//location mapsize
 	public static final int MAP_MAX_HEIGHT = 50;
 	public static final int MAP_MAX_WIDTH = 50;
 
 	public static final long TRAVEL_UNIT_TIME = 5000;
-
 
 
 
