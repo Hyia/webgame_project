@@ -242,7 +242,7 @@ public class TempararyServiceGame extends ServiceGame{
 
 	@Override
 	public int getUnitValue(int kind, int amount) {
-		ModelUnitBuild target = new ModelUnitBuild(kind, null, null, null);
+		ModelUnitBuild target = new ModelUnitBuild(kind,  null, null);
 		int index = unitbuildTime.indexOf(target);
 		if(index != -1){
 			
@@ -257,7 +257,7 @@ public class TempararyServiceGame extends ServiceGame{
 
 	@Override
 	public ModelUnitBuild getUnitBuild(int kind) {
-		ModelUnitBuild target = new ModelUnitBuild(kind, null, null, null);
+		ModelUnitBuild target = new ModelUnitBuild(kind, null, null);
 		int index = unitbuildTime.indexOf(target);
 		if(index != -1){
 			
