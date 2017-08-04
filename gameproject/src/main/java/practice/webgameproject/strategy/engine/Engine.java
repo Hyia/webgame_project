@@ -7,8 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import practice.webgameproject.strategy.engine.BattleLogMaker.Army;
-import practice.webgameproject.strategy.engine.BattleLogMaker.Round;
+import practice.webgameproject.strategy.engine.child.Army;
+import practice.webgameproject.strategy.engine.child.BattleLogMaker;
+import practice.webgameproject.strategy.engine.child.BattleLogMaker.Round;
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
@@ -343,6 +344,55 @@ public class Engine {
 
 	//전투 및 로그작성
 	private String fight(List<ModelHeroTable> attacker, Integer destination){
+		//방어자측 정보+보정
+		List<Army> defenderArms = new ArrayList<Army>();
+		//방어측에 영웅이 있는지 확인
+		List<ModelHeroTable> defHeros = service.getHeroList_InCastle(new ModelCastle(null, null, null, destination, null));
+		Army heroArmy;
+		//영웅 있는 경우
+		if(defHeros != null && defHeros.size() != 0){
+			//영웅 루프
+			for(int i=0; i<defHeros.size(); i++){
+				//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장
+				ModelHeroTable hero = defHeros.get(i);
+				List<ModelHeroTroop> heroUnits = service.getHeroTroop_SlotList(hero);
+				heroArmy = new Army(hero.getHeroID());
+				for(int j=0; j< heroUnits.size(); j++){
+					ModelSlot slot = service.getSlot(heroUnits.get(j).getSlotID());
+					ModelUnit unitInfo = service.getUnitInformation(slot.getSlotUID());
+					ModelUnit unit = new ModelUnit(unitInfo);
+					int amount = slot.getSlotAmount();
+					int atk = correction(unit.getATK(), hero.getSTR().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
+					int hp = correction(unit.getHP(), hero.getCON().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
+
+					unit.setATK(atk);
+					unit.setHP(hp);
+					heroArmy.addUnit(unit, amount);
+					
+				}
+				defenderArms.add(heroArmy);
+			}
+		}
+		//영웅이 배정되지 않은 병력들.
+		List<ModelSlot> defenders = new ArrayList<ModelSlot>();
+		defenders = service.getLocalArmySlotList(destination);
+		Army localArmy = new Army(IServices.HEROID_NO_HERO_TROOPS);
+		for(int i=0; i<defenders.size();i++){
+			ModelSlot slot = service.getSlot(defenders.get(i).getSlotID());
+			ModelUnit unit = service.getUnitInformation(slot.getSlotUID());
+			
+			int amount = slot.getSlotAmount();
+			int atk = unit.getATK();
+			int hp = unit.getHP();
+			localArmy.addUnit(unit, amount);
+
+		}
+		defenderArms.add(localArmy);
+		
+		return fight(attacker,defenderArms);
+	}
+	
+	private String fight(List<ModelHeroTable> attacker, List<Army> localArmy){
 		//로그 생성 준비
 		BattleLogMaker logMaker = new BattleLogMaker();
 		
@@ -354,7 +404,7 @@ public class Engine {
 			//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장
 			ModelHeroTable hero = attacker.get(i);
 			List<ModelHeroTroop> heroUnits = service.getHeroTroop_SlotList(hero);
-			Army heroArmy = logMaker.new Army(attacker.get(i).getHeroID());
+			Army heroArmy = new Army(attacker.get(i).getHeroID());
 			for(int j=0; j< heroUnits.size(); j++){
 				ModelSlot slot = service.getSlot(heroUnits.get(j).getSlotID());
 				ModelUnit unitInfo = service.getUnitInformation(slot.getSlotUID());
@@ -377,63 +427,51 @@ public class Engine {
 		logMaker.setAttacker(attacker);
 		//전투 직전 공격자 영웅들 휘하병력 상태를 저장.
 		logMaker.setAttackerArmy(attackerArms);
-
-		//공격자측 정보+보정
-		List<Army> defenderArms = new ArrayList<Army>();
+		
+		//방어자측 정보+보정
 		logMaker.setDefender(null);
 		int defAtkSum = 0;
 		int defHpSum = 0;
 		//방어측에 영웅이 있는지 확인
-		List<ModelHeroTable> defHeros = service.getHeroList_InCastle(new ModelCastle(null, null, null, destination, null));
-		//영웅 있는 경우
-		if(defHeros != null && defHeros.size() != 0){
-			//영웅 루프
-			for(int i=0; i<defHeros.size(); i++){
+		List<ModelHeroTable> defHeros = new ArrayList<ModelHeroTable>();
+		for(int i=0; i<localArmy.size();i++){
+			Army oneArmy = localArmy.get(i);
+			Integer HeroID = oneArmy.getHeroID();
+
+			List<ModelUnit> units = oneArmy.getUnits();
+			List<Integer> unitAmounts = oneArmy.getUnitAmountList();
+			if(HeroID == null || HeroID.intValue() == IServices.HEROID_NO_HERO_TROOPS){
+				//영웅 없는 병력
+				for(int j=0; j< units.size(); j++){
+					ModelUnit unit = units.get(j);
+					int amount = unitAmounts.get(j);
+
+					defAtkSum += (unit.getATK()*amount);
+					defHpSum += (unit.getHP()*amount);
+				}
+			}else{
+				//영웅 있는 병력
 				//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장				
-				ModelHeroTable hero = defHeros.get(i);
-				List<ModelHeroTroop> heroUnits = service.getHeroTroop_SlotList(hero);
-				Army heroArmy = logMaker.new Army(attacker.get(i).getHeroID());
-				for(int j=0; j< heroUnits.size(); j++){
-					ModelSlot slot = service.getSlot(heroUnits.get(j).getSlotID());
-					ModelUnit unitInfo = service.getUnitInformation(slot.getSlotUID());
-					ModelUnit unit = new ModelUnit(unitInfo);
-					int amount = slot.getSlotAmount();
-					int atk = correction(unit.getATK(), hero.getSTR().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
-					int hp = correction(unit.getHP(), hero.getCON().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
+				ModelHeroTable hero = service.getHero(new ModelHeroTable(HeroID, null, null, null, null, null, null, null, null, null));
+				for(int j=0; j< units.size(); j++){
+					ModelUnit unit = units.get(j);
+					int amount = unitAmounts.get(j);
+					int atk = correction(unit.getATK(), hero.getSTR().intValue(), (hero.getSpecialty().intValue() == unit.getUnitID().intValue()));
+					int hp = correction(unit.getHP(), hero.getCON().intValue(), (hero.getSpecialty().intValue() == unit.getUnitID().intValue()));
 
 					unit.setATK(atk);
 					unit.setHP(hp);
-					heroArmy.addUnit(unit, amount);
-
 					defAtkSum += (atk*amount);
 					defHpSum += (hp*amount);
 				}
-				defenderArms.add(heroArmy);
+				defHeros.add(hero);
 			}
-			logMaker.setDefender(defHeros);
 		}
-		//영웅이 배정되지 않은 병력들.
-		List<ModelSlot> defenders = new ArrayList<ModelSlot>();
-		defenders = service.getLocalArmySlotList(destination);
-		Army localArmy = logMaker.new Army(IServices.HEROID_NO_HERO_TROOPS);
-		for(int i=0; i<defenders.size();i++){
-			ModelSlot slot = service.getSlot(defenders.get(i).getSlotID());
-			ModelUnit unit = service.getUnitInformation(slot.getSlotUID());
-			
-			int amount = slot.getSlotAmount();
-			int atk = unit.getATK();
-			int hp = unit.getHP();
-			localArmy.addUnit(unit, amount);
-
-			defAtkSum += (atk*amount);
-			defHpSum += (hp*amount);
-
-		}
-		defenderArms.add(localArmy);
-
-		logMaker.setDefenderArmy(defenderArms);
+//		logMaker.setDefender(defHeros.size()==0? null: defHeros);
+		logMaker.setDefender(defHeros);
+		logMaker.setDefenderArmy(localArmy);
 		//정보저장 끝
-		
+
 		//이제 전투
 		/**
 		 * attackerArms : 공격 가는 영웅들의 슬롯정보. List<Army>
@@ -518,8 +556,8 @@ public class Engine {
 			 * 모든 제대를 다 돌지 못한 채 잔여딜 소멸(딜부족)	-	루프를 빠져나간다.
 			 * 모든 제대를 다 돌고도 상대 공격력이 여전히 양수인 경우(오버딜) - 루프를 빠져나가고 패배
 			 */
-			for(int i=0; i<defenderArms.size(); i++){
-				Army arm = defenderArms.get(i);
+			for(int i=0; i<localArmy.size(); i++){
+				Army arm = localArmy.get(i);
 				List<ModelUnit> units = arm.getUnits();
 				List<Integer> unitAmount = arm.getUnitAmountList();
 				
@@ -573,7 +611,7 @@ public class Engine {
 			
 			//라운드 종료. 저장할것.
 			//addRound는 라운드 추가에 성공시 TRUE를 리턴
-			isContinusBattle =  logMaker.addRound(attackerArms, defenderArms);
+			isContinusBattle =  logMaker.addRound(attackerArms, localArmy);
 		}while(myHpSum>0 && defHpSum>0 && isContinusBattle);
 		
 		/**
@@ -596,6 +634,8 @@ public class Engine {
 		//로그 이름을 반환하여 찾을 수 있도록 함
 		return logMaker.getLogName();
 	}
+	
+	
 	
 	//진격지 도착
 	private void makeBattle(ModelHeroTable target, Integer targetLocationID) {
