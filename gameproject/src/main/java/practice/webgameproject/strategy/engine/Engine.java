@@ -362,11 +362,6 @@ public class Engine {
 					ModelUnit unitInfo = service.getUnitInformation(slot.getSlotUID());
 					ModelUnit unit = new ModelUnit(unitInfo);
 					int amount = slot.getSlotAmount();
-					int atk = correction(unit.getATK(), hero.getSTR().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
-					int hp = correction(unit.getHP(), hero.getCON().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
-
-					unit.setATK(atk);
-					unit.setHP(hp);
 					heroArmy.addUnit(unit, amount);
 					
 				}
@@ -374,16 +369,13 @@ public class Engine {
 			}
 		}
 		//영웅이 배정되지 않은 병력들.
-		List<ModelSlot> defenders = new ArrayList<ModelSlot>();
-		defenders = service.getLocalArmySlotList(destination);
+		List<ModelSlot> defenders =  service.getLocalArmySlotList(destination);
 		Army localArmy = new Army(IServices.HEROID_NO_HERO_TROOPS);
 		for(int i=0; i<defenders.size();i++){
 			ModelSlot slot = service.getSlot(defenders.get(i).getSlotID());
 			ModelUnit unit = service.getUnitInformation(slot.getSlotUID());
 			
 			int amount = slot.getSlotAmount();
-			int atk = unit.getATK();
-			int hp = unit.getHP();
 			localArmy.addUnit(unit, amount);
 
 		}
