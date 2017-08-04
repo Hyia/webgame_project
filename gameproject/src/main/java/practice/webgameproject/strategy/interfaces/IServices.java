@@ -7,6 +7,7 @@ import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelHeroTroop;
+import practice.webgameproject.strategy.model.ModelLog;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelOutResource;
 import practice.webgameproject.strategy.model.ModelSlot;
@@ -16,6 +17,7 @@ import practice.webgameproject.strategy.model.ModelUnitBuild;
 import practice.webgameproject.strategy.model.ModelWaitList_Building;
 import practice.webgameproject.strategy.model.ModelWaitList_Unit;
 import practice.webgameproject.strategy.model.ModelXYval;
+
 
 public interface IServices {
 	//success code
@@ -60,15 +62,23 @@ public interface IServices {
 
 
 	//general methods - members -GET
-	public ModelMembers getMember(ModelMembers targetMember);
+	public Integer			getMembersLogin		(ModelMembers targetMember);
+	
+	public ModelMembers		getMember			(ModelMembers targetMember);
 	
 
 	//general methods - members -INSERT
-	public Integer insertMembers(ModelMembers newMember);
+	public Integer insertMembers	(ModelMembers newMember);
+	
+	public Integer insertLog		(ModelLog newLog);
+	
 
 	
 	//general methods - members -UPDATE
-	public Integer		updateMembers				(ModelMembers updateMembers,ModelMembers searchMembers);
+	public Integer		updateMembers_Level					(ModelMembers updateMembers,ModelMembers searchMembers);
+	public Integer		updateMembers_EXP					(ModelMembers updateMembers,ModelMembers searchMembers);
+	public Integer		updateMembers_SaveProduction		(ModelMembers updateMembers,ModelMembers searchMembers);
+	public Integer		updateMembers_UserData				(ModelMembers updateMembers,ModelMembers searchMembers);
 
 	
 	//general methods - members -DELETE

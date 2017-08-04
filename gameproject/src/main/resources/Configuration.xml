@@ -18,6 +18,6 @@
 
     <!-- sql 이 저장되는 xml 파일 등록: 주의 사항은 경로로 설정해야 한다. -->
     <mappers>
-        <mapper resource="mapperWebGame.xml" />
+        <mapper resource="mapper/mapperWebGame.xml" />
     </mappers>
 </configuration>

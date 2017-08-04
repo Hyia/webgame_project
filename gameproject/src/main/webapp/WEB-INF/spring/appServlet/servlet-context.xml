@@ -43,11 +43,12 @@
     <!-- base-package 속성에 자동 스캔할 패키지 경로를 입력                             -->
     <!-- 복수의 패키지를 사용하고 싶은 경우 <context:component-scan> 태그를 복수개 작성  -->
     <context:component-scan base-package="practice.webgameproject.strategy" />
+                                          
     
     <!-- step3. 데이터베이스 커넥션 설정 -->
     <beans:bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
         <beans:property name="driverClassName"            value="com.mysql.jdbc.Driver" />
-        <beans:property name="url"                        value="jdbc:mysql://192.168.0.58:3306/strategy" />
+        <beans:property name="url"                        value="jdbc:mysql://192.168.0.58:3306/tester1?useUnicode=true&amp;characterEncoding=utf8" />
         <beans:property name="username"                   value="tester1" />
         <beans:property name="password"                   value="1234" />  
              

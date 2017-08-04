@@ -3,12 +3,14 @@ package practice.webgameproject.strategy.model;
 public class ModelMembers {
 	private static final int STARTING_USER_RESOURCE_AMOUNT = 0;// 신규유저 시작자원량
 
-	private	String	UserID			;				//` 		VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
-	private	String 	UserPW			;				//`		 VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
-	private	String 	UserNicName		;			//`	 VARCHAR(20) NOT NULL COLLATE 'utf8mb4_unicode_ci',
-	private	String 	UserEmail		;			//` 	VARCHAR(50) NOT NULL COLLATE 'utf8mb4_unicode_ci',
-	private	Integer UserLevel		;			//`		 INT(11) NOT NULL,
-	private	Integer SaveProduction	;		//` DECIMAL(11,0) NOT NULL,
+	private	String	UserID			;	//` VARCHAR(20)
+	private	String 	UserPW			;	//`	VARCHAR(20)
+	private	String 	UserNicName		;	//`	VARCHAR(20)
+	private	String 	UserEmail		;	//` VARCHAR(50)
+	private	Integer UserLevel		;	//`	INT(11)
+	private	Integer SaveProduction	;	//` DECIMAL(11,0)
+	private	Integer UserEXP			;	//`	INT(11)
+	
 	public String getUserID() {
 		return UserID;
 	}
@@ -65,6 +67,12 @@ public class ModelMembers {
 		UserLevel = userLevel;
 		SaveProduction = saveProduction;
 	}
+	
+	
+	public ModelMembers() {
+		super();
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof ModelMembers){

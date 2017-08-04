@@ -14,6 +14,10 @@ public class ModelHeroTable {
 	private Integer Specialty 		;//INT(11) 
 	private Integer Potrait 		;//INT(11) 
 	private Boolean Sex 			;//BIT(1)
+	private Integer HeroLevel		;//INT(11)	
+	private Integer HeroEXP  		;//INT(11)
+	
+	
 	public Integer getHeroID() {
 		return HeroID;
 	}
