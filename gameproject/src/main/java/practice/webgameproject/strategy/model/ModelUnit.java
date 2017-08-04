@@ -1,6 +1,8 @@
 package practice.webgameproject.strategy.model;
 
 public class ModelUnit {
+	
+
 	private Integer UnitID;// 		INT(11) 	AUTO_INCREMENT
 	private String  Name 	;//	VARCHAR(20)
 	private Integer ATK 	;//	INT(11) 
@@ -39,6 +41,9 @@ public class ModelUnit {
 	public void setHP(Integer hP) {
 		HP = hP;
 	}
+	public ModelUnit() {
+		super();
+	}
 	public ModelUnit(String name, Integer aTK, Integer sPD, Integer hP) {
 		super();
 		Name = name;
@@ -56,6 +61,11 @@ public class ModelUnit {
 	
 	public ModelUnit(ModelUnit unitInfo) {
 		this(unitInfo.UnitID,unitInfo.Name,unitInfo.ATK,unitInfo.SPD,unitInfo.HP);
+	}
+	
+	@Override
+	public String toString() {
+		return "ModelUnit \nUnitID=" + UnitID + "\n Name=" + Name + "\n ATK=" + ATK + "\n SPD=" + SPD + "\n HP=" + HP;
 	}
 
 	@Override

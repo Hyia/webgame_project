@@ -7,36 +7,36 @@
     
     <!-- Members Insert --><!--CHECK-->
     <insert id="insertMembers" parameterType="ModelMembers">        
-        Insert into Members
-        	('UserID', 'UserPW', 'UserNicName', 'UserEmail')
+        Insert into members
+        	(UserID, UserPW, UserNicName, UserEmail)
         		values (#{UserID}, #{UserPW}, #{UserNicName}, #{UserEmail})
     </insert>
     
     <!-- Castle Insert --><!--CHECK-->
     <insert id="insertCastle" parameterType="ModelCastle">        
         Insert into Castle
-        	('UserID', 'Name', 'Kind', 'LocationID','Production')
+        	(UserID, Name, Kind, LocationID,Production)
         		values (#{UserID}, #{Name}, #{Kind}, #{LocationID},#(Production))
     </insert>
     
     <!-- xyval Insert --><!--CHECK-->
     <insert id="insertXYval" parameterType="ModelXYval">        
         Insert into xyval
-        	('LocationID', 'CastleX', 'CastleY', 'Kind')
+        	(LocationID, CastleX, CastleY, Kind)
         		values (#{LocationID}, #{CastleX}, #{CastleY}, #{Kind})
     </insert>
     
     <!-- OutResource Insert --><!--CHECK-->
     <insert id="insertOutResource" parameterType="ModelOutResource">        
         Insert into OutResource
-        	('LocationID', 'UserID', 'Production', 'Kind')
+        	(LocationID, UserID, Production, Kind)
         		values (#{LocationID}, #{UserID}, #{Production}, #{Kind})
     </insert>
     
     <!-- Building Insert --><!--CHECK-->
     <insert id="insertBuilding" parameterType="ModelBuilding">        
         Insert into Building
-        	('LocationID', 'Kind', 'Level', 'RoomNumber')
+        	(LocationID, Kind, Level, RoomNumber)
         		values (#{LocationID}, #{Kind}, #{Level}, #{RoomNumber})
     </insert>
     
@@ -44,7 +44,7 @@
     <insert id="insertWaitBuildingList" parameterType="ModelWaitList_Building">      
  			Insert into 
  				WaitList_Building
- 					('WaitTime','LocationID','Kind','RoomNumber')
+ 					(WaitTime,LocationID,Kind,RoomNumber)
  						values (#(WaitTime),#(LocationID),#(Kind),#(RoomNumber))
     </insert>
     
@@ -52,42 +52,42 @@
     <insert id="insertWaitUnitgList" parameterType="ModelWaitList_Unit">      
  			Insert into 
  				WaitList_Unit
- 					('WaitTime','LocationID','UnitID','Amount')
+ 					(WaitTime,LocationID,UnitID,Amount)
  						values (#(WaitTime),#(LocationID),#(UnitID),#(Amount))
     </insert>
     
     <!-- Castletroop Insert --><!--CHECK-->
     <insert id="insertCastletroop" parameterType="ModelCastletroop">        
         insert into Castletroop
-        	('LocationID', 'SlotID')
+        	(LocationID, SlotID)
         		values (#{LocationID}, #{SlotID})
     </insert>
     
     <!-- Herotable Insert --><!--CHECK-->
     <insert id="insertHerotable" parameterType="ModelHeroTable">        
         Insert into Herotable
-        	('HeroID', 'STR', 'AGI', 'CON', 'Owner', 'LocationID','Statuus', 'Specialty', 'Potrait', 'Sex')
+        	(HeroID, STR, AGI, CON, Owner, LocationID,Statuus, Specialty, Potrait, Sex)
         		values (#{HeroID}, #{STR}, #{AGI}, #{CON}, #{Owner}, #{LocationID}, #{Statuus}, #{Specialty}, #{Potrait}, #{Sex} )
     </insert>
     
     <!-- Herotroop Insert --><!--CHECK-->
     <insert id="insertHerotroop" parameterType="ModelHerotroop">        
         Insert into Herotroop
-        	('HeroID', 'SlotID')
+        	(HeroID, SlotID)
         		values (#{HeroID}, #{SlotID})
     </insert>
     
     <!-- Slot Insert --><!--CHECK-->
     <insert id="insertSlot" parameterType="ModelSlot">        
         Insert into Slot
-        	('SlotID', 'SoltUID', 'SoltAmount')
-        		values (#{SlotID}, #{SoltUID}, #{SoltAmount})
+        	(SlotID, SlotUID, SlotAmount)
+        		values (#{SlotID}, #{SlotUID}, #{SlotAmount})
     </insert>
     
     <!-- Log Insert --><!--CHECK-->
     <insert id="insertLog" parameterType="ModelLog">        
         Insert into Log
-        	('AttackUserID', 'DefenseUserID', 'AttackUserUseYN','DefenseUserUseYN','WhoWins','BattleDate')
+        	(AttackUserID, DefenseUserID, AttackUserUseYN,DefenseUserUseYN,WhoWins,BattleDate)
         		values (#{AttackUserID}, #{DefenseUserID}, #{AttackUserUseYN},#{DefenseUserUseYN},#{WhoWins},#{BattleDate})
     </insert>
     
@@ -166,15 +166,14 @@
     </select>
     
     <!-- 모든 좌표 정보 가져오기 --><!--CHECK-->
-    <select id="getAllXYval">        
-  		 SELECT * FROM
-      		  xyval
+    <select id="getAllXYval" resultType="ModelXYval">        
+  		 SELECT * FROM xyval
       		  
     </select>
     
     <!-- 성에병력 슬롯ID 정보 가져오기 --><!--CHECK-->
     <select id="getCastleTroop_SlotList" parameterType="ModelCastle"  resultType="ModelSlot">        
- 		select SlotID,SoltUID,SoltAmount from
+ 		select SlotID,SlotUID,SlotAmount from
 			castletroop_SlotUnit
 				where LocationID=#{LocationID}
  
@@ -226,7 +225,7 @@
     
     <!-- 영웅의병력 슬롯ID 정보 가져오기 --><!--CHECK-->
     <select id="getHeroTroop_SlotList" parameterType="ModelHeroTable"  resultType="ModelSlot">        
- 		select SlotID,SoltUID,SoltAmount from
+ 		select SlotID,SlotUID,SlotAmount from
 			herotroop_SlotUnit
 				where HeroID=#{HeroID}
     </select>
@@ -260,7 +259,7 @@
     	update members 
        		SET 
        			 UserLevel		=	#{updateValue.UserLevel}
-       	WHERE 	 UserID			=	#{serchValue.UserID}
+       	WHERE 	 UserID			=	#{searchValue.UserID}
     
     </update>
     
@@ -269,7 +268,7 @@
     	update members 
        		SET 
        			 UserEXP	=	#{updateValue.UserEXP}
-       	WHERE 	 UserID		=	#{serchValue.UserID}
+       	WHERE 	 UserID		=	#{searchValue.UserID}
     
     </update>
     
@@ -278,7 +277,7 @@
     	update members 
        		SET 
        			 SaveProduction	=	#{updateValue.SaveProduction}
-       	WHERE 	 UserID			=	#{serchValue.UserID}
+       	WHERE 	 UserID			=	#{searchValue.UserID}
     
     </update>
     
@@ -300,7 +299,7 @@
 					and  #{updateValue.UserPW} !=''  then #{updateValue.UserPW}
                   	else UserPW
                  	end
-		where	UserID=#{serchValue.UserID}
+		where	UserID=#{searchValue.UserID}
        	
     </update>
     
@@ -314,7 +313,7 @@
     			 Name			=	#{updateValue.Name}
     			,SaveProduction	=	#{updateValue.SaveProduction}
     			,Kind			=	#{updateValue.Kind}
-       	WHERE	 LocationID		=	#{serchValue.LocationID}
+       	WHERE	 LocationID		=	#{searchValue.LocationID}
     
     </update>
     
@@ -323,7 +322,7 @@
     	update Building 
        		SET  level		=	#{updateValue.Level}
        			,RoomNumber	=	#{updateValue.RoomNumber}
-       	WHERE LocationID	=	#{serchValue.LocationID}
+       	WHERE LocationID	=	#{searchValue.LocationID}
     
     </update>
     
@@ -331,26 +330,79 @@
     
     <!-- 영웅 정보 업데이트 --><!--CHECK-->
     <update id="updateHero" parameterType="hashmap">
-    	update updateHero 
-       		SET	 STR		= #{updateValue.STR}
-				,AGI        = #{updateValue.AGI}
-				,CON        = #{updateValue.CON}
-				,Owner      = #{updateValue.Owner}
-				,LacationID = #{updateValue.LacationID}
-				,Statuus    = #{updateValue.Statuus}
-				,Specialty  = #{updateValue.Specialty}
-				,Potrait    = #{updateValue.Potrait}
-				,Sex        = #{updateValue.Sex}
-       	WHERE HeroID		= #{serchValue.HeroID}
+    	update herotable
+  		set STR = case
+                  	when #{updateValue.STR} is not null
+					and  #{updateValue.STR} !=0  then #{updateValue.STR}
+                  	else STR
+                	end,
+   		AGI = case
+                  	when #{updateValue.AGI} is not null
+					and  #{updateValue.AGI} !=0  then #{updateValue.AGI}
+                  	else UserNicName
+                 	end,
+   		CON = case
+                  	when #{updateValue.CON} is not null
+					and  #{updateValue.CON} !=0  then #{updateValue.CON}
+                  	else UserPW
+                 	end,
+		Owner = case
+                  	when #{updateValue.Owner} is not null
+					and  #{updateValue.Owner} !=''  then #{updateValue.Owner}
+                  	else UserNicName
+                 	end,
+		LacationID = case
+                  	when #{updateValue.LacationID} is not null
+					and  #{updateValue.LacationID} !=0  then #{updateValue.LacationID}
+                  	else UserNicName
+                 	end,
+		Statuus = case
+                  	when #{updateValue.Statuus} is not null
+					and  #{updateValue.Statuus} !=0  then #{updateValue.Statuus}
+                  	else UserNicName
+                 	end,
+		Specialty = case
+                  	when #{updateValue.Specialty} is not null
+					and  #{updateValue.Specialty} !=0  then #{updateValue.Specialty}
+                  	else UserNicName
+                 	end,
+		Potrait = case
+                  	when #{updateValue.Potrait} is not null
+					and  #{updateValue.Potrait} !=0  then #{updateValue.Potrait}
+                  	else UserNicName
+                 	end,
+		Sex = case
+                  when #{updateValue.Sex} is not null then #{updateValue.Sex}
+                  else UserNicName
+                 	end,
+		HeroLevel = case
+                  when #{updateValue.HeroLevel} is not null
+									and  #{updateValue.HeroLevel} !=0  then #{updateValue.HeroLevel}
+                  else UserNicName
+                 	end,
+		HeroEXP = case
+                  	when #{updateValue.HeroEXP} is not null
+					and  #{updateValue.HeroEXP} !=0  then #{updateValue.HeroEXP}
+                  	else UserNicName
+                 	end					  					  					  					                   
+		where	HeroID=#{searchValue.HeroID}
     
     </update>
     
     <!-- 영웅 슬롯 유닛 정보 업데이트 --><!--CHECK-->
     <update id="updateSlot" parameterType="hashmap">
     	update slot 
-       		SET  SoltUID		=	#{updateValue.SoltUID}
-       			,SoltAmount		=	#{updateValue.SoltAmount}
-       	WHERE 	 SoltID			=	#{serchValue.SoltID}
+       		SET  SlotUID	=	case
+                  	when #{updateValue.SlotUID} is not null
+					and  #{updateValue.SlotUID} !=0  then #{updateValue.SlotUID}
+                  	else SlotUID
+                 	end,
+       			 SlotAmount		=	case
+                  	when #{updateValue.SlotAmount} is not null
+					and  #{updateValue.SlotAmount} !=0  then #{updateValue.SlotAmount}
+                  	else SlotAmount
+                 	end
+       	WHERE 	 SlotID			=	#{searchValue.SlotID}
     
     </update>
     
@@ -364,7 +416,7 @@
 			                                               		  else Kind 
 					  										      end
        	
-				WHERE 	 LocationID		=	#{serchValue.LocationID}
+				WHERE 	 LocationID		=	#{searchValue.LocationID}
     
     </update>
     
@@ -373,7 +425,7 @@
     	update
     	WaitList_Building SET 
      		 		 WaitTime		=	#{updateValue.WaitTime}
-			WHERE 	 LocationID		=	#{serchValue.LocationID}
+			WHERE 	 LocationID		=	#{searchValue.LocationID}
     
     </update>
     
@@ -382,7 +434,7 @@
     	update
     	waitlist_unit SET 
      		 		 WaitTime		=	#{updateValue.WaitTime}
-			WHERE 	 LocationID		=	#{serchValue.LocationID}
+			WHERE 	 LocationID		=	#{searchValue.LocationID}
     
     </update>
     

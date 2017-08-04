@@ -10,24 +10,38 @@ public class ModelSlot {
 	}
 	
 	public void setSlotID(Integer SlotID) {
-		SlotID = SlotID;
+		this.SlotID = SlotID;
 	}
 
 	public Integer getSlotUID() {
 		return SlotUID;
 	}
 	public void setSlotUID(Integer SlotUID) {
-		SlotUID = SlotUID;
+		this.SlotUID = SlotUID;
 	}
 	public Integer getSlotAmount() {
 		return SlotAmount;
 	}
 	public void setSlotAmount(Integer SlotAmount) {
-		SlotAmount = SlotAmount;
+		this.SlotAmount = SlotAmount;
 	}
+	
+	
+	public ModelSlot(Integer slotID, Integer slotUID, Integer slotAmount) {
+		super();
+		SlotID = slotID;
+		SlotUID = slotUID;
+		SlotAmount = slotAmount;
+	}
+
 	public ModelSlot(Integer SlotUID, Integer SlotAmount) {
-		SlotUID = SlotUID;
-		SlotAmount = SlotAmount;
+		this.SlotUID = SlotUID;
+		this.SlotAmount = SlotAmount;
+	}
+	
+	public ModelSlot() {
+		super();
+		
 	}
 	
 	@Override

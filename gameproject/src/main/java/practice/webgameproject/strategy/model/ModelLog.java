@@ -3,12 +3,20 @@ package practice.webgameproject.strategy.model;
 import java.util.Date;
 
 public class ModelLog {
+		public String getWhoWins() {
+		return WhoWins;
+	}
+
+	public void setWhoWins(String whoWins) {
+		WhoWins = whoWins;
+	}
 		private Integer LogNumber;			//  INT(11) NOT NULL AUTO_INCREMENT, PRIMARY KEY
 		private String 	AttackUserID;		//  VARCHAR(50) NULL DEFAULT NULL 
 		private String 	DefenseUserID;		//  VARCHAR(50) NULL DEFAULT NULL 
 		private boolean AttackUserUseYN; 	//  BIT(1) NULL DEFAULT NULL
 		private boolean DefenseUserUseYN;	//  BIT(1) NULL DEFAULT NULL
 		private Date 	BattleDate;		 	//  DATETIME NULL DEFAULT NULL
+		private String 	WhoWins;
 		
 		public Integer getLogNumber() {
 			return LogNumber;
@@ -58,6 +66,10 @@ public class ModelLog {
 			BattleDate = battleDate;
 		}
 		
+		public ModelLog() {
+			super();
+			
+		}
 		public ModelLog(Integer logNumber, String attackUserID, String defenseUserID, boolean attackUserUseYN,
 				boolean defenseUserUseYN, Date battleDate) {
 			super();

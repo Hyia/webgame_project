@@ -16,6 +16,7 @@ import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelHeroTroop;
+import practice.webgameproject.strategy.model.ModelLog;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelOutResource;
 import practice.webgameproject.strategy.model.ModelSlot;
@@ -35,7 +36,7 @@ public class DaoGame implements IServices{
 
 
 	 
-	// Methods MEMBERS
+	// Methods MEMBERS - GET
 	@Override
 	public ModelMembers getMember(ModelMembers targetMember) {
 		
@@ -49,23 +50,61 @@ public class DaoGame implements IServices{
 		
 	}
 
+	
+	// Methods MEMBERS - INSERT
 	@Override
 	public Integer insertMembers(ModelMembers newMember) {
 		
 		return session.insert("mapper.mysql.mapperWebGame.insertMembers",newMember);
 	}
 
+	
+	// Methods MEMBERS - UPDATE
 	@Override
-	public Integer updateMembers(ModelMembers updateMembers,ModelMembers searchMembers) {
-		
+	public Integer updateMembers_Level(ModelMembers updateMembers, ModelMembers searchMembers) {
 		Map<String, ModelMembers> map = new HashMap<String, ModelMembers>();
 		
 		map.put("updateValue", updateMembers);
-        map.put("searchValue", searchMembers);
+		map.put("searchValue", searchMembers);
 		
-		return session.insert("mapper.mysql.mapperWebGame.updateMembers",map);
+		return session.insert("mapper.mysql.mapperWebGame.updateMembers_Level",map);
+	}
+	
+	@Override
+	public Integer updateMembers_EXP(ModelMembers updateMembers, ModelMembers searchMembers) {
+
+		Map<String, ModelMembers> map = new HashMap<String, ModelMembers>();
+		
+		map.put("updateValue", updateMembers);
+		map.put("searchValue", searchMembers);
+		
+		return session.insert("mapper.mysql.mapperWebGame.updateMembers_EXP",map);
 	}
 
+	@Override
+	public Integer updateMembers_SaveProduction(ModelMembers updateMembers, ModelMembers searchMembers) {
+
+		Map<String, ModelMembers> map = new HashMap<String, ModelMembers>();
+		
+		map.put("updateValue", updateMembers);
+		map.put("searchValue", searchMembers);
+		
+		return session.insert("mapper.mysql.mapperWebGame.updateMembers_SaveProduction",map);
+	}
+
+	@Override
+	public Integer updateMembers_UserData(ModelMembers updateMembers, ModelMembers searchMembers) {
+
+		Map<String, ModelMembers> map = new HashMap<String, ModelMembers>();
+		
+		map.put("updateValue", updateMembers);
+		map.put("searchValue", searchMembers);
+		
+		return session.insert("mapper.mysql.mapperWebGame.updateMembers_UserData",map);
+	}
+
+	
+	// Methods MEMBERS - DELETE
 	@Override
 	public Integer deleteMembers(ModelMembers members) {
 		
@@ -82,9 +121,9 @@ public class DaoGame implements IServices{
 	}
 
 	@Override
-	public List<ModelUnitBuild> getUnitBuild(ModelUnitBuild targetUnitBuild) {
+	public List<ModelUnitBuild> getUnitBuild() {
 		
-		return session.selectList("mapper.mysql.mapperWebGame.getUnitBuild",targetUnitBuild);
+		return session.selectList("mapper.mysql.mapperWebGame.getUnitBuild");
 	}
 
 	@Override
@@ -101,14 +140,23 @@ public class DaoGame implements IServices{
 
 	
 	
+	// Methods Others - INSERT
+	@Override
+	public Integer insertLog(ModelLog newLog) {
+		
+		return session.insert("mapper.mysql.mapperWebGame.insertLog",newLog);
+	}
+	
+	
+	
 	// Methods Others - UPDATE
 	@Override
-	public Integer updateSlot(ModelSlot updateSlot	, ModelSlot serchSlot) {
+	public Integer updateSlot(ModelSlot updateSlot	, ModelSlot searchSlot) {
 		
 		Map<String, ModelSlot> map = new HashMap<String, ModelSlot>();
 		
 		map.put("updateValue", updateSlot);
-		map.put("searchValue", serchSlot);
+		map.put("searchValue", searchSlot);
 		
 		return session.insert("mapper.mysql.mapperWebGame.updateSlot",map);
 	}
@@ -265,56 +313,56 @@ public class DaoGame implements IServices{
 	
 	// Methods Catle - UPDATE
 	@Override
-	public Integer updateCastle(ModelCastle updateCastle	, ModelCastle serchCastle) {
+	public Integer updateCastle(ModelCastle updateCastle	, ModelCastle searchCastle) {
 		
 		Map<String, ModelCastle> map = new HashMap<String, ModelCastle>();
 		
 		map.put("updateValue", updateCastle);
-		map.put("searchValue", serchCastle);
+		map.put("searchValue", searchCastle);
 		
 		return session.insert("mapper.mysql.mapperWebGame.updateCastle",map);
 	}
 
 	@Override
-	public Integer updateBuilding(ModelBuilding updateBuilding	, ModelBuilding serchBuilding) {
+	public Integer updateBuilding(ModelBuilding updateBuilding	, ModelBuilding searchBuilding) {
 
 		Map<String, ModelBuilding> map = new HashMap<String, ModelBuilding>();
 		
 		map.put("updateValue", updateBuilding);
-		map.put("searchValue", serchBuilding);
+		map.put("searchValue", searchBuilding);
 		
 		return session.insert("mapper.mysql.mapperWebGame.updateBuilding",map);
 	}
 
 	@Override
-	public Integer updateOutResource(ModelOutResource updateOutResource	, ModelOutResource serchOutResource) {
+	public Integer updateOutResource(ModelOutResource updateOutResource	, ModelOutResource searchOutResource) {
 
 		Map<String, ModelOutResource> map = new HashMap<String, ModelOutResource>();
 		
 		map.put("updateValue", updateOutResource);
-		map.put("searchValue", serchOutResource);
+		map.put("searchValue", searchOutResource);
 		
 		return session.insert("mapper.mysql.mapperWebGame.updateOutResource",map);
 	}
 
 	@Override
-	public Integer updateWaitList_Building(ModelWaitList_Building updateBudingList	, ModelWaitList_Building serchBudingList) {
+	public Integer updateWaitList_Building(ModelWaitList_Building updateBudingList	, ModelWaitList_Building searchBudingList) {
 
 		Map<String, ModelWaitList_Building> map = new HashMap<String, ModelWaitList_Building>();
 		
 		map.put("updateValue", updateBudingList);
-		map.put("searchValue", serchBudingList);
+		map.put("searchValue", searchBudingList);
 		
 		return session.insert("mapper.mysql.mapperWebGame.updateWaitList_Building",map);
 	}
 
 	@Override
-	public Integer updateWaitList_Unit(ModelWaitList_Unit updateUnitList	, ModelWaitList_Unit serchUnitList) {
+	public Integer updateWaitList_Unit(ModelWaitList_Unit updateUnitList	, ModelWaitList_Unit searchUnitList) {
 
 		Map<String, ModelWaitList_Unit> map = new HashMap<String, ModelWaitList_Unit>();
 		
 		map.put("updateValue", updateUnitList);
-		map.put("searchValue", serchUnitList);
+		map.put("searchValue", searchUnitList);
 		
 		return session.insert("mapper.mysql.mapperWebGame.updateWaitList_Unit",map);
 	}
@@ -380,12 +428,12 @@ public class DaoGame implements IServices{
 	
 	// Methods Hero - UPDATE
 	@Override
-	public Integer updateHero(ModelHeroTable updateHero	, ModelHeroTable serchHero) {
+	public Integer updateHero(ModelHeroTable updateHero	, ModelHeroTable searchHero) {
 		
 		Map<String, ModelHeroTable> map = new HashMap<String, ModelHeroTable>();
 		
 		map.put("updateValue", updateHero);
-		map.put("searchValue", serchHero);
+		map.put("searchValue", searchHero);
 		
 		return session.insert("mapper.mysql.mapperWebGame.updateHero",map);
 	}
@@ -403,8 +451,6 @@ public class DaoGame implements IServices{
 		
 		return session.insert("mapper.mysql.mapperWebGame.deleteHeroTroop",heroID);
 	}
-
-	
 
 		
 }

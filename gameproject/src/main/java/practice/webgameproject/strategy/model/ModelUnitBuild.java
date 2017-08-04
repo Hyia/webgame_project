@@ -4,45 +4,68 @@ package practice.webgameproject.strategy.model;
 
 import java.util.Date;
 
+import android.text.format.Time;
+
 public class ModelUnitBuild {
+	
+
 	private Integer UnitID 		;//	INT(11)
-	private String  Name 		;//VARCHAR(20)
-	private Date BuildTime 	;//TIME
+	private Date BuildTime	 	;//TIME
 	private Integer Values 		;//INT(11)
+	
 	
 	public Integer getUnitID() {
 		return UnitID;
 	}
+
+
+
 	public void setUnitID(Integer unitID) {
 		UnitID = unitID;
 	}
-	public String getName() {
-		return Name;
-	}
-	public void setName(String name) {
-		Name = name;
-	}
+
+
+
 	public Date getBuildTime() {
 		return BuildTime;
 	}
-	public void setBuildTime(java.sql.Date buildTime) {
-		Date d = new Date(buildTime.getTime());
-		BuildTime = d;
+
+
+
+	public void setBuildTime(Date buildTime) {
+		BuildTime = buildTime;
 	}
+
+
+
 	public Integer getValues() {
 		return Values;
 	}
+
+
+
 	public void setValues(Integer values) {
 		Values = values;
 	}
-	
-	public ModelUnitBuild(Integer unitID, String name, Date buildTime, Integer values) {
+
+	public ModelUnitBuild() {
+		super();
+	}
+
+
+	@Override
+	public String toString() {
+		return "ModelUnitBuild [UnitID=" + UnitID + ", BuildTime=" + BuildTime + ", Values=" + Values + "]";
+	}
+
+
+
+	public ModelUnitBuild(Integer unitID,  Date buildTime, Integer values) {
+		super();
 		UnitID = unitID;
-		Name = name;
 		BuildTime = buildTime;
 		Values = values;
 	}
-	
 	
 	
 	

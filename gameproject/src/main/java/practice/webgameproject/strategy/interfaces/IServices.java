@@ -62,13 +62,13 @@ public interface IServices {
 
 
 	//general methods - members -GET
-	public Integer			getMembersLogin		(ModelMembers targetMember);
+	public Integer			getMembersLogin		(ModelMembers targetMember);	//Test OK
 	
-	public ModelMembers		getMember			(ModelMembers targetMember);
+	public ModelMembers		getMember			(ModelMembers targetMember);	//Test OK
 	
 
 	//general methods - members -INSERT
-	public Integer insertMembers	(ModelMembers newMember);
+	public Integer insertMembers	(ModelMembers newMember);	//Test OK
 	
 	public Integer insertLog		(ModelLog newLog);
 	
@@ -88,7 +88,7 @@ public interface IServices {
 	//general methods - Others Information -GET
 	public ModelUnit 		 	 getUnitInformation	(Integer UnitID);
 	
-	public List<ModelUnitBuild>  getUnitBuild		(ModelUnitBuild targetUnitBuild);
+	public List<ModelUnitBuild>  getUnitBuild		();
 	
 	public List<ModelStructures> getStructures		(ModelStructures targetStructures);
 	
@@ -97,7 +97,7 @@ public interface IServices {
 	
 	
 	//general methods - Others Information -UPDATE
-	public Integer		updateSlot					(ModelSlot updateSlot			, ModelSlot serchSlot);
+	public Integer		updateSlot					(ModelSlot updateSlot			, ModelSlot searchSlot);
 	
 	
 
@@ -157,15 +157,15 @@ public interface IServices {
 	
 	
 	//general methods - castles - UPDATE	
-	public Integer		updateCastle				(ModelCastle updateCastle					, ModelCastle serchCastle);
+	public Integer		updateCastle				(ModelCastle updateCastle					, ModelCastle searchCastle);
 	
-	public Integer		updateBuilding				(ModelBuilding updateBuilding				, ModelBuilding serchBuilding);
+	public Integer		updateBuilding				(ModelBuilding updateBuilding				, ModelBuilding searchBuilding);
 	
-	public Integer		updateOutResource			(ModelOutResource updateOutResource			, ModelOutResource serchOutResource);
+	public Integer		updateOutResource			(ModelOutResource updateOutResource			, ModelOutResource searchOutResource);
 	
-	public Integer		updateWaitList_Building		(ModelWaitList_Building updateBudingList	, ModelWaitList_Building serchBudingList);
+	public Integer		updateWaitList_Building		(ModelWaitList_Building updateBudingList	, ModelWaitList_Building searchBudingList);
 	
-	public Integer		updateWaitList_Unit			(ModelWaitList_Unit updateUnitList			, ModelWaitList_Unit serchUnitList);
+	public Integer		updateWaitList_Unit			(ModelWaitList_Unit updateUnitList			, ModelWaitList_Unit searchUnitList);
 	
 	
 	//general methods - castles - DELETE
@@ -195,7 +195,7 @@ public interface IServices {
 	
 	
 	//general methods - hero - UPDATE
-	public Integer		updateHero					(ModelHeroTable updateHero	, ModelHeroTable serchHero);
+	public Integer		updateHero					(ModelHeroTable updateHero	, ModelHeroTable searchHero);
 	
 	
 	//general methods - hero - DELETE
