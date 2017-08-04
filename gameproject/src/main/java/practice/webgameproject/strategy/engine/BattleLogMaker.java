@@ -155,6 +155,9 @@ public class BattleLogMaker {
 		        out.write(round.get(i).toString());
 		        //out.newLine();
 	        }
+	        //전투 결산 부분
+	        out.write(makeTail());
+	        
 	        out.close();
 	      } catch (IOException e) {
 	      }
@@ -162,7 +165,12 @@ public class BattleLogMaker {
 	
 	private String makeHeader(){
 		//TODO 초기병력 정보를 담는 가장 위쪽을 만들 것
-		String str = "<div name='log_title'>    </div>";
+		String str = "여기에 HTML을 포함한 로그 앞머리가 붙어요. 어떻게 보여줄지는 상의필요";
+		return str;
+	}
+	private String makeTail(){
+		//TODO 초기병력 정보를 담는 가장 위쪽을 만들 것
+		String str = "여기에 로그 결산이 붙어요. 어떻게 보여줄지는 상의필요.";
 		return str;
 	}
 	
@@ -189,7 +197,7 @@ public class BattleLogMaker {
 		@Override
 		public String toString() {
 			//TODO 각 라운드 정보를 작성할것.
-			String str= "만들지 않은 라운드("+round+")";
+			String str= "여기에  라운드("+round+")에 대한 교전기록이 붙어요";
 			
 			return str;
 		}
