@@ -435,7 +435,7 @@ public class ServiceGame extends DaoGame{
 
 		return super.deleteCastleBuildings(locationID);
 	}
-
+	
 	@Override
 	public Integer deleteOutResource(Integer locationID) {
 
