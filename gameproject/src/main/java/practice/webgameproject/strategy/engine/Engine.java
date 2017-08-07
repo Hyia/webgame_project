@@ -817,15 +817,28 @@ public class Engine {
 			fight(attacker, localArmy);
 			break;
 		case IServices.LOCATION_TYPE_EXTERNALRESOURCE://야외자원지
-			//			ModelOutResource ourResource = service.getRe
-			
-			fight(target, targetLocationID);
+			ModelOutResource outResource = service.getOutResource(targetLocationID);
+			if(target.getOwner().equals(outResource.getUserID())){
+				//자신의 성에서 자신의 자원지로
+				target.setStatuus(targetLocationID);
+				
+			}else if(isAliance(target.getOwner(), outResource.getUserID())){
+				//동맹 자원지로 보낸 경우
+				//(동맹 미구현)
+			}else{
+				//적이거나 중립. 전투개시.
+				//일반화
+				attacker = new ArrayList<ModelHeroTable>();
+				attacker.add(target);
+				
+				//잡몹 생성
+				localArmy = makeCreeps(distance);
+				fight(attacker, localArmy);
+			}
 			break;
 		}
-		
-		
-		
 	}
+	
 
 	/**
 	 * 중립병력을 만들어주는 메서드
