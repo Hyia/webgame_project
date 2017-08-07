@@ -1,6 +1,10 @@
 package practice.webgameproject.strategy.engine;
 
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -780,6 +784,7 @@ public class Engine {
 		// TODO 2.로그정보를 DB에 넣기
 		ModelLog logger = new ModelLog(logMaker.getLogName(), logMaker.getAttacker_ID(), logMaker.getDefender_ID(), false, false, logMaker.getLogDate());
 		service.insertLog(logger);
+		// TODO 전투로 변경된 병력상황을 DB에 반영
 		
 		
 		
@@ -787,6 +792,30 @@ public class Engine {
 		return logMaker.getLogName();
 	}
 	
+	public String getLogFile(String logName){
+		String logText = "";
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(BattleLogMaker.getLogfileRoot()+"/"+logName+".log"));
+			
+			while(true){
+				String line = br.readLine();
+				if(line ==null){
+					break;
+				}
+				
+				logText.concat("\r\n"+line);
+			}
+			
+			br.close();
+		} catch (IOException e) {
+			// Do nothing
+		}
+		
+		return "";
+	}
+	
+	//선술집용
 	public List<ModelHeroTable> makeHero(){
 		List<ModelHeroTable> heros = new ArrayList<ModelHeroTable>();
 

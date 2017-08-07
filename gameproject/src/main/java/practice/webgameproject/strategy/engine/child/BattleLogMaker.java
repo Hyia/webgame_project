@@ -64,10 +64,13 @@ public class BattleLogMaker {
 		logID = serialNumber;
 		round = new ArrayList<Round>();
 		currentRound = 0;
+		logDate = new Date();
 		logName = null;
 	}
 
-	
+	public static String getLogfileRoot() {
+		return LOGFILEROOT;
+	}
 
 
 
