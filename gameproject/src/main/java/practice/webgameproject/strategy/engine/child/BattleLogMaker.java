@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,19 +36,21 @@ public class BattleLogMaker {
 	
 	List<Round> round;
 	
-	public BattleLogMaker(List<ModelHeroTable> attacker, List<Army> attackerArmy,
-			List<ModelHeroTable> defender, List<Army> defenderArmy) {
+	public BattleLogMaker(String attacker_ID,List<ModelHeroTable> attacker, List<Army> attackerArmy,
+			String defender_ID,List<ModelHeroTable> defender, List<Army> defenderArmy) {
 		serialNumber++;
 		logID = serialNumber;
 		logDate = new Date();
-		logName = logDate.toString()+"-"+logID;
 		this.attacker = attacker;
 		this.attackerArmy = attackerArmy;
 		this.defender = defender;
 		this.defenderArmy = defenderArmy;
-		
+		this.attacker_ID = attacker_ID;
+		this.defender_ID = defender_ID;
 		round = new ArrayList<Round>();
 		currentRound = 0;
+		
+		logName = null;
 	}
 
 	public Date getLogDate() {
@@ -59,12 +62,15 @@ public class BattleLogMaker {
 	public BattleLogMaker() {
 		serialNumber++;
 		logID = serialNumber;
-		logName = (new Date()).toString()+"-"+logID;
 		round = new ArrayList<Round>();
 		currentRound = 0;
+		logDate = new Date();
+		logName = null;
 	}
 
-	
+	public static String getLogfileRoot() {
+		return LOGFILEROOT;
+	}
 
 
 
@@ -144,6 +150,9 @@ public class BattleLogMaker {
 		return logID;
 	}
 	public String getLogName() {
+		if(logName == null){
+			return "ERROR_call_getLogName_before_write";
+		}
 		return logName;
 	}
 
@@ -163,6 +172,7 @@ public class BattleLogMaker {
 	}
 
 	public void writeLog() {
+		logName = new SimpleDateFormat("YYYYMMDDhhmmssSSS").format(logDate)+"-"+attacker_ID+"-"+defender_ID;
 		BufferedWriter out = null;
 	    try {
 	        out = new BufferedWriter(new FileWriter(LOGFILEROOT+"/"+logName+".log"));
