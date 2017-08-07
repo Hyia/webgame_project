@@ -36,6 +36,10 @@ public class ModelBuilding {
 		RoomNumber = roomNumber;
 	}
 	
+	public ModelBuilding() {
+		
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof ModelBuilding){

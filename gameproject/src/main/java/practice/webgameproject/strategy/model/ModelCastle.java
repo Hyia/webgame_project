@@ -1,6 +1,8 @@
 package practice.webgameproject.strategy.model;
 
 public class ModelCastle {
+
+
 	private String	UserID 		 ;//VARCHAR(20)
 	private String	Name 		 ;//VARCHAR(20)
 	private Integer	Kind 		 ;//INT(11) 
@@ -51,6 +53,14 @@ public class ModelCastle {
 		LocationID = locationID;
 		Production = production;
 	}
+	
+	
+	@Override
+	public String toString() {
+		return "ModelCastle [UserID=" + UserID + ", Name=" + Name + ", Kind=" + Kind + ", LocationID=" + LocationID
+				+ ", Production=" + Production + "]";
+	}
+	
 	
 	@Override
 	public boolean equals(Object obj) {
