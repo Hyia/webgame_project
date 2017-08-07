@@ -192,7 +192,7 @@ public class Engine {
 	 * @return IServices.SUCCESS or error code
 	 */
 	public int buildStucture(ModelCastle targetCastle,int kind,int roomNumber){
-		return buildStucture(targetCastle.getLocationID(), kind, roomNumber);
+		return buildStucture(targetCastle.getUserID(), targetCastle.getLocationID(), kind, roomNumber);
 	}
 	/**
 	 * 새 건물 건설용 메서드.
@@ -201,10 +201,37 @@ public class Engine {
 	 * @param roomNumber
 	 * @return IServices.SUCCESS or error code
 	 */
-	public int buildStucture(int locationID,int kind,int roomNumber){
-		ModelBuilding building = new ModelBuilding(locationID,kind,BASIC_BUILDING_LEVEL,roomNumber);
-		int result = service.insertBuilding(building);
-		return result;
+	public int buildStucture(String owner, int locationID,int kind,int roomNumber){
+		ModelMembers who = new ModelMembers(owner, null, null, null);
+		who = service.getMember(who);
+		int stocked_resource = who.getSaveProduction();
+		ModelBuilding target = service.getBuilding(locationID,roomNumber);//
+		target.setKind(kind);
+		target.setLevel(0);
+		ModelStructures structure = service.getSturcture(kind);
+		
+		int require_resource = service.getUpgradeValue(target, structure.getValues().intValue());
+		if(stocked_resource >= require_resource){
+			//뭔가 건설 시행
+
+			who.setSaveProduction( stocked_resource - require_resource);
+			
+			//자원은 즉시 빠져야함
+			service.updateMemberResource(who);
+			
+			//쓰레드 시작하기
+			long buildTime = (new Date()).getTime() + structure.getTime().intValue();
+			ModelWaitList_Building queueBuilding = new ModelWaitList_Building(new Date(buildTime), locationID, structure.getKind().intValue(), roomNumber);
+			ProductThread tr = new ProductThread();
+			tr.setTarget(queueBuilding);
+			tr.setFinish_time(queueBuilding.getWaitTime().getTime());
+			tr.start();
+			threadsHolder.add(new ThreadHolder(queueBuilding.getLocationID(), tr));
+
+			return IServices.SUCCESS;
+		}
+		
+		return IServices.ERROR_INVAILD_ACCESS;
 	}
 	
 	/**
