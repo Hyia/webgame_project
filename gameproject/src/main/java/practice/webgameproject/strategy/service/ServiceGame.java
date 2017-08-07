@@ -282,224 +282,534 @@ public class ServiceGame extends DaoGame{
 	@Override
 	public ModelCastle getCastleOne(Integer locationID) {
 
-		return super.getCastleOne(locationID);
+		ModelCastle result=null;
+        
+        try {
+        	result = dao.getCastleOne(locationID);
+        } catch (Exception e) {
+            logger.error("getCastleOne " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public List<ModelHeroTable> getHeroList_InCastle(ModelCastle targetCastle) {
 
-		return super.getHeroList_InCastle(targetCastle);
+		List<ModelHeroTable> result=null;
+        
+        try {
+        	result = dao.getHeroList_InCastle(targetCastle);
+        } catch (Exception e) {
+            logger.error("getHeroList_InCastle " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public List<ModelSlot> getCastleTroop_SlotList(ModelCastle targetTroop) {
 
-		return super.getCastleTroop_SlotList(targetTroop);
+		List<ModelSlot> result=null;
+        
+        try {
+        	result = dao.getCastleTroop_SlotList(targetTroop);
+        } catch (Exception e) {
+            logger.error("getCastleTroop_SlotList " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public ModelXYval getXYval_LocationID(Integer locationID) {
 
-		return super.getXYval_LocationID(locationID);
+		ModelXYval result=null;
+        
+        try {
+        	result = dao.getXYval_LocationID(locationID);
+        } catch (Exception e) {
+            logger.error("getXYval_LocationID " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public ModelXYval getXYval_XY(ModelXYval targetXYval) {
 
-		return super.getXYval_XY(targetXYval);
+		ModelXYval result=null;
+        
+        try {
+        	result = dao.getXYval_XY(targetXYval);
+        } catch (Exception e) {
+            logger.error("getXYval_XY " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public List<ModelWaitList_Building> getWaitList_Building(ModelCastle targetWitList) {
-
-		return super.getWaitList_Building(targetWitList);
+		
+		List<ModelWaitList_Building> result= null;
+        
+        try {
+        	result = dao.getWaitList_Building(targetWitList);
+        } catch (Exception e) {
+            logger.error("getWaitList_Building " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public List<ModelWaitList_Unit> getWaitList_Unit(ModelCastle targetWitList) {
 
-		return super.getWaitList_Unit(targetWitList);
+		List<ModelWaitList_Unit> result= null;
+        
+        try {
+        	result = dao.getWaitList_Unit(targetWitList);
+        } catch (Exception e) {
+            logger.error("getWaitList_Unit " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public List<ModelBuilding> getBuilding(ModelCastle targetBuilding) {
 
-		return super.getBuilding(targetBuilding);
+		List<ModelBuilding> result= null;
+        
+        try {
+        	result = dao.getBuilding(targetBuilding);
+        } catch (Exception e) {
+            logger.error("getBuilding " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer getAllProduction(ModelCastle targetCastleProduction) {
 
-		return super.getAllProduction(targetCastleProduction);
+		Integer result= -1;
+        
+        try {
+        	result = dao.getAllProduction(targetCastleProduction);
+        } catch (Exception e) {
+            logger.error("getAllProduction " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public ModelOutResource getOutResource(Integer locationID) {
 
-		return super.getOutResource(locationID);
+		ModelOutResource result= null;
+        
+        try {
+        	result = dao.getOutResource(locationID);
+        } catch (Exception e) {
+            logger.error("getOutResource " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public Integer insertCastle(ModelCastle newCastle) {
 
-		return super.insertCastle(newCastle);
+		Integer result= -1;
+        
+        try {
+        	result = dao.insertCastle(newCastle);
+        } catch (Exception e) {
+            logger.error("insertCastle " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public Integer insertXYval(ModelXYval newXYval) {
 
-		return super.insertXYval(newXYval);
+		Integer result= -1;
+        
+        try {
+        	result = dao.insertXYval(newXYval);
+        } catch (Exception e) {
+            logger.error("insertXYval " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer insertWaitBuildingList(ModelWaitList_Building newBuildingList) {
 
-		return super.insertWaitBuildingList(newBuildingList);
+		Integer result= -1;
+        
+        try {
+        	result = dao.insertWaitBuildingList(newBuildingList);
+        } catch (Exception e) {
+            logger.error("insertWaitBuildingList " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public Integer insertWaitUnitgList(ModelWaitList_Unit newUnitList) {
 
-		return super.insertWaitUnitgList(newUnitList);
+		Integer result= -1;
+        
+        try {
+        	result = dao.insertWaitUnitgList(newUnitList);
+        } catch (Exception e) {
+            logger.error("insertWaitUnitgList " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public Integer insertCastletroop(ModelCastleTroop newCastleTroop) {
 
-		return super.insertCastletroop(newCastleTroop);
+		Integer result= -1;
+        
+        try {
+        	result = dao.insertCastletroop(newCastleTroop);
+        } catch (Exception e) {
+            logger.error("insertCastletroop " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public Integer insertSlot(ModelSlot newSlot) {
 
-		return super.insertSlot(newSlot);
+		Integer result= -1;
+        
+        try {
+        	result = dao.insertSlot(newSlot);
+        } catch (Exception e) {
+            logger.error("insertSlot " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer insertOutResource(ModelOutResource newOutResource) {
 
-		return super.insertOutResource(newOutResource);
+		Integer result= -1;
+        
+        try {
+        	result = dao.insertOutResource(newOutResource);
+        } catch (Exception e) {
+            logger.error("insertOutResource " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer mInsertWaitList_Building(List<ModelWaitList_Building> list) {
 
-		return super.mInsertWaitList_Building(list);
+		Integer result= -1;
+        
+        try {
+        	result = dao.mInsertWaitList_Building(list);
+        } catch (Exception e) {
+            logger.error("mInsertWaitList_Building " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public Integer mInsertWaitList_Unit(List<ModelWaitList_Unit> list) {
 
-		return super.mInsertWaitList_Unit(list);
+		Integer result= -1;
+        
+        try {
+        	result = dao.mInsertWaitList_Unit(list);
+        } catch (Exception e) {
+            logger.error("mInsertWaitList_Unit " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer updateCastle(ModelCastle updateCastle, ModelCastle searchCastle) {
 
-		return super.updateCastle(updateCastle, searchCastle);
+		Integer result= -1;
+        
+        try {
+        	result = dao.updateCastle(updateCastle,searchCastle);
+        } catch (Exception e) {
+            logger.error("updateCastle " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer updateBuilding(ModelBuilding updateBuilding, ModelBuilding searchBuilding) {
 
-		return super.updateBuilding(updateBuilding, searchBuilding);
+		Integer result= -1;
+        
+        try {
+        	result = dao.updateBuilding(updateBuilding,searchBuilding);
+        } catch (Exception e) {
+            logger.error("updateBuilding " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer updateOutResource(ModelOutResource updateOutResource, ModelOutResource searchOutResource) {
 
-		return super.updateOutResource(updateOutResource, searchOutResource);
+		Integer result= -1;
+        
+        try {
+        	result = dao.updateOutResource(updateOutResource,searchOutResource);
+        } catch (Exception e) {
+            logger.error("updateOutResource " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public Integer updateWaitList_Building(ModelWaitList_Building updateBudingList,
 			ModelWaitList_Building searchBudingList) {
 
-		return super.updateWaitList_Building(updateBudingList, searchBudingList);
+		Integer result= -1;
+        
+        try {
+        	result = dao.updateWaitList_Building(updateBudingList,searchBudingList);
+        } catch (Exception e) {
+            logger.error("updateWaitList_Building " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public Integer updateWaitList_Unit(ModelWaitList_Unit updateUnitList, ModelWaitList_Unit searchUnitList) {
 
-		return super.updateWaitList_Unit(updateUnitList, searchUnitList);
+		Integer result= -1;
+        
+        try {
+        	result = dao.updateWaitList_Unit(updateUnitList,searchUnitList);
+        } catch (Exception e) {
+            logger.error("updateWaitList_Unit " + e.getMessage() );
+        }
+        
+        return result;
+        
 	}
 
 	@Override
 	public Integer deleteCastleTroop(Integer locationID) {
 
-		return super.deleteCastleTroop(locationID);
+		Integer result= -1;
+        
+        try {
+        	result = dao.deleteCastleTroop(locationID);
+        } catch (Exception e) {
+            logger.error("deleteCastleTroop " + e.getMessage() );
+        }
+        
+        return result;
 	}
 	
 	@Override
 	public Integer deleteCastleBuildings(Integer locationID) {
 
-		return super.deleteCastleBuildings(locationID);
+		Integer result= -1;
+        
+        try {
+        	result = dao.deleteCastleBuildings(locationID);
+        } catch (Exception e) {
+            logger.error("deleteCastleBuildings " + e.getMessage() );
+        }
+        
+        return result;
 	}
 	
 	@Override
 	public Integer deleteOutResource(Integer locationID) {
 
-		return super.deleteOutResource(locationID);
+		Integer result= -1;
+        
+        try {
+        	result = dao.deleteOutResource(locationID);
+        } catch (Exception e) {
+            logger.error("deleteOutResource " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer deleteCastle(Integer userID) {
 
-		return super.deleteCastle(userID);
+		Integer result= -1;
+        
+        try {
+        	result = dao.deleteCastle(userID);
+        } catch (Exception e) {
+            logger.error("deleteCastle " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer deleteWaitList_Building() {
 
-		return super.deleteWaitList_Building();
+
+		Integer result= -1;
+        
+        try {
+        	result = dao.deleteWaitList_Building();
+        } catch (Exception e) {
+            logger.error("deleteWaitList_Building " + e.getMessage() );
+        }
+        
+        return result;
 	}
 	
 	@Override
 	public Integer deleteWaitList_Unit() {
 
-		return super.deleteWaitList_Unit();
+		Integer result= -1;
+        
+        try {
+        	result = dao.deleteWaitList_Unit();
+        } catch (Exception e) {
+            logger.error("deleteWaitList_Unit " + e.getMessage() );
+        }
+        
+        return result;
 	}
 	
 	@Override
 	public ModelHeroTable getHero(ModelHeroTable targetHero) {
 
-		return super.getHero(targetHero);
+		ModelHeroTable result= null;
+        
+        try {
+        	result = dao.getHero(targetHero);
+        } catch (Exception e) {
+            logger.error("getHero " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public List<ModelHeroTroop> getHeroTroop_SlotList(ModelHeroTable targetTroop) {
 
-		return super.getHeroTroop_SlotList(targetTroop);
+		List<ModelHeroTroop> result= null;
+        
+        try {
+        	result = dao.getHeroTroop_SlotList(targetTroop);
+        } catch (Exception e) {
+            logger.error("getHeroTroop_SlotList " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer insertHerotable(ModelHeroTable newHero) {
 
-		return super.insertHerotable(newHero);
+		Integer result= -1;
+        
+        try {
+        	result = dao.insertHerotable(newHero);
+        } catch (Exception e) {
+            logger.error("insertHerotable " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer insertHerotroop(ModelHeroTroop newHeroTroop) {
 
-		return super.insertHerotroop(newHeroTroop);
+		Integer result= -1;
+        
+        try {
+        	result = dao.insertHerotroop(newHeroTroop);
+        } catch (Exception e) {
+            logger.error("insertHerotroop " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer updateHero(ModelHeroTable updateHero, ModelHeroTable searchHero) {
 
-		return super.updateHero(updateHero, searchHero);
+		Integer result= -1;
+        
+        try {
+        	result = dao.updateHero(updateHero,searchHero);
+        } catch (Exception e) {
+            logger.error("updateHero " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer deleteHeroTable(Integer heroID) {
 
-		return super.deleteHeroTable(heroID);
+		Integer result= -1;
+        
+        try {
+        	result = dao.deleteHeroTable(heroID);
+        } catch (Exception e) {
+            logger.error("deleteHeroTable " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public Integer deleteHeroTroop(Integer heroID) {
 
-		return super.deleteHeroTroop(heroID);
+		Integer result= -1;
+        
+        try {
+        	result = dao.deleteHeroTroop(heroID);
+        } catch (Exception e) {
+            logger.error("deleteHeroTroop " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override

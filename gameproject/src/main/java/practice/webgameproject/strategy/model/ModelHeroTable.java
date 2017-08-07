@@ -1,6 +1,7 @@
 package practice.webgameproject.strategy.model;
 
 public class ModelHeroTable {
+	
 	public static final boolean SEX_MALE=true;
 	public static final boolean SEX_FEMALE=false;
 	
@@ -79,6 +80,10 @@ public class ModelHeroTable {
 		Sex = sex;
 	}
 	
+	public ModelHeroTable(){
+		
+	}
+	
 	public ModelHeroTable(Integer heroID, Integer sTR, Integer aGI, Integer cON, String owner, Integer lacationID,
 			Integer statuus, Integer specialty, Integer potrait, Boolean sex) {
 		HeroID = heroID;
@@ -107,6 +112,11 @@ public class ModelHeroTable {
 	}
 	
 	
-	
+	@Override
+	public String toString() {
+		return "ModelHeroTable [HeroID=" + HeroID + ", STR=" + STR + ", AGI=" + AGI + ", CON=" + CON + ", Owner="
+				+ Owner + ", LacationID=" + LacationID + ", Statuus=" + Statuus + ", Specialty=" + Specialty
+				+ ", Potrait=" + Potrait + ", Sex=" + Sex + ", HeroLevel=" + HeroLevel + ", HeroEXP=" + HeroEXP + "]";
+	}
 	
 }

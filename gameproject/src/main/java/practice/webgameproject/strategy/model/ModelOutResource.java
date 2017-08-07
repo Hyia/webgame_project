@@ -1,6 +1,7 @@
 package practice.webgameproject.strategy.model;
 
 public class ModelOutResource {
+
 	private Integer LocationID;//AUTO_INCREMENT
 	private String UserID; 
 	private Integer Production; 
@@ -27,6 +28,9 @@ public class ModelOutResource {
 	public Integer getLocationID() {
 		return LocationID;
 	}
+	public ModelOutResource() {
+
+	}
 	public ModelOutResource(String userID, Integer production, Integer kind) {
 		UserID = userID;
 		Production = production;
@@ -38,6 +42,10 @@ public class ModelOutResource {
 		Production = production;
 		Kind = kind;
 	}
-	
+	@Override
+	public String toString() {
+		return "ModelOutResource [LocationID=" + LocationID + ", UserID=" + UserID + ", Production=" + Production
+				+ ", Kind=" + Kind + "]";
+	}
 	
 }

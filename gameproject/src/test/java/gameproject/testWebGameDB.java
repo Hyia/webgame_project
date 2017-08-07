@@ -12,12 +12,17 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import practice.webgameproject.strategy.interfaces.IServices;
+import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
+import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelLog;
 import practice.webgameproject.strategy.model.ModelMembers;
+import practice.webgameproject.strategy.model.ModelOutResource;
 import practice.webgameproject.strategy.model.ModelSlot;
 import practice.webgameproject.strategy.model.ModelUnit;
 import practice.webgameproject.strategy.model.ModelUnitBuild;
+import practice.webgameproject.strategy.model.ModelWaitList_Building;
+import practice.webgameproject.strategy.model.ModelWaitList_Unit;
 import practice.webgameproject.strategy.model.ModelXYval;
 
 public class testWebGameDB {
@@ -272,73 +277,165 @@ public class testWebGameDB {
 		List<ModelCastle> result= new ArrayList<ModelCastle>();
 		result= serviceGame.getCastleList(serchCastle);
 		
-		for(int i=0;i<result.size();i++){
-			System.out.println(result.get(i));
-		}
+		//for(int i=0;i<result.size();i++){
+		//	System.out.println(result.get(i).toString());
+		//}
+		
+		assertSame(1,result.size());
 	}
 
 	@Test
 	public void testGetCastleOne() {
+		Integer locationID=1;
 		
+		ModelCastle result=serviceGame.getCastleOne(locationID);
+		
+		assertEquals("winter", result.getName());
 	}
 
 	@Test
 	public void testGetHeroList_InCastle() {
+		ModelCastle castle=new ModelCastle();
 		
+		castle.setLocationID(1);
+		
+		List<ModelHeroTable> result =new ArrayList<ModelHeroTable>();
+		
+		result=serviceGame.getHeroList_InCastle(castle);
+		
+		for(int i=0;i<result.size();i++){
+			System.out.println(result.get(i).toString());
+		}
 	}
 
 	@Test
 	public void testGetCastleTroop_SlotList() {
+		ModelCastle locationid=new ModelCastle();
 		
+		locationid.setLocationID(1);
+		
+		List<ModelSlot> result=serviceGame.getCastleTroop_SlotList(locationid);
+		
+		assertSame(3,result.size());
 	}
 
 	@Test
 	public void testGetXYval_LocationID() {
+		Integer locationid=1;
 		
+		ModelXYval result=serviceGame.getXYval_LocationID(locationid);
+		
+		assertSame(100,result.getCastleX());
+		assertSame(110,result.getCastleY());
 	}
 
 	@Test
 	public void testGetXYval_XY() {
+		ModelXYval xy=new ModelXYval();
 		
+		xy.setCastleX(100);
+		xy.setCastleY(110);
+		
+		ModelXYval result=serviceGame.getXYval_XY(xy);
+		
+		assertSame(100,result.getCastleX());
+		assertSame(110,result.getCastleY());
 	}
 
 	@Test
 	public void testGetWaitList_Building() {
+		ModelCastle locationID=new ModelCastle();
+		
+		locationID.setLocationID(1);
+		
+		List<ModelWaitList_Building> result=serviceGame.getWaitList_Building(locationID);
+		
+		assertSame(4,result.size());
 		
 	}
 
 	@Test
 	public void testGetWaitList_Unit() {
+		ModelCastle locationID=new ModelCastle();
 		
+		locationID.setLocationID(1);
+		
+		List<ModelWaitList_Unit> result=serviceGame.getWaitList_Unit(locationID);
+		
+		assertSame(3,result.size());
 	}
 
 	@Test
 	public void testGetBuilding() {
 		
+		ModelCastle locationID=new ModelCastle();
+		
+		locationID.setLocationID(1);
+		
+		List<ModelBuilding> result=serviceGame.getBuilding(locationID);
+		
+		assertSame(4,result.size());
 	}
 
 	@Test
 	public void testGetAllProduction() {
+		
+		ModelCastle UserID=new ModelCastle();
+		
+		UserID.setUserID("tester");
+		
+		Integer result=serviceGame.getAllProduction(UserID);
+		Integer re=150;
+		//System.out.print(result);
+		
+		assertEquals(re, result);
 		
 	}
 
 	@Test
 	public void testGetOutResource() {
 		
+		Integer locationID=1;
+		
+		ModelOutResource result=serviceGame.getOutResource(locationID);
+		
+		//System.out.print(result.toString());
+		
+		assertEquals("tester", result.getUserID());
+		
 	}
 
 	@Test
 	public void testInsertCastle() {
+		ModelCastle newCastle=new ModelCastle();
+		
+		newCastle.setKind(1);
+		newCastle.setName("spring");
+		newCastle.setUserID("tester");
+		newCastle.setLocationID(4);
+		
+		Integer result=serviceGame.insertCastle(newCastle);
+		
+		assertSame(1,result);
 		
 	}
 
 	@Test
 	public void testInsertXYval() {
+		ModelXYval newXYval=new ModelXYval();
 		
+		newXYval.setCastleX(-11);
+		newXYval.setCastleY(-11);
+		newXYval.setKind(1);
+		
+		Integer result=serviceGame.insertXYval(newXYval);
+		
+		assertSame(1,result);
 	}
 
 	@Test
 	public void testInsertBuilding() {
+		ModelBuilding newBuilding=new ModelBuilding();
 		
 	}
 

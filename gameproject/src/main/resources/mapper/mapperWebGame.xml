@@ -15,15 +15,15 @@
     <!-- Castle Insert --><!--CHECK-->
     <insert id="insertCastle" parameterType="ModelCastle">        
         Insert into Castle
-        	(UserID, Name, Kind, LocationID,Production)
-        		values (#{UserID}, #{Name}, #{Kind}, #{LocationID},#(Production))
+        	(LocationID,UserID, Name, Kind )
+        		values (#{LocationID},#{UserID}, #{Name}, #{Kind})
     </insert>
     
     <!-- xyval Insert --><!--CHECK-->
     <insert id="insertXYval" parameterType="ModelXYval">        
         Insert into xyval
-        	(LocationID, CastleX, CastleY, Kind)
-        		values (#{LocationID}, #{CastleX}, #{CastleY}, #{Kind})
+        	(CastleX, CastleY, Kind)
+        		values (#{CastleX}, #{CastleY}, #{Kind})
     </insert>
     
     <!-- OutResource Insert --><!--CHECK-->
@@ -87,8 +87,8 @@
     <!-- Log Insert --><!--CHECK-->
     <insert id="insertLog" parameterType="ModelLog">        
         Insert into Log
-        	(AttackUserID, DefenseUserID, AttackUserUseYN,DefenseUserUseYN,WhoWins,BattleDate)
-        		values (#{AttackUserID}, #{DefenseUserID}, #{AttackUserUseYN},#{DefenseUserUseYN},#{WhoWins},#{BattleDate})
+        	(LogName, AttackUserID,DefenseUserID, AttackUserUseYN,DefenseUserUseYN,WhoWins,BattleDate)
+        		values (#{LogName},#{AttackUserID}, #{DefenseUserID}, #{AttackUserUseYN},#{DefenseUserUseYN},#{WhoWins},#{BattleDate})
     </insert>
     
     <!-- Multi Insert WaitList_Building --><!--CHECK-->

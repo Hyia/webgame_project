@@ -26,9 +26,9 @@ public class HomeController {
 
 //	@Autowired
 //	ServiceGame service;
-	ServiceGame service = new TempararyServiceGame();
+//	ServiceGame service = new TempararyServiceGame();
 	
-	Engine game = new Engine(service);
+//	Engine game = new Engine(service);
 	
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
