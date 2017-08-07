@@ -24,10 +24,12 @@ public class BattleLogMaker {
 	private Date logDate;
 	
 	//공격측 병력정보
+	String attacker_ID;
 	List<ModelHeroTable> attacker;
 	List<Army> attackerArmy;
 	
 	//방어측 병력정보
+	String defender_ID;
 	List<ModelHeroTable> defender;
 	List<Army> defenderArmy;
 	
@@ -65,6 +67,22 @@ public class BattleLogMaker {
 	
 
 
+
+	public String getAttacker_ID() {
+		return attacker_ID;
+	}
+
+	public void setAttacker_ID(String attacker_ID) {
+		this.attacker_ID = attacker_ID;
+	}
+
+	public String getDefender_ID() {
+		return defender_ID;
+	}
+
+	public void setDefender_ID(String defender_ID) {
+		this.defender_ID = defender_ID;
+	}
 
 	public List<ModelHeroTable> getAttacker() {
 		return attacker;
