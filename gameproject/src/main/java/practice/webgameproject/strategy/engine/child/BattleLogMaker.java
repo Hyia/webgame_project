@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -168,7 +169,7 @@ public class BattleLogMaker {
 	}
 
 	public void writeLog() {
-		logName = logDate.toString()+"-"+attacker_ID+"-"+defender_ID;
+		logName = new SimpleDateFormat("YYYYMMDDhhmmssSSS").format(logDate)+"-"+attacker_ID+"-"+defender_ID;
 		BufferedWriter out = null;
 	    try {
 	        out = new BufferedWriter(new FileWriter(LOGFILEROOT+"/"+logName+".log"));
