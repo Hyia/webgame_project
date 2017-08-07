@@ -79,10 +79,10 @@ public class ModelLog {
 			super();
 			
 		}
-		public ModelLog(Integer logNumber, String attackUserID, String defenseUserID, boolean attackUserUseYN,
+		public ModelLog(String logName, String attackUserID, String defenseUserID, boolean attackUserUseYN,
 				boolean defenseUserUseYN, Date battleDate) {
 			super();
-			LogNumber = logNumber;
+			LogName = logName;
 			AttackUserID = attackUserID;
 			DefenseUserID = defenseUserID;
 			AttackUserUseYN = attackUserUseYN;
