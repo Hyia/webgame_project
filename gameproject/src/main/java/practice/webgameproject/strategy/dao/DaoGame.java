@@ -119,6 +119,12 @@ public class DaoGame implements IServices{
 		
 		return session.selectOne("mapper.mysql.mapperWebGame.getUnitInformation",UnitID);
 	}
+	
+	@Override
+	public List<ModelUnit> getUnitInformationList() {
+		
+		return session.selectList("mapper.mysql.mapperWebGame.getUnitInformationList");
+	}
 
 	@Override
 	public List<ModelUnitBuild> getUnitBuild() {

@@ -173,6 +173,18 @@ public class testWebGameDB {
 		
 		assertEquals("하급", result.getName());
 	}
+	
+	@Test
+	public void testGetUnitInformationList() {
+		
+		List<ModelUnit> result= new ArrayList<ModelUnit>();
+		
+		result=serviceGame.getUnitInformationList();
+		
+		//System.out.print(result.toString());
+		
+		assertSame(3, result.size());
+	}
 
 	@Test
 	public void testGetUnitBuild() {
