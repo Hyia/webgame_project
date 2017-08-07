@@ -174,6 +174,20 @@ public class ServiceGame extends DaoGame{
         
         return result;
 	}
+	
+	@Override
+	public List<ModelUnit> getUnitInformationList() {
+
+		List<ModelUnit> result=null;
+        
+        try {
+        	result = dao.getUnitInformationList();
+        } catch (Exception e) {
+            logger.error("getUnitInformationList " + e.getMessage() );
+        }
+        
+        return result;
+	}
 
 	@Override
 	public List<ModelUnitBuild> getUnitBuild() {
@@ -226,7 +240,15 @@ public class ServiceGame extends DaoGame{
 	@Override
 	public Integer deleteXYval(Integer locationID) {
 
-		return super.deleteXYval(locationID);
+		Integer result=null;
+        
+        try {
+        	result = dao.deleteXYval(locationID);
+        } catch (Exception e) {
+            logger.error("deleteXYval " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override

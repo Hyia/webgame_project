@@ -88,6 +88,8 @@ public interface IServices {
 	//general methods - Others Information -GET
 	public ModelUnit 		 	 getUnitInformation	(Integer UnitID);
 	
+	public List<ModelUnit>		 getUnitInformationList();
+	
 	public List<ModelUnitBuild>  getUnitBuild		();
 	
 	public List<ModelStructures> getStructures		(ModelStructures targetStructures);

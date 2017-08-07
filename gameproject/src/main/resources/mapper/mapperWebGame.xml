@@ -236,6 +236,11 @@
       		  	where UnitID=#{UnitID}
     </select>
     
+    <!-- 유닛  스탯정보 리스트 가져오기 --><!--CHECK-->
+    <select id="getUnitInformationList" resultType="ModelUnit">        
+ 		SELECT * FROM unit
+    </select>
+    
     <!-- 유닛  건설정보 가져오기 --><!--CHECK-->
     <select id="getUnitBuild"  resultType="ModelUnitBuild">        
  		SELECT * FROM unitbuild
