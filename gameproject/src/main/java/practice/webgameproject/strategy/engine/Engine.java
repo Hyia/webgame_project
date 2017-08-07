@@ -16,6 +16,7 @@ import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelHeroTroop;
+import practice.webgameproject.strategy.model.ModelLog;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelOutResource;
 import practice.webgameproject.strategy.model.ModelSlot;
@@ -202,6 +203,11 @@ public class Engine {
 	 * @return IServices.SUCCESS or error code
 	 */
 	public int buildStucture(String owner, int locationID,int kind,int roomNumber){
+		if(!hasAddableConstructOrder(locationID)){
+			// TODO : 에러메세지를 세분화 할 필요가 있을듯.
+			return IServices.ERROR_INVAILD_ACCESS;
+		}
+		
 		ModelMembers who = new ModelMembers(owner, null, null, null);
 		who = service.getMember(who);
 		int stocked_resource = who.getSaveProduction();
@@ -251,7 +257,11 @@ public class Engine {
 	 * @return
 	 */
 	public int upgradeStructure(ModelMembers who, Integer locationID,int roomNumber){
-
+		if(!hasAddableConstructOrder(locationID)){
+			// TODO : 에러메세지를 세분화 할 필요가 있을듯.
+			return IServices.ERROR_INVAILD_ACCESS;
+		}
+		
 		int stocked_resource = who.getSaveProduction();
 		ModelBuilding target = service.getBuilding(locationID,roomNumber);//
 		ModelStructures structure = service.getSturcture(target.getKind());
@@ -416,6 +426,28 @@ public class Engine {
 		// TODO 에러 종류 "더 보낼 수 없는 상태"를 IServices에 추가.
 		return IServices.ERROR_UNHANDLED_EXCEPTION;
 	}
+	
+	private boolean hasAddableConstructOrder(Integer locationID){
+		int counter = 0;
+		for(int i=0; i< threadsHolder.size(); i++){
+			ThreadHolder holder =threadsHolder.get(i); 
+			if(holder.thread instanceof ProductThread){
+				if( (((ProductThread)holder.thread).target) instanceof ModelWaitList_Building){
+					ModelWaitList_Building building = (ModelWaitList_Building)(((ProductThread)holder.thread).target);
+					if(building.getLocationID().equals(locationID)){
+						counter++;
+					}
+				}
+			}
+		}
+		
+		if(counter < MAX_CONSTRUCT_PER_CASTLE){
+			return true;
+		}
+		
+		return false;
+		
+	}
 
 	/**
 	 * 해당 성에서 추가적으로 병력을 파견할 수 있는지를 리턴.
@@ -544,6 +576,7 @@ public class Engine {
 		logMaker.setAttacker(attacker);
 		//전투 직전 공격자 영웅들 휘하병력 상태를 저장.
 		logMaker.setAttackerArmy(attackerArms);
+		logMaker.setAttacker_ID(attacker.get(0).getOwner());
 		
 		//방어자측 정보+보정
 		logMaker.setDefender(null);
@@ -570,6 +603,7 @@ public class Engine {
 				//영웅 있는 병력
 				//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장				
 				ModelHeroTable hero = service.getHero(new ModelHeroTable(HeroID, null, null, null, null, null, null, null, null, null));
+				logMaker.setDefender_ID(hero.getOwner());
 				for(int j=0; j< units.size(); j++){
 					ModelUnit unit = units.get(j);
 					int amount = unitAmounts.get(j);
@@ -744,7 +778,8 @@ public class Engine {
 		//로그파일 쓰기
 		logMaker.writeLog();
 		// TODO 2.로그정보를 DB에 넣기
-//		service.inser
+		ModelLog logger = new ModelLog(null, logMaker.getAttacker_ID(), logMaker.getDefender_ID(), false, false, logMaker.getLogDate());
+		service.insertLog(logger);
 		
 		
 		
@@ -988,6 +1023,7 @@ public class Engine {
 					if(slot.getSlotUID().intValue() == ((ModelWaitList_Unit) target).getUnitID().intValue()){
 						//수량 증가시키고 나감
 						slot.setSlotAmount(slot.getSlotAmount() + ((ModelWaitList_Unit) target).getAmount());
+						service.updateSlot(slot, slot);
 						isAdded = true;
 						break;
 					}
