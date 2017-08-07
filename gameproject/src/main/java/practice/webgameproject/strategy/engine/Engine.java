@@ -778,7 +778,7 @@ public class Engine {
 		//로그파일 쓰기
 		logMaker.writeLog();
 		// TODO 2.로그정보를 DB에 넣기
-		ModelLog logger = new ModelLog(null, logMaker.getAttacker_ID(), logMaker.getDefender_ID(), false, false, logMaker.getLogDate());
+		ModelLog logger = new ModelLog(logMaker.getLogName(), logMaker.getAttacker_ID(), logMaker.getDefender_ID(), false, false, logMaker.getLogDate());
 		service.insertLog(logger);
 		
 		
