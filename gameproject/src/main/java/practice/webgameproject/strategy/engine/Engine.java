@@ -36,8 +36,12 @@ public class Engine {
 
 	private static final int MAX_MARCH_PER_CASTLE = 3;// 한 성에서 최대로 전투보낼 수 있는 영웅 수
 	private static final int MAX_CONSTRUCT_PER_CASTLE = 3;// 한 성에서 최대로 건설할 수 있는 수
+	private static final int MAXHEROS_FOR_TAVERN = 3;//여관 최대 영웅수.
 	private static final int MAX_SLOT_PER_HERO = 3;// 한 영웅이 최대로 들 수 있는 영웅 수
+	
 	private static final double SPECIALTY_BONUS = 1.2;// 특기병 능력치 보너스
+	
+	private int numberOfUnitKind;
 
 	private List<ThreadHolder> threadsHolder;
 	private List<List<ModelUnit>> unitTierList;
@@ -75,7 +79,10 @@ public class Engine {
 		//유닛 티어분류
 		// TODO : 유닛이 많아지면 티어를 기억하는 테이블이 하나 더 필요하겠다. 그리고 자동화할것...손코딩 말고...
 		unitTierList = new ArrayList<List<ModelUnit>>();
+		List<ModelUnit> units = service.getUnitInformationList();
+		numberOfUnitKind = units.size();
 
+		// TODO : 유닛을 티어별로 자동정리하려면 유닛 테이블에 티어를 입력해줘야하지 않을까
 		List<ModelUnit> tier1Units = new ArrayList<ModelUnit>();
 		tier1Units.add(service.getUnitInformation(IServices.UNIT_TYPE_LV1));
 		unitTierList.add(tier1Units);
@@ -87,6 +94,7 @@ public class Engine {
 		List<ModelUnit> tier3Units = new ArrayList<ModelUnit>();
 		tier3Units.add(service.getUnitInformation(IServices.UNIT_TYPE_LV3));
 		unitTierList.add(tier3Units);
+		
 	}
 	
 	/**
@@ -683,6 +691,62 @@ public class Engine {
 		return logMaker.getLogName();
 	}
 	
+	public List<ModelHeroTable> makeHero(){
+		List<ModelHeroTable> heros = new ArrayList<ModelHeroTable>();
+
+		for(int i=0; i< MAXHEROS_FOR_TAVERN ; i++){
+			
+		Integer str = (int)(Math.random()*10)+1;
+		Integer agi = (int)(Math.random()*10)+1;
+		Integer con = 10 - (str + agi);
+		Integer specialty = (int)(Math.random()*(numberOfUnitKind-1))+1;
+		Integer potrait = null;//TODO 준비된 랜덤포트릿을 집어넣는다.
+		boolean sex = (int)(Math.random()*1)==0?true:false;
+		
+		ModelHeroTable hero = new ModelHeroTable(null, str, agi, con, null, null, null, specialty, potrait, sex);
+		heros.add(hero);
+		
+		}
+		
+		return heros;
+	}
+	
+	public int recruitHero(ModelMembers user, List<ModelHeroTable> list, int index){
+		ModelHeroTable who = null;
+		try{
+
+			who = list.get(index);
+			who.setOwner(user.getUserID());
+			service.insertHerotable(who);
+			
+			
+		}catch (ArrayIndexOutOfBoundsException e) {
+			return IServices.ERROR_INVAILD_ACCESS;
+		}
+		
+		return IServices.SUCCESS;
+	}
+	
+	public int fireHero(ModelMembers usr, Integer HeroID){
+		ModelHeroTable targetHero = new ModelHeroTable(HeroID, null, null, null, null, null, null, null, null, null);
+		targetHero = service.getHero(targetHero);
+		if(usr.getUserID().equals(targetHero.getOwner())){
+			//삭제하려고 함
+
+			List<ModelHeroTroop> slots = service.getHeroTroop_SlotList(targetHero);
+			for(int i=0; i< slots.size() ; i++){
+				service.deleteSlot(slots.get(i).getSlotID());
+			}
+			service.deleteHeroTroop(HeroID);
+			service.deleteHeroTable(HeroID);
+			
+			
+			return IServices.SUCCESS;
+		}else{
+			//지 영웅이 아닌데 삭제시도함
+			return IServices.ERROR_INVAILD_ACCESS;
+		}
+	}
 	
 	
 	//진격지 도착
@@ -758,7 +822,7 @@ public class Engine {
 				ModelUnit unit = getRandomUnitAtTier(tier);
 				int amount = (int)Math.random()*(creepLevel+1)+10;
 				army.addUnit(unit, amount);
-			}else if(creepLevel < Math.pow(creepLevelCut, creepLevelCut+2)){
+			}else{
 				// 3 단계 이하의 유닛을 랜덤하게 가져와서 level+1개만큼 뿌려주자!
 				int tier = (int)Math.random()*(3 - 1) + 1;
 				ModelUnit unit = getRandomUnitAtTier(tier);
