@@ -44,6 +44,7 @@ public class Engine {
 	private int numberOfUnitKind;
 
 	private List<ThreadHolder> threadsHolder;
+	private List<ModelUnit> units;
 	private List<List<ModelUnit>> unitTierList;
 	
 	//엔진 초기화
@@ -79,7 +80,7 @@ public class Engine {
 		//유닛 티어분류
 		// TODO : 유닛이 많아지면 티어를 기억하는 테이블이 하나 더 필요하겠다. 그리고 자동화할것...손코딩 말고...
 		unitTierList = new ArrayList<List<ModelUnit>>();
-		List<ModelUnit> units = service.getUnitInformationList();
+		units = service.getUnitInformationList();
 		numberOfUnitKind = units.size();
 
 		// TODO : 유닛을 티어별로 자동정리하려면 유닛 테이블에 티어를 입력해줘야하지 않을까
@@ -95,6 +96,31 @@ public class Engine {
 		tier3Units.add(service.getUnitInformation(IServices.UNIT_TYPE_LV3));
 		unitTierList.add(tier3Units);
 		
+	}
+	
+	public boolean shutDown(){
+		
+		//기존 큐 테이블 제거, 생성 
+		service.deleteWaitList_Building();
+		service.deleteWaitList_Unit();
+		
+
+		//큐 테이블 재작성
+		List<ModelWaitList_Building> buildQueue = new ArrayList<ModelWaitList_Building>();
+		List<ModelWaitList_Unit> unitQueue = new ArrayList<ModelWaitList_Unit>();
+		for( int i=0; i < threadsHolder.size() ; i++){
+			Thread tr = threadsHolder.get(i).thread;
+			if(((ProductThread)tr).target instanceof ModelWaitList_Building){
+				buildQueue.add((ModelWaitList_Building)(((ProductThread)tr).getTarget()));
+			}else{
+				unitQueue.add((ModelWaitList_Unit)(((ProductThread)tr).getTarget()));
+			}
+		}
+		
+		service.mInsertWaitList_Building(buildQueue);
+		service.mInsertWaitList_Unit(unitQueue);
+		
+		return true;
 	}
 	
 	/**
@@ -292,6 +318,15 @@ public class Engine {
 			return IServices.ERROR_INVAILD_ACCESS;
 		}
 	}
+	private ModelUnit getUnit(int unitID){
+		ModelUnit unit = new ModelUnit(unitID, null, null, null, null);
+		int index = units.indexOf(unit);
+		if(index != -1){
+			return units.get(index);
+		}
+		System.out.println("INVALID UNIT INDEX");
+		return null;
+	}
 	
 	//전투이동 명령
 	public int goBattle(ModelHeroTable hero, ModelXYval targetLocation){
@@ -322,8 +357,7 @@ public class Engine {
 		//보정 들어간 단순합
 		for(int i=0; i<herosUnits.size();i++){
 			// TODO : 나중에 이거 간소화좀 시켜봐
-			// FIXME: 루프 안에서 DB를 참조하면 너무 느리지 않을까
-			ModelUnit unit = service.getUnitInformation(service.getSlot(herosUnits.get(i).getSlotID()).getSlotUID());
+			ModelUnit unit = getUnit(service.getSlot(herosUnits.get(i).getSlotID()).getSlotUID());
 			int unitSPD = unit.getSPD().intValue();
 			speed_sum += correction(unitSPD, hero.getAGI(), (hero.getSpecialty().intValue() == unit.getUnitID().intValue()));
 		}
@@ -878,6 +912,10 @@ public class Engine {
 		
 		public void setTarget(Object target){
 			this.target = target;
+		}
+		
+		public Object getTarget() {
+			return target;
 		}
 		
 		@Override
