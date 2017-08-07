@@ -179,6 +179,10 @@ public interface IServices {
 	
 	public Integer		deleteCastle				(Integer userID);
 	
+	public Integer		deleteWaitList_Building		();
+	
+	public Integer		deleteWaitList_Unit			();
+	
 	
 	
 	

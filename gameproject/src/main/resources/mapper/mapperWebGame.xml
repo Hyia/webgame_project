@@ -66,8 +66,8 @@
     <!-- Herotable Insert --><!--CHECK-->
     <insert id="insertHerotable" parameterType="ModelHeroTable">        
         Insert into Herotable
-        	(HeroID, STR, AGI, CON, Owner, LocationID,Statuus, Specialty, Potrait, Sex)
-        		values (#{HeroID}, #{STR}, #{AGI}, #{CON}, #{Owner}, #{LocationID}, #{Statuus}, #{Specialty}, #{Potrait}, #{Sex} )
+        	(STR, AGI, CON, Owner, LocationID,Statuus, Specialty, Potrait, Sex)
+        		values (#{STR}, #{AGI}, #{CON}, #{Owner}, #{LocationID}, #{Statuus}, #{Specialty}, #{Potrait}, #{Sex} )
     </insert>
     
     <!-- Herotroop Insert --><!--CHECK-->
@@ -519,10 +519,26 @@
     			where UserID=#{UserID} and UserPW=#{UserPW} 
     </delete>
     
+    <!-- DELETE  WaitList_Building --><!--CHECK-->
+    <delete id="deleteWaitList_Building">
+    	delete from
+    		WaitList_Building
+    			where 1=1 
+    </delete>
+    
+        <!-- DELETE  WaitList_Unit --><!--CHECK-->
+    <delete id="deleteWaitList_Unit">
+    	delete from
+    		WaitList_Unit
+    			where 1=1 
+    </delete>
+    
+    
+    
     <!-- ========================== Delete Mappers ============================== -->
     
     <!-- ========================== Create&Drop Mappers ============================== -->
-
+	
     <!-- ========================== Create&Drop Mappers ============================== -->
     
         

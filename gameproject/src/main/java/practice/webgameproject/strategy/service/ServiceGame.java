@@ -254,13 +254,29 @@ public class ServiceGame extends DaoGame{
 	@Override
 	public Integer deleteSlot(Integer slotID) {
 
-		return super.deleteSlot(slotID);
+		Integer result=null;
+        
+        try {
+        	result = dao.deleteSlot(slotID);
+        } catch (Exception e) {
+            logger.error("deleteSlot " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
 	public List<ModelCastle> getCastleList(ModelMembers targetUser) {
 
-		return super.getCastleList(targetUser);
+		List<ModelCastle> result=null;
+        
+        try {
+        	result = dao.getCastleList(targetUser);
+        } catch (Exception e) {
+            logger.error("getCastleList " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
@@ -413,7 +429,7 @@ public class ServiceGame extends DaoGame{
 
 		return super.deleteCastleTroop(locationID);
 	}
-
+	
 	@Override
 	public Integer deleteCastleBuildings(Integer locationID) {
 
@@ -432,6 +448,18 @@ public class ServiceGame extends DaoGame{
 		return super.deleteCastle(userID);
 	}
 
+	@Override
+	public Integer deleteWaitList_Building() {
+
+		return super.deleteWaitList_Building();
+	}
+	
+	@Override
+	public Integer deleteWaitList_Unit() {
+
+		return super.deleteWaitList_Unit();
+	}
+	
 	@Override
 	public ModelHeroTable getHero(ModelHeroTable targetHero) {
 

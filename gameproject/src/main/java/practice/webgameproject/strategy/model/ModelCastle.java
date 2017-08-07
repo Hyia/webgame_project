@@ -39,6 +39,10 @@ public class ModelCastle {
 		LocationID = locationID;
 	}
 	
+	public ModelCastle() {
+		
+	}	
+	
 	public ModelCastle(String userID, String name, Integer kind, Integer locationID, Integer production) {
 		super();
 		UserID = userID;

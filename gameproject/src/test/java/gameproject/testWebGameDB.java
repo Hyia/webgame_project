@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import practice.webgameproject.strategy.interfaces.IServices;
+import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelLog;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelSlot;
@@ -247,17 +248,29 @@ public class testWebGameDB {
 
 	@Test
 	public void testDeleteXYval() {
+		Integer locationID=3;
 		
+		Integer result=serviceGame.deleteXYval(locationID);
+		
+		assertSame(1,result);
 	}
 
 	@Test
 	public void testDeleteSlot() {
+		Integer slotID=20;
 		
+		Integer result=serviceGame.deleteSlot(slotID);
+		
+		assertSame(1,result);
 	}
 
 	@Test
 	public void testGetCastleList() {
+		ModelMembers serchCastle= new ModelMembers();
 		
+		serchCastle.setUserID("tester");
+		List<ModelCastle> result= new ArrayList<ModelCastle>();
+		result= serviceGame.getCastleList(serchCastle);
 	}
 
 	@Test

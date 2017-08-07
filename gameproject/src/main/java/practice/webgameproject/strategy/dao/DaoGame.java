@@ -399,6 +399,18 @@ public class DaoGame implements IServices{
 		
 		return session.insert("mapper.mysql.mapperWebGame.deleteCastle",userID);
 	}
+	
+	@Override
+	public Integer deleteWaitList_Building() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Integer deleteWaitList_Unit() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	
 	
@@ -457,6 +469,8 @@ public class DaoGame implements IServices{
 		
 		return session.insert("mapper.mysql.mapperWebGame.deleteHeroTroop",heroID);
 	}
+
+	
 
 		
 }

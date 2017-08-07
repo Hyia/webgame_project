@@ -1,12 +1,7 @@
 package practice.webgameproject.strategy.model;
 
 public class ModelMembers {
-	public Integer getUserEXP() {
-		return UserEXP;
-	}
-	public void setUserEXP(Integer userEXP) {
-		UserEXP = userEXP;
-	}
+
 
 	private static final int STARTING_USER_RESOURCE_AMOUNT = 0;// 신규유저 시작자원량
 
@@ -17,6 +12,8 @@ public class ModelMembers {
 	private	Integer UserLevel		;	//`	INT(11)
 	private	Integer SaveProduction	;	//` DECIMAL(11,0)
 	private	Integer UserEXP			;	//`	INT(11)
+	
+	
 	
 	public String getUserID() {
 		return UserID;
@@ -53,6 +50,12 @@ public class ModelMembers {
 	}
 	public void setSaveProduction(Integer saveProduction) {
 		SaveProduction = saveProduction;
+	}
+	public Integer getUserEXP() {
+		return UserEXP;
+	}
+	public void setUserEXP(Integer userEXP) {
+		UserEXP = userEXP;
 	}
 	
 	public ModelMembers(String userID, String userPW, String userNicName, String userEmail) {
