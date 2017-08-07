@@ -11,6 +11,7 @@ import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelHeroTroop;
+import practice.webgameproject.strategy.model.ModelLog;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelOutResource;
 import practice.webgameproject.strategy.model.ModelSlot;
@@ -308,5 +309,407 @@ public class TempararyServiceGame extends ServiceGame{
 		}
 		return null;
 	}
+
+
+	@Override
+	public Integer getMembersLogin(ModelMembers targetMember) {
+		// TODO Auto-generated method stub
+		return super.getMembersLogin(targetMember);
+	}
+
+
+	@Override
+	public Integer insertMembers(ModelMembers newMember) {
+		// TODO Auto-generated method stub
+		return super.insertMembers(newMember);
+	}
+
+
+	@Override
+	public Integer insertLog(ModelLog newLog) {
+		// TODO Auto-generated method stub
+		return super.insertLog(newLog);
+	}
+
+
+	@Override
+	public Integer updateMembers_Level(ModelMembers updateMembers, ModelMembers searchMembers) {
+		// TODO Auto-generated method stub
+		return super.updateMembers_Level(updateMembers, searchMembers);
+	}
+
+
+	@Override
+	public Integer updateMembers_EXP(ModelMembers updateMembers, ModelMembers searchMembers) {
+		// TODO Auto-generated method stub
+		return super.updateMembers_EXP(updateMembers, searchMembers);
+	}
+
+
+	@Override
+	public Integer updateMembers_SaveProduction(ModelMembers updateMembers, ModelMembers searchMembers) {
+		// TODO Auto-generated method stub
+		return super.updateMembers_SaveProduction(updateMembers, searchMembers);
+	}
+
+
+	@Override
+	public Integer updateMembers_UserData(ModelMembers updateMembers, ModelMembers searchMembers) {
+		// TODO Auto-generated method stub
+		return super.updateMembers_UserData(updateMembers, searchMembers);
+	}
+
+
+	@Override
+	public Integer deleteMembers(ModelMembers members) {
+		// TODO Auto-generated method stub
+		return super.deleteMembers(members);
+	}
+
+
+	@Override
+	public ModelUnit getUnitInformation(Integer UnitID) {
+		// TODO Auto-generated method stub
+		return super.getUnitInformation(UnitID);
+	}
+
+
+	@Override
+	public List<ModelUnit> getUnitInformationList() {
+		// TODO Auto-generated method stub
+		return super.getUnitInformationList();
+	}
+
+
+	@Override
+	public List<ModelUnitBuild> getUnitBuild() {
+		// TODO Auto-generated method stub
+		return super.getUnitBuild();
+	}
+
+
+	@Override
+	public List<ModelStructures> getStructures(ModelStructures targetStructures) {
+		// TODO Auto-generated method stub
+		return super.getStructures(targetStructures);
+	}
+
+
+	@Override
+	public List<ModelXYval> getAllXYval() {
+		// TODO Auto-generated method stub
+		return super.getAllXYval();
+	}
+
+
+	@Override
+	public Integer updateSlot(ModelSlot updateSlot, ModelSlot searchSlot) {
+		// TODO Auto-generated method stub
+		return super.updateSlot(updateSlot, searchSlot);
+	}
+
+
+	@Override
+	public Integer deleteXYval(Integer locationID) {
+		// TODO Auto-generated method stub
+		return super.deleteXYval(locationID);
+	}
+
+
+	@Override
+	public Integer deleteSlot(Integer slotID) {
+		// TODO Auto-generated method stub
+		return super.deleteSlot(slotID);
+	}
+
+
+	@Override
+	public List<ModelCastle> getCastleList(ModelMembers targetUser) {
+		// TODO Auto-generated method stub
+		return super.getCastleList(targetUser);
+	}
+
+
+	@Override
+	public ModelCastle getCastleOne(Integer locationID) {
+		// TODO Auto-generated method stub
+		return super.getCastleOne(locationID);
+	}
+
+
+	@Override
+	public List<ModelHeroTable> getHeroList_InCastle(ModelCastle targetCastle) {
+		// TODO Auto-generated method stub
+		return super.getHeroList_InCastle(targetCastle);
+	}
+
+
+	@Override
+	public List<ModelSlot> getCastleTroop_SlotList(ModelCastle targetTroop) {
+		// TODO Auto-generated method stub
+		return super.getCastleTroop_SlotList(targetTroop);
+	}
+
+
+	@Override
+	public ModelXYval getXYval_LocationID(Integer locationID) {
+		// TODO Auto-generated method stub
+		return super.getXYval_LocationID(locationID);
+	}
+
+
+	@Override
+	public ModelXYval getXYval_XY(ModelXYval targetXYval) {
+		// TODO Auto-generated method stub
+		return super.getXYval_XY(targetXYval);
+	}
+
+
+	@Override
+	public List<ModelWaitList_Building> getWaitList_Building(ModelCastle targetWitList) {
+		// TODO Auto-generated method stub
+		return super.getWaitList_Building(targetWitList);
+	}
+
+
+	@Override
+	public List<ModelWaitList_Unit> getWaitList_Unit(ModelCastle targetWitList) {
+		// TODO Auto-generated method stub
+		return super.getWaitList_Unit(targetWitList);
+	}
+
+
+	@Override
+	public List<ModelBuilding> getBuilding(ModelCastle targetBuilding) {
+		// TODO Auto-generated method stub
+		return super.getBuilding(targetBuilding);
+	}
+
+
+	@Override
+	public Integer getAllProduction(ModelCastle targetCastleProduction) {
+		// TODO Auto-generated method stub
+		return super.getAllProduction(targetCastleProduction);
+	}
+
+
+	@Override
+	public ModelOutResource getOutResource(Integer locationID) {
+		// TODO Auto-generated method stub
+		return super.getOutResource(locationID);
+	}
+
+
+	@Override
+	public Integer insertCastle(ModelCastle newCastle) {
+		// TODO Auto-generated method stub
+		return super.insertCastle(newCastle);
+	}
+
+
+	@Override
+	public Integer insertXYval(ModelXYval newXYval) {
+		// TODO Auto-generated method stub
+		return super.insertXYval(newXYval);
+	}
+
+
+	@Override
+	public Integer insertWaitBuildingList(ModelWaitList_Building newBuildingList) {
+		// TODO Auto-generated method stub
+		return super.insertWaitBuildingList(newBuildingList);
+	}
+
+
+	@Override
+	public Integer insertWaitUnitgList(ModelWaitList_Unit newUnitList) {
+		// TODO Auto-generated method stub
+		return super.insertWaitUnitgList(newUnitList);
+	}
+
+
+	@Override
+	public Integer insertCastletroop(ModelCastleTroop newCastleTroop) {
+		// TODO Auto-generated method stub
+		return super.insertCastletroop(newCastleTroop);
+	}
+
+
+	@Override
+	public Integer insertSlot(ModelSlot newSlot) {
+		// TODO Auto-generated method stub
+		return super.insertSlot(newSlot);
+	}
+
+
+	@Override
+	public Integer insertOutResource(ModelOutResource newOutResource) {
+		// TODO Auto-generated method stub
+		return super.insertOutResource(newOutResource);
+	}
+
+
+	@Override
+	public Integer mInsertWaitList_Building(List<ModelWaitList_Building> list) {
+		// TODO Auto-generated method stub
+		return super.mInsertWaitList_Building(list);
+	}
+
+
+	@Override
+	public Integer mInsertWaitList_Unit(List<ModelWaitList_Unit> list) {
+		// TODO Auto-generated method stub
+		return super.mInsertWaitList_Unit(list);
+	}
+
+
+	@Override
+	public Integer updateCastle(ModelCastle updateCastle, ModelCastle searchCastle) {
+		// TODO Auto-generated method stub
+		return super.updateCastle(updateCastle, searchCastle);
+	}
+
+
+	@Override
+	public Integer updateBuilding(ModelBuilding updateBuilding, ModelBuilding searchBuilding) {
+		// TODO Auto-generated method stub
+		return super.updateBuilding(updateBuilding, searchBuilding);
+	}
+
+
+	@Override
+	public Integer updateOutResource(ModelOutResource updateOutResource, ModelOutResource searchOutResource) {
+		// TODO Auto-generated method stub
+		return super.updateOutResource(updateOutResource, searchOutResource);
+	}
+
+
+	@Override
+	public Integer updateWaitList_Building(ModelWaitList_Building updateBudingList,
+			ModelWaitList_Building searchBudingList) {
+		// TODO Auto-generated method stub
+		return super.updateWaitList_Building(updateBudingList, searchBudingList);
+	}
+
+
+	@Override
+	public Integer updateWaitList_Unit(ModelWaitList_Unit updateUnitList, ModelWaitList_Unit searchUnitList) {
+		// TODO Auto-generated method stub
+		return super.updateWaitList_Unit(updateUnitList, searchUnitList);
+	}
+
+
+	@Override
+	public Integer deleteCastleTroop(Integer locationID) {
+		// TODO Auto-generated method stub
+		return super.deleteCastleTroop(locationID);
+	}
+
+
+	@Override
+	public Integer deleteCastleBuildings(Integer locationID) {
+		// TODO Auto-generated method stub
+		return super.deleteCastleBuildings(locationID);
+	}
+
+
+	@Override
+	public Integer deleteOutResource(Integer locationID) {
+		// TODO Auto-generated method stub
+		return super.deleteOutResource(locationID);
+	}
+
+
+	@Override
+	public Integer deleteCastle(Integer userID) {
+		// TODO Auto-generated method stub
+		return super.deleteCastle(userID);
+	}
+
+
+	@Override
+	public Integer deleteWaitList_Building() {
+		// TODO Auto-generated method stub
+		return super.deleteWaitList_Building();
+	}
+
+
+	@Override
+	public Integer deleteWaitList_Unit() {
+		// TODO Auto-generated method stub
+		return super.deleteWaitList_Unit();
+	}
+
+
+	@Override
+	public ModelHeroTable getHero(ModelHeroTable targetHero) {
+		// TODO Auto-generated method stub
+		return super.getHero(targetHero);
+	}
+
+
+	@Override
+	public List<ModelHeroTroop> getHeroTroop_SlotList(ModelHeroTable targetTroop) {
+		// TODO Auto-generated method stub
+		return super.getHeroTroop_SlotList(targetTroop);
+	}
+
+
+	@Override
+	public Integer insertHerotable(ModelHeroTable newHero) {
+		// TODO Auto-generated method stub
+		return super.insertHerotable(newHero);
+	}
+
+
+	@Override
+	public Integer insertHerotroop(ModelHeroTroop newHeroTroop) {
+		// TODO Auto-generated method stub
+		return super.insertHerotroop(newHeroTroop);
+	}
+
+
+	@Override
+	public Integer updateHero(ModelHeroTable updateHero, ModelHeroTable searchHero) {
+		// TODO Auto-generated method stub
+		return super.updateHero(updateHero, searchHero);
+	}
+
+
+	@Override
+	public Integer deleteHeroTable(Integer heroID) {
+		// TODO Auto-generated method stub
+		return super.deleteHeroTable(heroID);
+	}
+
+
+	@Override
+	public Integer deleteHeroTroop(Integer heroID) {
+		// TODO Auto-generated method stub
+		return super.deleteHeroTroop(heroID);
+	}
+
+
+	@Override
+	public String getErrorMsg(int errorCode) {
+		// TODO Auto-generated method stub
+		return super.getErrorMsg(errorCode);
+	}
+
+
+	@Override
+	public int getUpgradeValue(Object target, int baseValue) {
+		// TODO Auto-generated method stub
+		return super.getUpgradeValue(target, baseValue);
+	}
+
+
+	@Override
+	public List<ModelSlot> getLocalArmySlotList(Integer targetLocationID) {
+		// TODO Auto-generated method stub
+		return super.getLocalArmySlotList(targetLocationID);
+	}
+	
+	
 
 }

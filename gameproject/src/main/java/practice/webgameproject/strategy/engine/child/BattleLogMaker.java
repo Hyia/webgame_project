@@ -184,6 +184,8 @@ public class BattleLogMaker {
 			this.attackerArmy = attackerArmy;
 			this.defenderArmy = defenderArmy;
 		}
+		
+		public Round(){};
 		public int getRound() {
 			return round;
 		}

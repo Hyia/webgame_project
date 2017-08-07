@@ -798,6 +798,8 @@ public class Engine {
 			}else if(isAliance(target.getOwner(), targetCastle.getUserID())){
 				//동맹 성으로 보낸 경우
 				//(동맹 미구현)
+				target.setStatuus(targetLocationID);
+				
 			}else{
 				//적 성. 전투개시
 				fight(target, targetLocationID);
