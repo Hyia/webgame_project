@@ -280,9 +280,9 @@ public class DaoGame implements IServices{
 	}
 
 	@Override
-	public Integer insertWaitUnitgList(ModelWaitList_Unit newUnitList) {
+	public Integer insertWaitUnitList(ModelWaitList_Unit newUnitList) {
 		
-		return session.insert("mapper.mysql.mapperWebGame.insertWaitUnitgList",newUnitList);
+		return session.insert("mapper.mysql.mapperWebGame.insertWaitUnitList",newUnitList);
 	}
 
 	@Override

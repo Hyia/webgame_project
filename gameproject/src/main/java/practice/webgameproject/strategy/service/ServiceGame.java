@@ -469,12 +469,12 @@ public class ServiceGame extends DaoGame{
 	}
 
 	@Override
-	public Integer insertWaitUnitgList(ModelWaitList_Unit newUnitList) {
+	public Integer insertWaitUnitList(ModelWaitList_Unit newUnitList) {
 
 		Integer result= -1;
         
         try {
-        	result = dao.insertWaitUnitgList(newUnitList);
+        	result = dao.insertWaitUnitList(newUnitList);
         } catch (Exception e) {
             logger.error("insertWaitUnitgList " + e.getMessage() );
         }
@@ -899,7 +899,15 @@ public class ServiceGame extends DaoGame{
 	//건물을 추가함
 	public Integer insertBuilding(ModelBuilding building) {
 
-		return ERROR_NOT_MAKE_YET;
+		int result = -1;
+		try{
+			result = dao.insertBuilding(building);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return result;
+		
 	}
 
 	//특정누군가의 어디에 있는 건물정보를 가져옴

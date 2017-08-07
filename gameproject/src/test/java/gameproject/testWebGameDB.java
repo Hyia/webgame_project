@@ -2,6 +2,7 @@ package gameproject;
 
 import static org.junit.Assert.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -437,16 +438,47 @@ public class testWebGameDB {
 	public void testInsertBuilding() {
 		ModelBuilding newBuilding=new ModelBuilding();
 		
+		newBuilding.setKind(4);
+		newBuilding.setLevel(1);
+		newBuilding.setLocationID(2);
+		newBuilding.setRoomNumber(2);
+		
+		Integer result=serviceGame.insertBuilding(newBuilding);
+		
+		assertSame(1,result);
 	}
 
 	@Test
 	public void testInsertWaitBuildingList() {
+		ModelWaitList_Building newWB=new ModelWaitList_Building();
+		Date dt = new Date();
+
+	
+		newWB.setKind(1);
+		newWB.setLocationID(1);
+		newWB.setRoomNumber(5);
+		newWB.setWaitTime(dt);
 		
+		Integer result=serviceGame.insertWaitBuildingList(newWB);
+		
+		assertSame(1,result);
 	}
 
 	@Test
-	public void testInsertWaitUnitgList() {
+	public void testInsertWaitUnitList() {
+		ModelWaitList_Unit newWU=new ModelWaitList_Unit();
+		Date dt = new Date();
+
+	
+		newWU.setAmount(10);
+		newWU.setUnitID(1);
+		newWU.setLocationID(1);
+		newWU.setRoomNumber(5);
+		newWU.setWaitTime(dt);
 		
+		Integer result=serviceGame.insertWaitUnitList(newWU);
+		
+		assertSame(1,result);
 	}
 
 	@Test

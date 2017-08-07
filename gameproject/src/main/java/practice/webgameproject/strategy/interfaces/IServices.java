@@ -145,7 +145,7 @@ public interface IServices {
 	
 	public Integer		insertWaitBuildingList		(ModelWaitList_Building newBuildingList);
 	
-	public Integer 		insertWaitUnitgList			(ModelWaitList_Unit newUnitList);
+	public Integer 		insertWaitUnitList			(ModelWaitList_Unit newUnitList);
 	
 	public Integer 		insertCastletroop			(ModelCastleTroop newCastleTroop);
 		

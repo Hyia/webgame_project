@@ -45,15 +45,15 @@
  			Insert into 
  				WaitList_Building
  					(WaitTime,LocationID,Kind,RoomNumber)
- 						values (#(WaitTime),#(LocationID),#(Kind),#(RoomNumber))
+ 						values (#{WaitTime},#{LocationID},#{Kind},#{RoomNumber})
     </insert>
     
     <!-- 성의 건설중인 유닛리스트  목록 추가 --><!--CHECK-->
-    <insert id="insertWaitUnitgList" parameterType="ModelWaitList_Unit">      
+    <insert id="insertWaitUnitList" parameterType="ModelWaitList_Unit">
  			Insert into 
  				WaitList_Unit
- 					(WaitTime,LocationID,UnitID,Amount)
- 						values (#(WaitTime),#(LocationID),#(UnitID),#(Amount))
+ 					(WaitTime,LocationID,UnitID,Amount,RoomNumber)
+ 						values (#{WaitTime},#{LocationID},#{UnitID},#{Amount},#{RoomNumber})
     </insert>
     
     <!-- Castletroop Insert --><!--CHECK-->
