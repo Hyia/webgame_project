@@ -86,15 +86,21 @@ public interface IServices {
 	
 	
 	//general methods - Others Information -GET
-	public ModelUnit 		 	 getUnitInformation	(Integer UnitID);
+	public ModelUnit 		 	 getUnitInformation		(Integer UnitID);
 	
-	public List<ModelUnit>		 getUnitInformationList();
+	public List<ModelUnit>		 getUnitInformationList	();
 	
-	public List<ModelUnitBuild>  getUnitBuild		();
+	public List<ModelUnitBuild>  getUnitBuild			();
 	
-	public List<ModelStructures> getStructures		(ModelStructures targetStructures);
+	public List<ModelStructures> getStructures			();
 	
-	public List<ModelXYval>		 getAllXYval		();
+	public List<ModelXYval>		 getAllXYval			();
+	
+	public List<ModelLog>		 getLog_ATK_DF_All		(String userID);
+	
+	public List<ModelLog>		 getLog_ATK				(String userID);
+	
+	public List<ModelLog>		 getLog_DF				(String userID);
 	
 	
 	

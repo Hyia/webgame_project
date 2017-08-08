@@ -15,6 +15,11 @@ public class ModelCastleTroop {
 	public void setSlotID(Integer slotID) {
 		SlotID = slotID;
 	}
+	
+	public ModelCastleTroop() {
+		super();
+	}
+	
 	public ModelCastleTroop(Integer locationID, Integer slotID) {
 		super();
 		LocationID = locationID;

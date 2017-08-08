@@ -133,9 +133,9 @@ public class DaoGame implements IServices{
 	}
 
 	@Override
-	public List<ModelStructures> getStructures(ModelStructures targetStructures) {
+	public List<ModelStructures> getStructures() {
 		
-		return session.selectList("mapper.mysql.mapperWebGame.getStructures",targetStructures);
+		return session.selectList("mapper.mysql.mapperWebGame.getStructures");
 	}
 
 	@Override
@@ -144,6 +144,23 @@ public class DaoGame implements IServices{
 		return session.selectList("mapper.mysql.mapperWebGame.getAllXYval");
 	}
 
+	@Override
+	public List<ModelLog> getLog_ATK_DF_All(String userID) {
+		
+		return session.selectList("mapper.mysql.mapperWebGame.getLog_ATK_DF_All",userID);
+	}
+
+	@Override
+	public List<ModelLog> getLog_ATK(String userID) {
+
+		return session.selectList("mapper.mysql.mapperWebGame.getLog_ATK",userID);
+	}
+
+	@Override
+	public List<ModelLog> getLog_DF(String userID) {
+
+		return session.selectList("mapper.mysql.mapperWebGame.getLog_DF",userID);
+	}
 	
 	
 	// Methods Others - INSERT
@@ -469,8 +486,6 @@ public class DaoGame implements IServices{
 		
 		return session.insert("mapper.mysql.mapperWebGame.deleteHeroTroop",heroID);
 	}
-
-	
 
 		
 }

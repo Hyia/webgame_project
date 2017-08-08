@@ -15,6 +15,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
+import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelLog;
 import practice.webgameproject.strategy.model.ModelMembers;
@@ -483,22 +484,49 @@ public class testWebGameDB {
 
 	@Test
 	public void testInsertCastletroop() {
+		ModelCastleTroop newCastleTroop=new ModelCastleTroop();
+		
+		newCastleTroop.setLocationID(2);
+		newCastleTroop.setSlotID(20);
+		
+		Integer result=serviceGame.insertCastletroop(newCastleTroop);
+		
+		assertSame(1,result);
 		
 	}
 
 	@Test
 	public void testInsertSlot() {
+		ModelSlot newslot=new ModelSlot();
 		
+		newslot.setSlotAmount(0);
+		
+		Integer result=serviceGame.insertSlot(newslot);
+		
+		assertSame(1,result);
 	}
 
 	@Test
 	public void testInsertOutResource() {
+		ModelOutResource newOutResource=new ModelOutResource();
 		
+		newOutResource.setKind(1);
+		newOutResource.setProduction(150);
+		newOutResource.setUserID("tester1");
+		newOutResource.setLocationID(5);
+		
+		Integer result=serviceGame.insertOutResource(newOutResource);
+		
+		assertSame(1,result);
 	}
 
 	@Test
 	public void testMInsertWaitList_Building() {
+		List<ModelWaitList_Building> list=new ArrayList<ModelWaitList_Building>();
+		Date dt=new Date();
 		
+		
+		Integer result=serviceGame.mInsertWaitList_Building(list)
 	}
 
 	@Test
