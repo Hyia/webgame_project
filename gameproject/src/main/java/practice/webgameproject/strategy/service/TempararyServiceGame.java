@@ -522,13 +522,6 @@ public class TempararyServiceGame extends ServiceGame{
 
 
 	@Override
-	public Integer insertWaitUnitgList(ModelWaitList_Unit newUnitList) {
-		// TODO Auto-generated method stub
-		return super.insertWaitUnitgList(newUnitList);
-	}
-
-
-	@Override
 	public Integer insertCastletroop(ModelCastleTroop newCastleTroop) {
 		// TODO Auto-generated method stub
 		return super.insertCastletroop(newCastleTroop);

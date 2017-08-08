@@ -43,6 +43,7 @@ public class Engine {
 	private static final int MAX_CONSTRUCT_PER_CASTLE = 3;// 한 성에서 최대로 건설할 수 있는 수
 	private static final int MAXHEROS_FOR_TAVERN = 3;//여관 최대 영웅수.
 	private static final int MAX_SLOT_PER_HERO = 3;// 한 영웅이 최대로 들 수 있는 영웅 수
+	private static final int UNITS_PER_RACE = 3;//한 종족이 갖고있는 유닛종류
 	
 	private static final double SPECIALTY_BONUS = 1.2;// 특기병 능력치 보너스
 	
@@ -783,6 +784,7 @@ public class Engine {
 		logMaker.writeLog();
 		// TODO 2.로그정보를 DB에 넣기
 		ModelLog logger = new ModelLog(logMaker.getLogName(), logMaker.getAttacker_ID(), logMaker.getDefender_ID(), false, false, logMaker.getLogDate());
+
 		service.insertLog(logger);
 		// TODO 전투로 변경된 병력상황을 DB에 반영
 		
@@ -792,27 +794,11 @@ public class Engine {
 		return logMaker.getLogName();
 	}
 	
-	public String getLogFile(String logName){
-		String logText = "";
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new FileReader(BattleLogMaker.getLogfileRoot()+"/"+logName+".log"));
-			
-			while(true){
-				String line = br.readLine();
-				if(line ==null){
-					break;
-				}
-				
-				logText.concat("\r\n"+line);
-			}
-			
-			br.close();
-		} catch (IOException e) {
-			// Do nothing
-		}
-		
-		return "";
+	public String getLogFile(String logName,String attackerID, String defenderID){
+		return BattleLogMaker.getLogFile(logName,attackerID,defenderID);
+	}
+	public String getLogFile(String fullLogName){
+		return BattleLogMaker.getLogFile(fullLogName);
 	}
 	
 	//선술집용
@@ -873,6 +859,48 @@ public class Engine {
 		}
 	}
 	
+	/**
+	 * 그 유저가 포함된 로그정보를 가져옴.
+	 * @param user 로그인한 해당유저
+	 * @return
+	 */
+	public List<ModelLog> getUserLogs(String user){
+		List<ModelLog> myLoglist = null;//service.getModelLog();
+		
+		
+		
+		//TODO 만들어
+		
+		return myLoglist;
+	}
+	
+	public List<ModelUnitBuild> getBuildableUnits(ModelBuilding target){
+		List<ModelUnitBuild> buildableUnits = new ArrayList<ModelUnitBuild>();
+		
+		//유닛 선행조건이 성내 다른 건물에 포함되는 경우 사용
+		/**
+		int requiredKind = IServices.BUILDING_TYPE_CENTER; // 선행 건물 종류
+		int requiredLevel = 0;	//선행건물 필요레벨
+		ModelCastle castle = service.getCastleOne(target.getLocationID());
+		List<ModelBuilding> buildings = service.getBuilding(castle);
+		for(int i=0; i<buildings.size(); i++){
+			if(buildings.get(i).getKind() == requiredKind && buildings.get(i).getLevel() >= requiredLevel){
+				// 선행조건이 있는  경우 여기에서.
+			}
+		}
+		 */
+		
+		//선행조건이 있는 유닛이 아닌 경우 사용
+		buildableUnits = service.getUnitBuild();
+		
+		
+		return buildableUnits;
+	}
+	
+	public List<ModelStructures> getBuildableBuildings(ModelCastle target){
+		List<ModelStructures> structures = service.getStructures();
+		return structures;
+	}
 	
 	//진격지 도착
 	private void makeBattle(ModelHeroTable target, Integer targetLocationID, long distance) {

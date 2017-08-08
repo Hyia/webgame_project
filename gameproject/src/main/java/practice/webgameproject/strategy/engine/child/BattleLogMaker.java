@@ -1,6 +1,8 @@
 package practice.webgameproject.strategy.engine.child;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -16,6 +18,7 @@ import practice.webgameproject.strategy.model.ModelUnit;
 
 public class BattleLogMaker {
 	private static final String LOGFILEROOT = "$LOGFILEROOT";//로그파일의 루트 디렉토리
+	private static final String LOGFILETAIL = ".log";//로그파일의 루트 디렉토리
 	
 	public static final int MAX_ROUND = 6;
 	private static int serialNumber = 0;
@@ -175,7 +178,7 @@ public class BattleLogMaker {
 		logName = new SimpleDateFormat("YYYYMMDDhhmmssSSS").format(logDate)+"-"+attacker_ID+"-"+defender_ID;
 		BufferedWriter out = null;
 	    try {
-	        out = new BufferedWriter(new FileWriter(LOGFILEROOT+"/"+logName+".log"));
+	        out = new BufferedWriter(new FileWriter(LOGFILEROOT+"/"+logName+LOGFILETAIL));
 	        //헤더만듬
 	        out.write(makeHeader());
 	        //각 라운드 기록함
@@ -200,6 +203,52 @@ public class BattleLogMaker {
 		//TODO 초기병력 정보를 담는 가장 위쪽을 만들 것
 		String str = "여기에 로그 결산이 붙어요. 어떻게 보여줄지는 상의필요.";
 		return str;
+	}
+	public static String getLogFile(String logName,String attacker_ID, String defender_ID){
+		//		logName = new SimpleDateFormat("YYYYMMDDhhmmssSSS").format(logDate)+"-"+attacker_ID+"-"+defender_ID;
+		String logText = "";
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(LOGFILEROOT+"/"+logName+"-"+attacker_ID+"-"+defender_ID+LOGFILETAIL));
+			
+			while(true){
+				String line = br.readLine();
+				if(line ==null){
+					break;
+				}
+				
+				logText.concat("\r\n"+line);
+			}
+			
+			br.close();
+		} catch (IOException e) {
+			// Do nothing
+		}
+		
+		return "";
+	}
+	public static String getLogFile(String fullLogname){
+		//		logName = new SimpleDateFormat("YYYYMMDDhhmmssSSS").format(logDate)+"-"+attacker_ID+"-"+defender_ID;
+		String logText = "";
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(LOGFILEROOT+"/"+fullLogname+LOGFILETAIL));
+			
+			while(true){
+				String line = br.readLine();
+				if(line ==null){
+					break;
+				}
+				
+				logText.concat("\r\n"+line);
+			}
+			
+			br.close();
+		} catch (IOException e) {
+			// Do nothing
+		}
+		
+		return "";
 	}
 	
 	
