@@ -390,13 +390,13 @@ public class Engine {
 		long travelTime = (long) (travelLength * IServices.TRAVEL_UNIT_TIME);
 		
 		//유닛 이동속도 보정
-		List<ModelHeroTroop> herosUnits = service.getHeroTroop_SlotList(hero);
+		List<ModelSlot> herosUnits = service.getHeroTroop_SlotList(hero.getHeroID());
 		double average_unitmove_speed = 0;
 		int speed_sum = 0;
 		//보정 들어간 단순합
 		for(int i=0; i<herosUnits.size();i++){
 			// TODO : 나중에 이거 간소화좀 시켜봐
-			ModelUnit unit = getUnit(service.getSlot(herosUnits.get(i).getSlotID()).getSlotUID());
+			ModelUnit unit = getUnit(herosUnits.get(i).getSlotUID());
 			int unitSPD = unit.getSPD().intValue();
 			speed_sum += correction(unitSPD, hero.getAGI(), (hero.getSpecialty().intValue() == unit.getUnitID().intValue()));
 		}
@@ -514,10 +514,10 @@ public class Engine {
 			for(int i=0; i<defHeros.size(); i++){
 				//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장
 				ModelHeroTable hero = defHeros.get(i);
-				List<ModelHeroTroop> heroUnits = service.getHeroTroop_SlotList(hero);
+				List<ModelSlot> heroUnits = service.getHeroTroop_SlotList(hero.getHeroID());
 				heroArmy = new Army(hero.getHeroID());
 				for(int j=0; j< heroUnits.size(); j++){
-					ModelSlot slot = service.getSlot(heroUnits.get(j).getSlotID());
+					ModelSlot slot = heroUnits.get(j);
 					ModelUnit unitInfo = service.getUnitInformation(slot.getSlotUID());
 					ModelUnit unit = new ModelUnit(unitInfo);
 					int amount = slot.getSlotAmount();
@@ -554,11 +554,11 @@ public class Engine {
 		for(int i=0; i<attacker.size(); i++){
 			//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장
 			ModelHeroTable hero = attacker.get(i);
-			List<ModelHeroTroop> heroUnits = service.getHeroTroop_SlotList(hero);
+			List<ModelSlot> heroUnits = service.getHeroTroop_SlotList(hero.getHeroID());
 			Army heroArmy = new Army(attacker.get(i).getHeroID());
 			for(int j=0; j< heroUnits.size(); j++){
-				ModelSlot slot = service.getSlot(heroUnits.get(j).getSlotID());
-				ModelUnit unitInfo = service.getUnitInformation(slot.getSlotUID());
+				ModelSlot slot = heroUnits.get(j);
+				ModelUnit unitInfo = getUnit(slot.getSlotUID());
 				ModelUnit unit = new ModelUnit(unitInfo);
 				int amount = slot.getSlotAmount();
 				int atk = correction(unit.getATK(), hero.getSTR().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
@@ -799,9 +799,9 @@ public class Engine {
 		// TODO 전투로 변경된 병력상황을 DB에 반영
 		//공격자 부분
 		for(int i=0; i< attacker.size(); i++){
-			List<ModelHeroTroop> heroSlots = 	service.getHeroTroop_SlotList(attacker.get(i));
+			List<ModelSlot> heroSlots = 	service.getHeroTroop_SlotList(attacker.get(i).getHeroID());
 			for(int j=0; j< heroSlots.size(); j++){
-				ModelSlot slot = service.getSlot(heroSlots.get(i).getSlotID());
+				ModelSlot slot = heroSlots.get(i);
 				
 				//아래 코드가 되는 전제 : attacker 리스트와 attackerArms리스트가 사이즈가 동일하고 순서도 같을 경우만 정상동작.
 				// FIXME : Army의 병력량을 Integer에서 Slot으로 바꾸면 해결되지 않을까?
@@ -903,7 +903,7 @@ public class Engine {
 		if(usr.getUserID().equals(targetHero.getOwner())){
 			//삭제하려고 함
 
-			List<ModelHeroTroop> slots = service.getHeroTroop_SlotList(targetHero);
+			List<ModelSlot> slots = service.getHeroTroop_SlotList(targetHero.getHeroID());
 			for(int i=0; i< slots.size() ; i++){
 				service.deleteSlot(slots.get(i).getSlotID());
 			}
