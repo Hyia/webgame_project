@@ -389,51 +389,51 @@
    		AGI = case
                   	when #{updateValue.AGI} is not null
 					and  #{updateValue.AGI} !=0  then #{updateValue.AGI}
-                  	else UserNicName
+                  	else AGI
                  	end,
    		CON = case
                   	when #{updateValue.CON} is not null
 					and  #{updateValue.CON} !=0  then #{updateValue.CON}
-                  	else UserPW
+                  	else CON
                  	end,
 		Owner = case
                   	when #{updateValue.Owner} is not null
 					and  #{updateValue.Owner} !=''  then #{updateValue.Owner}
-                  	else UserNicName
+                  	else Owner
                  	end,
 		LacationID = case
                   	when #{updateValue.LacationID} is not null
 					and  #{updateValue.LacationID} !=0  then #{updateValue.LacationID}
-                  	else UserNicName
+                  	else LacationID
                  	end,
 		Statuus = case
                   	when #{updateValue.Statuus} is not null
 					and  #{updateValue.Statuus} !=0  then #{updateValue.Statuus}
-                  	else UserNicName
+                  	else Statuus
                  	end,
 		Specialty = case
                   	when #{updateValue.Specialty} is not null
 					and  #{updateValue.Specialty} !=0  then #{updateValue.Specialty}
-                  	else UserNicName
+                  	else Specialty
                  	end,
 		Potrait = case
                   	when #{updateValue.Potrait} is not null
 					and  #{updateValue.Potrait} !=0  then #{updateValue.Potrait}
-                  	else UserNicName
+                  	else Potrait
                  	end,
 		Sex = case
                   when #{updateValue.Sex} is not null then #{updateValue.Sex}
-                  else UserNicName
+                  else Sex
                  	end,
 		HeroLevel = case
                   when #{updateValue.HeroLevel} is not null
-									and  #{updateValue.HeroLevel} !=0  then #{updateValue.HeroLevel}
-                  else UserNicName
+				  and  #{updateValue.HeroLevel} !=0  then #{updateValue.HeroLevel}
+                  else HeroLevel
                  	end,
 		HeroEXP = case
                   	when #{updateValue.HeroEXP} is not null
 					and  #{updateValue.HeroEXP} !=0  then #{updateValue.HeroEXP}
-                  	else UserNicName
+                  	else HeroEXP
                  	end					  					  					  					                   
 		where	HeroID=#{searchValue.HeroID}
     

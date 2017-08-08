@@ -17,6 +17,7 @@ import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelCastleTroop;
 import practice.webgameproject.strategy.model.ModelHeroTable;
+import practice.webgameproject.strategy.model.ModelHeroTroop;
 import practice.webgameproject.strategy.model.ModelLog;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelOutResource;
@@ -733,7 +734,7 @@ public class testWebGameDB {
 		newHero.setAGI(100);
 		newHero.setCON(100);
 		newHero.setSTR(100);
-		newHero.setLacationID(1);
+		newHero.setLocationID(1);
 		newHero.setSex(false);
 		
 		Integer result=serviceGame.insertHerotable(newHero);
@@ -743,12 +744,33 @@ public class testWebGameDB {
 
 	@Test
 	public void testInsertHerotroop() {
+		ModelHeroTroop newHeroTroop=new ModelHeroTroop();
+		
+		newHeroTroop.setHeroID(5);
+		newHeroTroop.setSlotID(20);
+		
+		Integer result=serviceGame.insertHerotroop(newHeroTroop);
+		
+		assertSame(1,result);
 		
 	}
 
 	@Test
 	public void testUpdateHero() {
+		ModelHeroTable updateHero=new ModelHeroTable();
+		ModelHeroTable searchHero=new ModelHeroTable();
 		
+		
+		updateHero.setAGI(666);
+		updateHero.setCON(666);
+		updateHero.setSTR(666);
+		
+		searchHero.setHeroID(5);
+		
+		
+		Integer result=serviceGame.updateHero(updateHero, searchHero);
+		
+		assertSame(1,result);
 	}
 
 	@Test

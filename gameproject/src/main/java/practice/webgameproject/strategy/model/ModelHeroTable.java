@@ -10,7 +10,7 @@ public class ModelHeroTable {
 	private Integer AGI 			;//INT(11) 
 	private Integer CON 			;//INT(11) 
 	private String  Owner 			;//VARCHAR(20)			UserID
-	private Integer LacationID  	;//INT(11) 
+	private Integer LocationID  	;//INT(11) 
 	private Integer Statuus 		;//INT(11) 
 	private Integer Specialty 		;//INT(11) 
 	private Integer Potrait 		;//INT(11) 
@@ -49,11 +49,11 @@ public class ModelHeroTable {
 	public void setOwner(String owner) {
 		Owner = owner;
 	}
-	public Integer getLacationID() {
-		return LacationID;
+	public Integer getLocationID() {
+		return LocationID;
 	}
-	public void setLacationID(Integer lacationID) {
-		LacationID = lacationID;
+	public void setLocationID(Integer locationID) {
+		LocationID = locationID;
 	}
 	public Integer getStatuus() {
 		return Statuus;
@@ -84,27 +84,27 @@ public class ModelHeroTable {
 		
 	}
 	
-	public ModelHeroTable(Integer heroID, Integer sTR, Integer aGI, Integer cON, String owner, Integer lacationID,
+	public ModelHeroTable(Integer heroID, Integer sTR, Integer aGI, Integer cON, String owner, Integer locationID,
 			Integer statuus, Integer specialty, Integer potrait, Boolean sex) {
 		HeroID = heroID;
 		STR = sTR;
 		AGI = aGI;
 		CON = cON;
 		Owner = owner;
-		LacationID = lacationID;
+		LocationID = locationID;
 		Statuus = statuus;
 		Specialty = specialty;
 		Potrait = potrait;
 		Sex = sex;
 	}
-	public ModelHeroTable(Integer heroID, Integer sTR, Integer aGI, Integer cON, Integer lacationID,
+	public ModelHeroTable(Integer heroID, Integer sTR, Integer aGI, Integer cON, Integer locationID,
 			Integer statuus, Integer specialty, Integer potrait, Boolean sex) {
 		HeroID = heroID;
 		STR = sTR;
 		AGI = aGI;
 		CON = cON;
 		Owner = null;
-		LacationID = lacationID;
+		LocationID = locationID;
 		Statuus = statuus;
 		Specialty = specialty;
 		Potrait = potrait;
@@ -115,7 +115,7 @@ public class ModelHeroTable {
 	@Override
 	public String toString() {
 		return "ModelHeroTable [HeroID=" + HeroID + ", STR=" + STR + ", AGI=" + AGI + ", CON=" + CON + ", Owner="
-				+ Owner + ", LacationID=" + LacationID + ", Statuus=" + Statuus + ", Specialty=" + Specialty
+				+ Owner + ", LocationID=" + LocationID + ", Statuus=" + Statuus + ", Specialty=" + Specialty
 				+ ", Potrait=" + Potrait + ", Sex=" + Sex + ", HeroLevel=" + HeroLevel + ", HeroEXP=" + HeroEXP + "]";
 	}
 	
