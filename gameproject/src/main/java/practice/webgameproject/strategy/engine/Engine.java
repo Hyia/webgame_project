@@ -1,19 +1,15 @@
 package practice.webgameproject.strategy.engine;
 
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import practice.webgameproject.strategy.engine.child.Army;
 import practice.webgameproject.strategy.engine.child.BattleLogMaker;
-import practice.webgameproject.strategy.engine.child.BattleLogMaker.Round;
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
@@ -33,6 +29,7 @@ import practice.webgameproject.strategy.model.ModelXYval;
 import practice.webgameproject.strategy.service.ServiceGame;
 
 public class Engine {
+	private static final Logger logger = LoggerFactory.getLogger(Engine.class);
 	
 	private ServiceGame service;
 	
@@ -524,7 +521,7 @@ public class Engine {
 					ModelUnit unitInfo = service.getUnitInformation(slot.getSlotUID());
 					ModelUnit unit = new ModelUnit(unitInfo);
 					int amount = slot.getSlotAmount();
-					heroArmy.addUnit(unit, amount);
+					heroArmy.addUnit(unit, amount,slot.getSlotID());
 					
 				}
 				defenderArms.add(heroArmy);
@@ -538,7 +535,7 @@ public class Engine {
 			ModelUnit unit = service.getUnitInformation(slot.getSlotUID());
 			
 			int amount = slot.getSlotAmount();
-			localArmy.addUnit(unit, amount);
+			localArmy.addUnit(unit, amount,slot.getSlotID());
 
 		}
 		defenderArms.add(localArmy);
@@ -569,7 +566,7 @@ public class Engine {
 
 				unit.setATK(atk);
 				unit.setHP(hp);
-				heroArmy.addUnit(unit, amount);
+				heroArmy.addUnit(unit, amount,slot.getSlotID());
 				
 				myAtkSum += (atk*amount);
 				myHpSum += (hp*amount);
@@ -585,8 +582,10 @@ public class Engine {
 		
 		//방어자측 정보+보정
 		logMaker.setDefender(null);
+		logMaker.setDefender_ID(null);
 		int defAtkSum = 0;
 		int defHpSum = 0;
+		boolean isCreep = false;// 슬롯아이디가 없는 임시생성병력인지를 체크. 이 병력들은  DB업데이트가 필요없다는 뜻.
 		//방어측에 영웅이 있는지 확인
 		List<ModelHeroTable> defHeros = new ArrayList<ModelHeroTable>();
 		for(int i=0; i<localArmy.size();i++){
@@ -621,6 +620,16 @@ public class Engine {
 					defHpSum += (hp*amount);
 				}
 				defHeros.add(hero);
+			}
+		}
+		getout: for(int i=0; i< localArmy.size(); i++){
+			List<Integer> slotIDs = localArmy.get(i).getUnitSlotIDList();
+			for(int j=0; j<slotIDs.size();j++){
+				if(slotIDs.get(j) == null){
+					//슬롯아이디가 없으므로 크립이다.
+					isCreep = true;
+					break getout;
+				}
 			}
 		}
 //		logMaker.setDefender(defHeros.size()==0? null: defHeros);
@@ -786,7 +795,57 @@ public class Engine {
 		ModelLog logger = new ModelLog(logMaker.getLogName(), logMaker.getAttacker_ID(), logMaker.getDefender_ID(), false, false, logMaker.getLogDate());
 
 		service.insertLog(logger);
+
 		// TODO 전투로 변경된 병력상황을 DB에 반영
+		//공격자 부분
+		for(int i=0; i< attacker.size(); i++){
+			List<ModelHeroTroop> heroSlots = 	service.getHeroTroop_SlotList(attacker.get(i));
+			for(int j=0; j< heroSlots.size(); j++){
+				ModelSlot slot = service.getSlot(heroSlots.get(i).getSlotID());
+				
+				//아래 코드가 되는 전제 : attacker 리스트와 attackerArms리스트가 사이즈가 동일하고 순서도 같을 경우만 정상동작.
+				// FIXME : Army의 병력량을 Integer에서 Slot으로 바꾸면 해결되지 않을까?
+				int unitAmount = attackerArms.get(i).getUnitAmountList().get(j);
+				if(unitAmount > 0 ){
+					//유닛수가 단순감소라면 변화한 병력량을 넣어줌
+					slot.setSlotAmount(unitAmount);
+				}else{
+					//전멸한경우 유닛ID를 제거.
+					slot.setSlotUID(null);
+					slot.setSlotAmount(0);
+				}
+				//그리고 슬롯에 반영
+				service.updateSlot(slot, slot);
+			}
+		}
+		
+		//방어자 부분
+		/**
+		 * 방어자 경우의 수
+		 * 영웅 없는 유저 병력
+		 * 영웅 있는 유저 병력
+		 * 영웅 있는 유저 병력+ 영웅 없는 병력
+		 * 
+		 * 영웅 없는 NPC병력
+		 * 영웅 있는 NPC병력
+		 * 영웅 있는 NPC 병력+ 영웅 없는 NPC 병력
+		 */
+		//NPC는 슬롯ID가 null이므로 저장할 수도 없고 저장할 필요도 없다. 
+		if(!isCreep){
+			for(int i=0; i< localArmy.size(); i++){
+				for( int j = 0 ; j < localArmy.get(i).getUnitAmountList().size(); j++){
+					ModelSlot slot = new ModelSlot(localArmy.get(i).getUnitSlotIDList().get(j), localArmy.get(i).getUnits().get(j).getUnitID(), localArmy.get(i).getUnitAmountList().get(j));
+					if(slot.getSlotAmount() > 0){
+						
+					}else{
+						slot.setSlotUID(null);
+						slot.setSlotAmount(0);
+					}
+					service.updateSlot(slot, slot);
+				}
+			}
+		}
+		
 		
 		
 		
@@ -865,14 +924,18 @@ public class Engine {
 	 * @return
 	 */
 	public List<ModelLog> getUserLogs(String user){
-		List<ModelLog> myLoglist = null;//service.getModelLog();
-		
-		
-		
-		//TODO 만들어
-		
+		List<ModelLog> myLoglist = service.getLog_ATK_DF_All(user);
 		return myLoglist;
 	}
+	public List<ModelLog> getUserAttackLogs(String user){
+		List<ModelLog> myLoglist = service.getLog_ATK(user);
+		return myLoglist;
+	}
+	public List<ModelLog> getUserDefLogs(String user){
+		List<ModelLog> myLoglist = service.getLog_DF(user);
+		return myLoglist;
+	}
+	
 	
 	public List<ModelUnitBuild> getBuildableUnits(ModelBuilding target){
 		List<ModelUnitBuild> buildableUnits = new ArrayList<ModelUnitBuild>();
@@ -901,13 +964,37 @@ public class Engine {
 		List<ModelStructures> structures = service.getStructures();
 		return structures;
 	}
+
+	public List<ModelHeroTable> getUserHeroInCastle(String user, Integer locationID){
+		List<ModelHeroTable> heros = service.getHeroList_InCastle(new ModelCastle(user, null, null, locationID, null));
+		
+		return heros;
+	}
+	public List<ModelHeroTable> getUserAllHero(String user){
+		List<ModelHeroTable> heros = new ArrayList<ModelHeroTable>();
+		
+		List<ModelCastle> castles = service.getCastleList(new ModelMembers(user, null, null, null));
+		for(int i=0; i<castles.size(); i++){
+			List<ModelHeroTable> castleHeros = service.getHeroList_InCastle(castles.get(i));
+			for(int j=0; j<castleHeros.size(); j++){
+				heros.add(castleHeros.get(j));
+			}
+		}
+		
+		
+		return heros;
+	}
+	
+	
+	// 동맹목록을 가져오기위한 것.
+//	public List<String> getAlia
 	
 	//진격지 도착
 	private void makeBattle(ModelHeroTable target, Integer targetLocationID, long distance) {
 		// 도착한 곳은 어떤곳인가
 		ModelXYval xy =  service.getModelXYval(targetLocationID);
 		int targetLocationKind = xy.getKind();
-		
+		String logName = "";
 		switch(targetLocationKind){
 		case IServices.LOCATION_TYPE_CASTLE://성
 			ModelCastle targetCastle =service.getCastleOne(targetLocationID);
@@ -921,7 +1008,7 @@ public class Engine {
 				
 			}else{
 				//적 성. 전투개시
-				fight(target, targetLocationID);
+				logName = fight(target, targetLocationID);
 			}
 			
 			break;
@@ -935,7 +1022,7 @@ public class Engine {
 			
 			//잡몹 생성
 			List<Army> localArmy = makeCreeps(distance);
-			fight(attacker, localArmy);
+			logName = fight(attacker, localArmy);
 			break;
 		case IServices.LOCATION_TYPE_EXTERNALRESOURCE://야외자원지
 			ModelOutResource outResource = service.getOutResource(targetLocationID);
@@ -954,10 +1041,11 @@ public class Engine {
 				
 				//잡몹 생성
 				localArmy = makeCreeps(distance);
-				fight(attacker, localArmy);
+				logName = fight(attacker, localArmy);
 			}
 			break;
 		}
+		logger.info(logName.equals("")?"전투가 발생하지 않았다.":"로그 저장됨["+logName+"]");
 	}
 	
 
@@ -983,19 +1071,19 @@ public class Engine {
 				// 1 단계 이하의 유닛을 랜덤하게 가져와서 level+1개만큼 뿌려주자!
 				ModelUnit unit = getRandomUnitAtTier(1);
 				int amount = (int)Math.random()*(creepLevel+1)+5;//랜덤이되 최소치 보장
-				army.addUnit(unit, amount);
+				army.addUnit(unit, amount, null);
 			}else if(creepLevel < Math.pow(creepLevelCut, creepLevelCut+1)){
 				// 2 단계 이하의 유닛을 랜덤하게 가져와서 level+1개만큼 뿌려주자!
 				int tier = (int)Math.random()*(2 - 1) + 1;
 				ModelUnit unit = getRandomUnitAtTier(tier);
 				int amount = (int)Math.random()*(creepLevel+1)+10;
-				army.addUnit(unit, amount);
+				army.addUnit(unit, amount, null);
 			}else{
 				// 3 단계 이하의 유닛을 랜덤하게 가져와서 level+1개만큼 뿌려주자!
 				int tier = (int)Math.random()*(3 - 1) + 1;
 				ModelUnit unit = getRandomUnitAtTier(tier);
 				int amount = (int)Math.random()*(creepLevel+1)+10;
-				army.addUnit(unit, amount);
+				army.addUnit(unit, amount, null);
 			}
 		}
 		

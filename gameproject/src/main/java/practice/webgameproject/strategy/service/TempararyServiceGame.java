@@ -389,9 +389,9 @@ public class TempararyServiceGame extends ServiceGame{
 
 
 	@Override
-	public List<ModelStructures> getStructures(ModelStructures targetStructures) {
+	public List<ModelStructures> getStructures() {
 		// TODO Auto-generated method stub
-		return super.getStructures(targetStructures);
+		return super.getStructures();
 	}
 
 

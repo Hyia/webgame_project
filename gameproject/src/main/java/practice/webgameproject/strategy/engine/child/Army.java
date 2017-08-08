@@ -10,6 +10,7 @@ public class Army{
 	Integer HeroID;
 	List<ModelUnit> units;
 	List<Integer> unitAmountList;
+	List<Integer> unitSlotIDList;
 	
 	public Integer getHeroID() {
 		return HeroID;
@@ -18,32 +19,27 @@ public class Army{
 		return units;
 	}
 	
-	public void setUnits(List<ModelUnit> units){
-		this.units = units;
-	}
-	
-	public void addUnit(ModelUnit unit, Integer amount){
+	public void addUnit(ModelUnit unit, Integer amount,Integer slotID){
 		this.units.add(unit);
 		this.unitAmountList.add(amount);
+		this.unitAmountList.add(slotID);
 	}
 	
 	
 	public List<Integer> getUnitAmountList() {
 		return unitAmountList;
 	}
-	public void setUnitAmountList(List<Integer> unitAmountList) {
-		this.unitAmountList = unitAmountList;
+
+	public List<Integer> getUnitSlotIDList() {
+		return unitSlotIDList;
 	}
-	public Army(Integer heroID, List<ModelUnit> units) {
-		super();
-		HeroID = heroID;
-		this.units = units;
-	}
+	
 	public Army(Integer heroID) {
 		super();
 		HeroID = heroID;
 		this.units = new ArrayList<ModelUnit>();
 		this.unitAmountList = new ArrayList<Integer>();
+		this.unitSlotIDList = new ArrayList<Integer>();
 	}
 	
 	@Override
