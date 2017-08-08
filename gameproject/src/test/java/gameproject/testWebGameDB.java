@@ -525,73 +525,220 @@ public class testWebGameDB {
 		List<ModelWaitList_Building> list=new ArrayList<ModelWaitList_Building>();
 		Date dt=new Date();
 		
+		list.add(new ModelWaitList_Building());
+		list.add(new ModelWaitList_Building());
+		list.add(new ModelWaitList_Building());
 		
-		Integer result=serviceGame.mInsertWaitList_Building(list)
+		list.get(0).setKind(1);
+		list.get(1).setKind(2);
+		list.get(2).setKind(3);
+		
+		list.get(0).setLocationID(1);
+		list.get(1).setLocationID(1);
+		list.get(2).setLocationID(1);
+		
+		list.get(0).setRoomNumber(1);
+		list.get(1).setRoomNumber(2);
+		list.get(2).setRoomNumber(3);
+		
+		list.get(0).setWaitTime(dt);
+		list.get(1).setWaitTime(dt);
+		list.get(2).setWaitTime(dt);
+		
+		
+		
+		
+		Integer result=serviceGame.mInsertWaitList_Building(list);
+		
+		assertSame(3,result);
 	}
 
 	@Test
 	public void testMInsertWaitList_Unit() {
+		List<ModelWaitList_Unit> list=new ArrayList<ModelWaitList_Unit>();
+		Date dt=new Date();
 		
+		list.add(new ModelWaitList_Unit());
+		list.add(new ModelWaitList_Unit());
+		list.add(new ModelWaitList_Unit());
+		
+		list.get(0).setUnitID(1);
+		list.get(1).setUnitID(2);
+		list.get(2).setUnitID(3);
+		
+		list.get(0).setAmount(1);
+		list.get(1).setAmount(2);
+		list.get(2).setAmount(3);
+		
+		
+		list.get(0).setLocationID(1);
+		list.get(1).setLocationID(1);
+		list.get(2).setLocationID(1);
+		
+		list.get(0).setRoomNumber(1);
+		list.get(1).setRoomNumber(2);
+		list.get(2).setRoomNumber(3);
+		
+		list.get(0).setWaitTime(dt);
+		list.get(1).setWaitTime(dt);
+		list.get(2).setWaitTime(dt);
+		
+		
+		
+		
+		Integer result=serviceGame.mInsertWaitList_Unit(list);
+		
+		assertSame(3,result);
 	}
 
 	@Test
 	public void testUpdateCastle() {
+		ModelCastle updateCastle=new ModelCastle();
+		ModelCastle searchCastle=new ModelCastle();
 		
+		updateCastle.setName("테스트");
+		
+		searchCastle.setLocationID(4);
+		
+		Integer result=serviceGame.updateCastle(updateCastle, searchCastle);
+		
+		assertSame(1,result);
 	}
 
 	@Test
 	public void testUpdateBuilding() {
+		ModelBuilding updateBuilding=new ModelBuilding();
+		ModelBuilding searchBuilding=new ModelBuilding();
 		
+		updateBuilding.setLevel(2);
+		
+		searchBuilding.setLocationID(1);
+		searchBuilding.setRoomNumber(2);
+		
+		Integer result=serviceGame.updateBuilding(updateBuilding, searchBuilding);
+		
+		assertSame(1,result);
 	}
 
 	@Test
 	public void testUpdateOutResource() {
+		ModelOutResource updateOutResource=new ModelOutResource();
+		ModelOutResource searchOutResource=new ModelOutResource();
 		
-	}
-
-	@Test
-	public void testUpdateWaitList_Building() {
+		//updateOutResource
 		
-	}
-
-	@Test
-	public void testUpdateWaitList_Unit() {
+		searchOutResource.setLocationID(1);
 		
+		
+		Integer result=serviceGame.updateOutResource(updateOutResource, searchOutResource);
+		
+		assertSame(1,result);
 	}
 
 	@Test
 	public void testDeleteCastleTroop() {
+		Integer locationID=3;
 		
+		Integer result=serviceGame.deleteCastleTroop(locationID);
+		
+		if(result>=0){
+			assertTrue(true);
+		}else{
+			assertTrue(false);
+		}
 	}
 
 	@Test
-	public void testDeleteCastleBuildings() {
+	public void testDeleteCastleBuilding_All() {
+		Integer locationID=2;
 		
+		Integer result=serviceGame.deleteCastleBuilding_All(locationID);
+		
+		if(result>=0){
+			assertTrue(true);
+		}else{
+			assertTrue(false);
+		}
+	}
+	
+	@Test
+	public void testDeleteCastleBuilding_One() {
+		ModelBuilding delBuilding=new ModelBuilding();
+		
+		delBuilding.setRoomNumber(1);
+		delBuilding.setLocationID(1);
+		
+		Integer result=serviceGame.deleteCastleBuilding_One(delBuilding);
+		
+		assertSame(1,result);
 	}
 
 	@Test
 	public void testDeleteOutResource() {
+		Integer locationID=5;
 		
+		Integer result=serviceGame.deleteOutResource(locationID);
+		
+		assertSame(1,result);
 	}
 
 	@Test
-	public void testDeleteCastle() {
+	public void testDeleteCastle_All() {
+		String userID = "jtest";
 		
+		Integer result=serviceGame.deleteCastle_All(userID);
+		
+		if(result>=0){
+			assertTrue(true);
+		}else{
+			assertTrue(false);
+		}
+	}
+	
+	@Test
+	public void testDeleteCastle_One() {
+		Integer locationID = 5;
+		
+		Integer result=serviceGame.deleteCastle_One(locationID);
+		
+		assertSame(1,result);
 	}
 
 	@Test
 	public void testGetHero() {
+		ModelHeroTable targetHero=new ModelHeroTable();
 		
+		targetHero.setHeroID(2);
+		
+		ModelHeroTable result=serviceGame.getHero(targetHero);
+		
+		assertEquals("test",result.getOwner());
+		
+		System.out.println(result.toString());
 	}
 
 	@Test
 	public void testGetHeroTroop_SlotList() {
+		Integer heroID=1;
 		
+		List<ModelSlot> result=serviceGame.getHeroTroop_SlotList(heroID);
+		
+		assertSame(6,result.size());
 	}
 
 	@Test
 	public void testInsertHerotable() {
+		ModelHeroTable newHero=new ModelHeroTable();
 		
+		newHero.setAGI(100);
+		newHero.setCON(100);
+		newHero.setSTR(100);
+		newHero.setLacationID(1);
+		newHero.setSex(false);
+		
+		Integer result=serviceGame.insertHerotable(newHero);
+		
+		assertSame(1,result);
 	}
 
 	@Test

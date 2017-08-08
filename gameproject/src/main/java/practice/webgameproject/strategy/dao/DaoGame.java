@@ -367,29 +367,7 @@ public class DaoGame implements IServices{
 		
 		return session.insert("mapper.mysql.mapperWebGame.updateOutResource",map);
 	}
-
-	@Override
-	public Integer updateWaitList_Building(ModelWaitList_Building updateBudingList	, ModelWaitList_Building searchBudingList) {
-
-		Map<String, ModelWaitList_Building> map = new HashMap<String, ModelWaitList_Building>();
-		
-		map.put("updateValue", updateBudingList);
-		map.put("searchValue", searchBudingList);
-		
-		return session.insert("mapper.mysql.mapperWebGame.updateWaitList_Building",map);
-	}
-
-	@Override
-	public Integer updateWaitList_Unit(ModelWaitList_Unit updateUnitList	, ModelWaitList_Unit searchUnitList) {
-
-		Map<String, ModelWaitList_Unit> map = new HashMap<String, ModelWaitList_Unit>();
-		
-		map.put("updateValue", updateUnitList);
-		map.put("searchValue", searchUnitList);
-		
-		return session.insert("mapper.mysql.mapperWebGame.updateWaitList_Unit",map);
-	}
-
+	
 	
 	
 	// Methods Catle - DELETE
@@ -400,9 +378,15 @@ public class DaoGame implements IServices{
 	}
 
 	@Override
-	public Integer deleteCastleBuildings(Integer locationID) {
+	public Integer deleteCastleBuilding_All(Integer locationID) {
 		
-		return session.insert("mapper.mysql.mapperWebGame.deleteCastleBuildings",locationID);
+		return session.insert("mapper.mysql.mapperWebGame.deleteCastleBuilding_All",locationID);
+	}
+	
+	@Override
+	public Integer deleteCastleBuilding_One(ModelBuilding delBuilding) {
+		
+		return session.insert("mapper.mysql.mapperWebGame.deleteCastleBuilding_One",delBuilding);
 	}
 
 	@Override
@@ -412,9 +396,15 @@ public class DaoGame implements IServices{
 	}
 
 	@Override
-	public Integer deleteCastle(Integer userID) {
+	public Integer deleteCastle_All(String userID) {
 		
-		return session.insert("mapper.mysql.mapperWebGame.deleteCastle",userID);
+		return session.insert("mapper.mysql.mapperWebGame.deleteCastle_All",userID);
+	}
+	
+	@Override
+	public Integer deleteCastle_One(Integer locationID) {
+		
+		return session.insert("mapper.mysql.mapperWebGame.deleteCastle_One",locationID);
 	}
 	
 	@Override
@@ -439,9 +429,9 @@ public class DaoGame implements IServices{
 	}
 
 	@Override
-	public List<ModelHeroTroop> getHeroTroop_SlotList(ModelHeroTable targetTroop) {
+	public List<ModelSlot> getHeroTroop_SlotList(Integer heroID) {
 		
-		return session.selectList("mapper.mysql.mapperWebGame.getHeroTroop_SlotList",targetTroop);
+		return session.selectList("mapper.mysql.mapperWebGame.getHeroTroop_SlotList",heroID);
 	}
 
 	

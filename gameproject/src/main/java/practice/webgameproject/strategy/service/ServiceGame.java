@@ -607,37 +607,6 @@ public class ServiceGame extends DaoGame{
 	}
 
 	@Override
-	public Integer updateWaitList_Building(ModelWaitList_Building updateBudingList,
-			ModelWaitList_Building searchBudingList) {
-
-		Integer result= -1;
-        
-        try {
-        	result = dao.updateWaitList_Building(updateBudingList,searchBudingList);
-        } catch (Exception e) {
-            logger.error("updateWaitList_Building " + e.getMessage() );
-        }
-        
-        return result;
-        
-	}
-
-	@Override
-	public Integer updateWaitList_Unit(ModelWaitList_Unit updateUnitList, ModelWaitList_Unit searchUnitList) {
-
-		Integer result= -1;
-        
-        try {
-        	result = dao.updateWaitList_Unit(updateUnitList,searchUnitList);
-        } catch (Exception e) {
-            logger.error("updateWaitList_Unit " + e.getMessage() );
-        }
-        
-        return result;
-        
-	}
-
-	@Override
 	public Integer deleteCastleTroop(Integer locationID) {
 
 		Integer result= -1;
@@ -652,14 +621,28 @@ public class ServiceGame extends DaoGame{
 	}
 	
 	@Override
-	public Integer deleteCastleBuildings(Integer locationID) {
+	public Integer deleteCastleBuilding_All(Integer locationID) {
 
 		Integer result= -1;
         
         try {
-        	result = dao.deleteCastleBuildings(locationID);
+        	result = dao.deleteCastleBuilding_All(locationID);
         } catch (Exception e) {
-            logger.error("deleteCastleBuildings " + e.getMessage() );
+            logger.error("deleteCastleBuilding_All " + e.getMessage() );
+        }
+        
+        return result;
+	}
+	
+	@Override
+	public Integer deleteCastleBuilding_One(ModelBuilding delBuilding) {
+
+		Integer result= -1;
+        
+        try {
+        	result = dao.deleteCastleBuilding_One(delBuilding);
+        } catch (Exception e) {
+            logger.error("deleteCastleBuilding_One " + e.getMessage() );
         }
         
         return result;
@@ -680,14 +663,28 @@ public class ServiceGame extends DaoGame{
 	}
 
 	@Override
-	public Integer deleteCastle(Integer userID) {
+	public Integer deleteCastle_All(String userID) {
 
 		Integer result= -1;
         
         try {
-        	result = dao.deleteCastle(userID);
+        	result = dao.deleteCastle_All(userID);
         } catch (Exception e) {
-            logger.error("deleteCastle " + e.getMessage() );
+            logger.error("deleteCastle_All " + e.getMessage() );
+        }
+        
+        return result;
+	}
+	
+	@Override
+	public Integer deleteCastle_One(Integer locationID) {
+
+		Integer result= -1;
+        
+        try {
+        	result = dao.deleteCastle_One(locationID);
+        } catch (Exception e) {
+            logger.error("deleteCastle_One " + e.getMessage() );
         }
         
         return result;
@@ -737,12 +734,12 @@ public class ServiceGame extends DaoGame{
 	}
 
 	@Override
-	public List<ModelHeroTroop> getHeroTroop_SlotList(ModelHeroTable targetTroop) {
+	public List<ModelSlot> getHeroTroop_SlotList(Integer heroID) {
 
-		List<ModelHeroTroop> result= null;
+		List<ModelSlot> result= null;
         
         try {
-        	result = dao.getHeroTroop_SlotList(targetTroop);
+        	result = dao.getHeroTroop_SlotList(heroID);
         } catch (Exception e) {
             logger.error("getHeroTroop_SlotList " + e.getMessage() );
         }

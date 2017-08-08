@@ -171,19 +171,20 @@ public interface IServices {
 	
 	public Integer		updateOutResource			(ModelOutResource updateOutResource			, ModelOutResource searchOutResource);
 	
-	public Integer		updateWaitList_Building		(ModelWaitList_Building updateBudingList	, ModelWaitList_Building searchBudingList);
-	
-	public Integer		updateWaitList_Unit			(ModelWaitList_Unit updateUnitList			, ModelWaitList_Unit searchUnitList);
 	
 	
 	//general methods - castles - DELETE
 	public Integer		deleteCastleTroop			(Integer locationID);
 	
-	public Integer		deleteCastleBuildings		(Integer locationID);
+	public Integer		deleteCastleBuilding_All	(Integer locationID);
+	
+	public Integer		deleteCastleBuilding_One	(ModelBuilding delBuilding);
 	
 	public Integer		deleteOutResource			(Integer locationID);
 	
-	public Integer		deleteCastle				(Integer userID);
+	public Integer		deleteCastle_All			(String userID);
+	
+	public Integer		deleteCastle_One			(Integer locationID);
 	
 	public Integer		deleteWaitList_Building		();
 	
@@ -197,7 +198,7 @@ public interface IServices {
 	//general methods - hero - GET
 	public ModelHeroTable 		getHero					(ModelHeroTable targetHero);
 	
-	public List<ModelHeroTroop> getHeroTroop_SlotList	(ModelHeroTable targetTroop);
+	public List<ModelSlot>		getHeroTroop_SlotList	(Integer heroID);
 	
 	
 	//general methods - hero - INSERT

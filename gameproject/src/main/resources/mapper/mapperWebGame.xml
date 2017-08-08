@@ -66,8 +66,8 @@
     <!-- Herotable Insert --><!--CHECK-->
     <insert id="insertHerotable" parameterType="ModelHeroTable">        
         Insert into Herotable
-        	(STR, AGI, CON, Owner, LocationID,Statuus, Specialty, Potrait, Sex)
-        		values (#{STR}, #{AGI}, #{CON}, #{Owner}, #{LocationID}, #{Statuus}, #{Specialty}, #{Potrait}, #{Sex} )
+        	(STR, AGI, CON, LocationID, Sex)
+        		values (#{STR}, #{AGI}, #{CON}, #{LocationID}, #{Sex} )
     </insert>
     
     <!-- Herotroop Insert --><!--CHECK-->
@@ -96,16 +96,16 @@
         INSERT INTO  waitlist_building (   WaitTime  ,   LocationID   ,   Kind	,	RoomNumber  )
         VALUES
             <foreach collection="list" item="item" index="index" open="(" separator="),(" close=")">
-                #{item.WaitTime} , #{item.LocationID} , #{item.Kind} , #{RoomNumber}
+                #{item.WaitTime} , #{item.LocationID} , #{item.Kind} , #{item.RoomNumber}
             </foreach>
     </insert>
     
     <!-- Multi Insert WaitList_Unit --><!--CHECK-->
-    <insert id="mInsertWaitList_Unit" parameterType="java.util.List">
+    <insert id="mInsertWaitList_Unit" parameterType="ModelWaitList_Building">
         INSERT INTO  waitlist_unit (  WaitTime ,  LocationID  ,  UnitID	, RoomNumber ,	Amount )
         VALUES
             <foreach collection="list" item="item" index="index" open="(" separator="),(" close=")">
-                #{item.WaitTime} , #{item.LocationID} , #{item.UnitID} , #{RoomNumber} , #{Amount}
+                #{item.WaitTime} , #{item.LocationID} , #{item.UnitID} , #{item.RoomNumber} , #{item.Amount}
             </foreach>
     </insert>
     
@@ -222,10 +222,10 @@
     </select>
     
     <!-- 영웅의병력 슬롯ID 정보 가져오기 --><!--CHECK-->
-    <select id="getHeroTroop_SlotList" parameterType="ModelHeroTable"  resultType="ModelSlot">        
+    <select id="getHeroTroop_SlotList" parameterType="Integer"  resultType="ModelSlot">        
  		select SlotID,SlotUID,SlotAmount from
 			herotroop_SlotUnit
-				where HeroID=#{HeroID}
+				where HeroID=#{heroID}
     </select>
     
     <!-- 유닛  스탯정보 가져오기 --><!--CHECK-->
@@ -337,21 +337,42 @@
     
     <!-- ModelCastle Update --><!--CHECK-->
     <update id="updateCastle" parameterType="hashmap">
-    	update
-    		castle SET
-    			 Name			=	#{updateValue.Name}
-    			,SaveProduction	=	#{updateValue.SaveProduction}
-    			,Kind			=	#{updateValue.Kind}
-       	WHERE	 LocationID		=	#{searchValue.LocationID}
+       	update
+    		castle
+			 SET Name			=	case
+                 					when #{updateValue.Name} is not null
+									and  #{updateValue.Name} !=''  then #{updateValue.Name}
+                  					else Name
+                					end,
+                 Production		=	case
+                 					when #{updateValue.Production} is not null
+									and  #{updateValue.Production} !=0  then #{updateValue.Production}
+                  					else Production
+                					end,
+                 Kind			=	case
+                 					when #{updateValue.Kind} is not null
+									and  #{updateValue.Kind} !=0  then #{updateValue.Kind}
+                  					else Kind
+                					end
+             WHERE	 LocationID		=	#{searchValue.LocationID}
     
     </update>
     
     <!-- Catle Building Update --><!--CHECK-->
     <update id="updateBuilding" parameterType="hashmap">
     	update Building 
-       		SET  level		=	#{updateValue.Level}
-       			,RoomNumber	=	#{updateValue.RoomNumber}
-       	WHERE LocationID	=	#{searchValue.LocationID}
+       		SET  Level			=	case
+                 					when #{updateValue.Level} is not null
+									and  #{updateValue.Level} !=0  then #{updateValue.Level}
+                  					else level
+                					end,
+                 RoomNumber		=	case
+                 					when #{updateValue.RoomNumber} is not null
+									and  #{updateValue.RoomNumber} !=0  then #{updateValue.RoomNumber}
+                  					else RoomNumber
+                					end
+       	WHERE 	LocationID	=	#{searchValue.LocationID}
+       		and RoomNumber	=	#{searchValue.RoomNumber}
     
     </update>
     
@@ -449,28 +470,6 @@
     
     </update>
     
-    <!-- 건물 건설 리스트 시간 업데이트 --><!--CHECK-->
-    <update id="updateWaitList_Building" parameterType="hashmap">
-    	update
-    	WaitList_Building SET 
-     		 		 WaitTime		=	#{updateValue.WaitTime}
-			WHERE 	 LocationID		=	#{searchValue.LocationID}
-    
-    </update>
-    
-    <!-- 유닛 생산 리스트 시간 업데이트 --><!--CHECK-->
-    <update id="updateWaitList_Unit" parameterType="hashmap">
-    	update
-    	waitlist_unit SET 
-     		 		 WaitTime		=	#{updateValue.WaitTime}
-			WHERE 	 LocationID		=	#{searchValue.LocationID}
-    
-    </update>
-    
-    
-    
-    
-    
     
     <!-- ========================== update Mappers ============================== -->
     
@@ -508,8 +507,15 @@
     			where SlotID=#{slotID}
     </delete>
     
-    <!-- DELETE Castle Buildings --><!--CHECK-->
-    <delete id="deleteCastleBuildings" parameterType="Integer">
+    <!-- DELETE Castle Building One --><!--CHECK-->
+    <delete id="deleteCastleBuilding_One" parameterType="ModelBuilding">
+    	delete from
+    		building
+    			where LocationID=#{locationID} and RoomNumber=#{RoomNumber}
+    </delete>
+    
+    <!-- DELETE Castle Building All --><!--CHECK-->
+    <delete id="deleteCastleBuilding_All" parameterType="Integer">
     	delete from
     		building
     			where LocationID=#{locationID}
@@ -529,11 +535,18 @@
     			where LocationID=#{locationID}
     </delete>
     
-    <!-- DELETE  Castle --><!--CHECK-->
-    <delete id="deleteCastle" parameterType="Integer">
+    <!-- DELETE  Castle All --><!--CHECK-->
+    <delete id="deleteCastle_All" parameterType="String">
     	delete from
     		castle
     			where UserID=#{userID}
+    </delete>
+    
+    <!-- DELETE  Castle One --><!--CHECK-->
+    <delete id="deleteCastle_One" parameterType="Integer">
+    	delete from
+    		castle
+    			where LocationID=#{locationID}
     </delete>
     
     <!-- DELETE  Member --><!--CHECK-->
