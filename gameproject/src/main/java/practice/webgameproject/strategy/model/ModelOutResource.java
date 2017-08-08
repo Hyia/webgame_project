@@ -2,13 +2,17 @@ package practice.webgameproject.strategy.model;
 
 public class ModelOutResource {
 
-	private Integer LocationID;//AUTO_INCREMENT
+
+	private Integer LocationID; //fk_xyval
 	private String UserID; 
 	private Integer Production; 
 	private Integer Kind;
 	
 	public String getUserID() {
 		return UserID;
+	}
+	public void setLocationID(Integer locationID) {
+		LocationID = locationID;
 	}
 	public void setUserID(String userID) {
 		UserID = userID;

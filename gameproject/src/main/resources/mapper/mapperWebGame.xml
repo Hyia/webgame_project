@@ -80,8 +80,8 @@
     <!-- Slot Insert --><!--CHECK-->
     <insert id="insertSlot" parameterType="ModelSlot">        
         Insert into Slot
-        	(SlotID, SlotUID, SlotAmount)
-        		values (#{SlotID}, #{SlotUID}, #{SlotAmount})
+        	(SlotUID, SlotAmount)
+        		values (#{SlotUID}, #{SlotAmount})
     </insert>
     
     <!-- Log Insert --><!--CHECK-->
@@ -129,8 +129,6 @@
         SELECT * FROM members
          WHERE UserID = #{UserID}
     </select>
-    
-    
     
     <!-- 유저 성 정보 가져오기 --><!--CHECK-->
     <select id="getCastleList" parameterType="ModelMembers"  resultType="ModelCastle">        
@@ -252,6 +250,32 @@
       		  
     </select>
     
+    <!-- Log 가져오기 --><!--CHECK-->
+    <select id="getLog_ATK_DF_All" parameterType="String" resultType="ModelLog">        
+ 		select * from log
+ 			where AttackUserID=#{AttackUserID} and  AttackUserUseYN=0
+							union 
+		select * from log
+			where DefenseUserID=#{DefenseUserID} and  DefenseUserUseYN=0 order by BattleDate asc
+      		  
+    </select>
+    
+    <!-- Log 가져오기 --><!--CHECK-->
+    <select id="getLog_ATK" parameterType="String" resultType="ModelLog">        
+ 		select * from log
+ 			where AttackUserID=#{AttackUserID}
+ 			and   AttackUserUseYN=0 order by BattleDate asc
+							 
+      		  
+    </select>
+    
+    <!-- Log 가져오기 --><!--CHECK-->
+    <select id="getLog_DF" parameterType="String" resultType="ModelLog">
+		select * from log
+			where DefenseUserID=#{DefenseUserID}
+			and   DefenseUserUseYN=0 order by BattleDate asc
+      		  
+    </select>
     
     
     <!-- ========================== select Mappers ============================== -->

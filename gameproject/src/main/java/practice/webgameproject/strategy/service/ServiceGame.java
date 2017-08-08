@@ -204,9 +204,17 @@ public class ServiceGame extends DaoGame{
 	}
 
 	@Override
-	public List<ModelStructures> getStructures(ModelStructures targetStructures) {
+	public List<ModelStructures> getStructures() {
 
-		return super.getStructures(targetStructures);
+		List<ModelStructures> result=null;
+        
+        try {
+        	result = dao.getStructures();
+        } catch (Exception e) {
+            logger.error("getStructures " + e.getMessage() );
+        }
+        
+        return result;
 	}
 
 	@Override
@@ -811,6 +819,45 @@ public class ServiceGame extends DaoGame{
         
         return result;
 	}
+	
+	@Override
+	public List<ModelLog> getLog_ATK_DF_All(String userID){
+		List<ModelLog> result= null;
+        
+        try {
+        	result = dao.getLog_ATK_DF_All(userID);
+        } catch (Exception e) {
+            logger.error("getLog_ATK_DF_All " + e.getMessage() );
+        }
+        
+        return result;
+	};
+	
+	@Override
+	public List<ModelLog> getLog_ATK(String userID){
+		List<ModelLog> result= null;
+        
+        try {
+        	result = dao.getLog_ATK(userID);
+        } catch (Exception e) {
+            logger.error("getLog_ATK " + e.getMessage() );
+        }
+        
+        return result;
+	};
+	
+	@Override
+	public List<ModelLog> getLog_DF(String userID){
+		List<ModelLog> result= null;
+        
+        try {
+        	result = dao.getLog_DF(userID);
+        } catch (Exception e) {
+            logger.error("getLog_DF " + e.getMessage() );
+        }
+        
+        return result;
+	};
 
 	@Override
 	public int hashCode() {
