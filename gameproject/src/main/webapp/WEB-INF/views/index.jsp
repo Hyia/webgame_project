@@ -39,9 +39,9 @@ body{
 	<script src='http://code.jquery.com/jquery-3.1.0.js'></script>
     <script>
     $(document).ready( function(e){
-        $('login').click( function(e){
-            $('#loginform').attr('action', '/phone/writeone1').submit();              
-        });
+    	if((${isLogedin == false})){
+    		alert("!?!!?");
+    	}
     });
 	</script>
 </head>
@@ -53,16 +53,29 @@ body{
     </div>
     
     <div id="sidebar">
+	    <c:if test="${isLogedin == null ||  isLogedin == false}">
     	<div id="login">
-        <form id="loginform"method="post" action="">
-            <p><input type="text" name="login" value="" placeholder="UserID"></p>
-            <p><input type="password" name="password" value="" placeholder="UserPW"></p>
+        <form id="loginform"method="post" action="/loginreq">
+            <p><input type="text" name="id" value="" placeholder="UserID"></p>
+            <p><input type="password" name="pwd" value="" placeholder="UserPW"></p>
             <p class="submit">
             	<input type="submit" name="login" value="Login">
             </p>
-            
+            <c:if test="${isLogedin != null && isLogedin == false}">
+            <p> ${errorMsg} </p>
+            </c:if>
         </form>
         </div>
+	    </c:if>
+	    <c:if test="${isLogedin != null && isLogedin == true}">
+    	<div id="after_login" >
+        <form id="loginform">
+            <p> ${usernickname} 님 환영합니다.</p>
+            <p> 자원 : ${resource} </p>
+        </form>
+        </div>
+	    </c:if>
+        
     </div>
 </div>
 </body>

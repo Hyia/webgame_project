@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 
 import practice.webgameproject.strategy.engine.child.Army;
 import practice.webgameproject.strategy.engine.child.BattleLogMaker;
@@ -30,7 +32,7 @@ import practice.webgameproject.strategy.service.ServiceGame;
 
 public class Engine {
 	private static final Logger logger = LoggerFactory.getLogger(Engine.class);
-	
+
 	private ServiceGame service;
 	
 	private static final int STARTING_USER_RESOURCE_AMOUNT = 0;// 신규유저 시작자원량
@@ -983,6 +985,10 @@ public class Engine {
 		
 		
 		return heros;
+	}
+	
+	public ModelMembers getUserInfo(ModelMembers user){
+		return service.getMember(user);
 	}
 	
 	
