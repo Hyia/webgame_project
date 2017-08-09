@@ -377,7 +377,7 @@ public class Engine {
 	}
 	public int goBattle(ModelHeroTable hero, Integer locationID){
 		//지금 좌표랑 공격목표 좌표랑 이동시간 계산
-		ModelXYval startPoint = service.getModelXYval(hero.getLacationID());
+		ModelXYval startPoint = service.getModelXYval(hero.getLocationID());
 		int startX = startPoint.getCastleX();
 		int startY = startPoint.getCastleY();
 		
@@ -407,7 +407,7 @@ public class Engine {
 		
 		
 		//쓰레드 시작
-		if(hasAddableMarch(hero.getLacationID())){
+		if(hasAddableMarch(hero.getLocationID())){
 			//병력을 보낼 수 있으면 쓰레드를 붙여주고 성공 리턴
 			/**
 			 * 필요사항
@@ -420,7 +420,7 @@ public class Engine {
 			march.setFinish_time(travelTime + (new Date()).getTime());//이동시간에 현재시간을 더해서 이동완료시간으로 변환
 			march.setTravelLength((long)travelLength);
 			march.start();
-			threadsHolder.add(new ThreadHolder(hero.getLacationID(), march));
+			threadsHolder.add(new ThreadHolder(hero.getLocationID(), march));
 			return IServices.SUCCESS;
 		}
 		
@@ -461,7 +461,7 @@ public class Engine {
 		for(int i=0; i< threadsHolder.size(); i++){
 			ThreadHolder holder =threadsHolder.get(i); 
 			if(holder.thread instanceof MarchThread){
-				if( ((MarchThread)holder.thread).target.getLacationID() == locationID){
+				if( ((MarchThread)holder.thread).target.getLocationID() == locationID){
 					counter++;
 				}
 			}
