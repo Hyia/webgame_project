@@ -15,6 +15,9 @@ public class ModelHeroTroop {
 	public void setSlotID(Integer slotID) {
 		SlotID = slotID;
 	}
+	public ModelHeroTroop() {
+		
+	}
 	public ModelHeroTroop(Integer heroID, Integer slotID) {
 		HeroID = heroID;
 		SlotID = slotID;
