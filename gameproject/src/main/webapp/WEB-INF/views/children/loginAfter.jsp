@@ -4,6 +4,6 @@
 
 <div id="after_login" >
 	<p>${usernickname}님 환영합니다.</p>
-	<p>ìì : ${resource}</p>
+	<p>자원 : ${resource}</p>
 </div>
 

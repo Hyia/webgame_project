@@ -31,6 +31,9 @@ body{
 	padding:10px;	
 	margin-left:3%;
 }
+div{
+	border:1px solid #487be1;
+}
 </style>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -53,9 +56,8 @@ body{
     </div>
     
     <div id="sidebar">
-    	<!-- 로그인을 안했을 때의 div -->
-	    <c:if test="${isLogedin == null ||  isLogedin == false}">
-	    	<div id="login">
+	    <div id="loginArea">
+	    	<c:if test="${isLogedin == null ||  isLogedin == false}">
 		        <form id="loginform"method="post" action="/loginreq">
 		            <p><input type="text" name="id" value="" placeholder="UserID"></p>
 		            <p><input type="password" name="pwd" value="" placeholder="UserPW"></p>
@@ -68,13 +70,15 @@ body{
 		            	<p> ${errorMsg} </p>
 		            </c:if>
 		        </form>
-	        </div>
-	    </c:if>
+		   </c:if>
+		<!-- login after -->
+	    	<c:if test="${isLogedin != null && isLogedin == true}">
+	    		<%@ include file="children/loginAfter.jsp" %>
+	    	</c:if>
+	   </div>
 	    
-	    <!-- 로그인을 했을때의 div -->
-	    <c:if test="${isLogedin != null && isLogedin == true}">
-	    	<%@ include file="children/loginAfter.jsp" %>
-	    </c:if>
+	    
+	    
         
     </div>
 </div>
