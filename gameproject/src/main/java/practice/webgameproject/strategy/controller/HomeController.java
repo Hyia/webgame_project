@@ -66,7 +66,11 @@ public class HomeController {
 		if(game.isValidLogin(member)){
 			member = game.getUserInfo(member);
 			model.addAttribute("isLogedin", "true");
+			
+			
 			session.setAttribute("UserInfo", member);
+			session.setAttribute("locationID", game.getUserInitLocation(member));
+			
 			
 			
 			return "index";

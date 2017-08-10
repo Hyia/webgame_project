@@ -166,6 +166,15 @@ public class Engine {
 	}
 	
 	/**
+	 * 로그인 직후 가질 로케이션 아이디. 본성이 되겠다.
+	 * @return
+	 */
+	public Integer getUserInitLocation(ModelMembers targetUser){
+		List<ModelCastle> list = service.getCastleList(targetUser);
+		return list.get(0).getLocationID();
+	}
+	
+	/**
 	 * 새 유저가 로그인을 하면, 해당 유저를 위한 기본영토 등등을 만든다.
 	 * @param newbie
 	 * @return 에로코드 혹은 성공코드.
