@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import practice.webgameproject.strategy.engine.Engine;
+import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelStructures;
@@ -56,15 +57,14 @@ public class BuildController {
 		ModelMembers member = (ModelMembers)session.getAttribute("UserInfo");
 		if(member.getUserID() != game.getCastleHost(Integer.parseInt(locationID))){
 			//니가 주인이 아닐 때
+			return "redirect:/error/"+IServices.ERROR_INVAILD_ACCESS;
 		}
-		
-		
-		
+		//주인이 맞으면 리스트를 들고 건설창을 보여준다
 		ModelCastle target = new ModelCastle(null, null, null, Integer.parseInt(locationID), null);
 		List<ModelStructures> structlist = game.getBuildableBuildings(target);
 		model.addAttribute("struct_list", structlist);
 		
-		return "redirect:/town/"+locationID;
+		return "/children/buildwindow";
 	}
 	
 	@RequestMapping(value="/build/menu/{locationID}/{roomNumber}")

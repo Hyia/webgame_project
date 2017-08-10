@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import practice.webgameproject.strategy.engine.Engine;
 
+/**
+ * view error msg
+ */
 @Controller
 @RequestMapping(value="/error")
 public class ErrorController {
