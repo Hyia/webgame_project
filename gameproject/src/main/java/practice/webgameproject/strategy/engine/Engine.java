@@ -66,7 +66,7 @@ public class Engine {
 //	public Engine(ServiceGame service){
 	public Engine(){
 		//서비스를 가져옴
-//		this.service = service;
+		//		this.service = service;
 		//쓰레드 홀더 초기화
 		threadsHolder = new ArrayList<ThreadHolder>();
 

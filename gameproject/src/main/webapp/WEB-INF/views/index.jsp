@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<%@ page session="true" %>
 <html>
 <style>
 body{
@@ -53,27 +53,27 @@ body{
     </div>
     
     <div id="sidebar">
+    	<!-- 로그인을 안했을 때의 div -->
 	    <c:if test="${isLogedin == null ||  isLogedin == false}">
-    	<div id="login">
-        <form id="loginform"method="post" action="/loginreq">
-            <p><input type="text" name="id" value="" placeholder="UserID"></p>
-            <p><input type="password" name="pwd" value="" placeholder="UserPW"></p>
-            <p class="submit">
-            	<input type="submit" name="login" value="Login">
-            </p>
-            <c:if test="${isLogedin != null && isLogedin == false}">
-            <p> ${errorMsg} </p>
-            </c:if>
-        </form>
-        </div>
+	    	<div id="login">
+		        <form id="loginform"method="post" action="/loginreq">
+		            <p><input type="text" name="id" value="" placeholder="UserID"></p>
+		            <p><input type="password" name="pwd" value="" placeholder="UserPW"></p>
+		            
+		            <p class="submit">
+		            	<input type="submit" name="login" value="Login">
+		            </p>
+		            
+		            <c:if test="${isLogedin != null && isLogedin == false}">
+		            	<p> ${errorMsg} </p>
+		            </c:if>
+		        </form>
+	        </div>
 	    </c:if>
+	    
+	    <!-- 로그인을 했을때의 div -->
 	    <c:if test="${isLogedin != null && isLogedin == true}">
-    	<div id="after_login" >
-        <form id="loginform">
-            <p> ${usernickname} 님 환영합니다.</p>
-            <p> 자원 : ${resource} </p>
-        </form>
-        </div>
+	    	<%@ include file="children/loginAfter.jsp" %>
 	    </c:if>
         
     </div>
