@@ -1,10 +1,7 @@
 package practice.webgameproject.strategy.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -21,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import practice.webgameproject.strategy.engine.Engine;
 import practice.webgameproject.strategy.model.ModelMembers;
-import practice.webgameproject.strategy.service.ServiceGame;
-import practice.webgameproject.strategy.service.TempararyServiceGame;
 
 /**
  * Handles requests for the application home page.
@@ -71,10 +66,6 @@ public class HomeController {
 		if(game.isValidLogin(member)){
 			member = game.getUserInfo(member);
 			model.addAttribute("isLogedin", "true");
-			model.addAttribute("usernickname", member.getUserNicName());
-			model.addAttribute("resource", member.getSaveProduction());
-			
-			member.setUserPW(null);
 			session.setAttribute("UserInfo", member);
 			
 			
@@ -86,29 +77,13 @@ public class HomeController {
 		return "index";
 	}
 	
-	@RequestMapping(value = "/admin_orders_initialize_game", method = RequestMethod.GET)
-	public String adminPage(Model model){
-		return "/admin_orders_initialize_game";
-	}
-	@RequestMapping(value = "/admin_orders_initialize_game", method = RequestMethod.POST)
-	public String adminPageClicked(@RequestParam("value") String str, Model model){
-		logger.info("=====================================");
-		logger.info(str);
-		logger.info("=====================================");
+	@RequestMapping(value = "/children/loginAfter", method = RequestMethod.GET)
+	public String refresher(Model model, HttpSession session){
+		ModelMembers member = (ModelMembers)session.getAttribute("UserInfo");
+		member = game.getUserInfo(member);
+		session.setAttribute("UserInfo", member);
 		
-		if(str.equals("startServer")){
-			game.EngineInitalizer();
-			model.addAttribute("status", "start");
-			return "/admin_orders_initialize_game";
-		}
-		if(str.equals("stopServer")){
-			game.shutDown();
-			model.addAttribute("status", "stop");
-			return "/admin_orders_initialize_game";
-		}
-		
-		
-		return "/admin_orders_initialize_game";
+		return "/children/loginAfter";
 	}
 	
 }
