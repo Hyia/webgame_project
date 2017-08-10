@@ -23,6 +23,7 @@ body{
 	float:left;
 	padding:10px;
 }
+#contents..align-center { text-align: center; }
 #sidebar{
 	border:1px solid #487be1;
 	width:200px;
@@ -49,7 +50,7 @@ div{
        		if(${isLogedin == true}){
      		   $('#sidebar').load('/children/loginAfter');
            	}
-   		}, 1000) /* time in milliseconds (ie 2 seconds)*/    	
+   		}, 1000) /* time in milliseconds (ie 1 seconds)*/    	
     });
 	</script>
 </head>
@@ -57,11 +58,12 @@ div{
 <body>
 <div id="wrapper">
 	<div id="contents" >
-       contents
+       <h1>Web Game Project</h1>
     </div>
     
     <div id="sidebar">
 	    <div id="loginArea">
+	    <!-- login wait -->
 	    	<c:if test="${isLogedin == null ||  isLogedin == false}">
 		        <form id="loginform"method="post" action="/loginreq">
 		            <p><input type="text" name="id" value="" placeholder="UserID"></p>
