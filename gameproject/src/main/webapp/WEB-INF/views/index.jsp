@@ -42,7 +42,19 @@ body{
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Login Page</title>
-
+<script src='http://code.jquery.com/jquery-3.1.0.js'></script>
+    <script>
+     $(document).ready( function(e){
+     	if((${isLogedin == false})){
+     		alert("!?!!?");
+     	}
+        	setInterval(function(){
+        		if(${isLogedin == true}){
+      		   $('#sidebar').load('/children/loginAfter');
+            	}
+    		}, 1000) /* time in milliseconds (ie 1 seconds)*/    	
+     });
+ 	</script>
 </head>
 
 <body>
