@@ -954,6 +954,10 @@ public class Engine {
 		return myLoglist;
 	}
 	
+	public String getCastleHost(Integer locationID){
+		ModelCastle castle = service.getCastleOne(locationID);
+		return castle.getUserID();
+	}
 	
 	public List<ModelUnitBuild> getBuildableUnits(ModelBuilding target){
 		List<ModelUnitBuild> buildableUnits = new ArrayList<ModelUnitBuild>();
