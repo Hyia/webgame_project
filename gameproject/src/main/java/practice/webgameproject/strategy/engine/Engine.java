@@ -8,7 +8,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 
 import practice.webgameproject.strategy.engine.child.Army;
 import practice.webgameproject.strategy.engine.child.BattleLogMaker;
@@ -30,10 +32,12 @@ import practice.webgameproject.strategy.model.ModelWaitList_Unit;
 import practice.webgameproject.strategy.model.ModelXYval;
 import practice.webgameproject.strategy.service.ServiceGame;
 
+@Service
 public class Engine {
 	private static final Logger logger = LoggerFactory.getLogger(Engine.class);
-
-	private ServiceGame service;
+	@Autowired
+	@Qualifier("serviceGame")
+	ServiceGame service;
 	
 	private static final int STARTING_USER_RESOURCE_AMOUNT = 0;// 신규유저 시작자원량
 	private static final int BASIC_BUILDING_LEVEL = 1;// 신규 건물 초기레벨
@@ -53,9 +57,10 @@ public class Engine {
 	private List<List<ModelUnit>> unitTierList;
 	
 	//엔진 초기화
-	public Engine(ServiceGame service){
-		//서비스를 가져옴
-		this.service = service;
+//	public Engine(ServiceGame service){
+	public Engine(){
+		//서비스를 
+//		this.service = service;
 		//쓰레드 홀더 초기화
 		threadsHolder = new ArrayList<ThreadHolder>();
 		
@@ -138,15 +143,17 @@ public class Engine {
 		result = service.getMember(member);
 		if(result == null){
 			//이거 없는 유저야!
+			logger.info("없는유저같음");
 			return false;
 		}
 		
 		//있는 경우 패스워드 비교
 		if(!member.getUserPW().equals(result.getUserPW())){
 			//패스워드가 달라!
+			logger.info("pwd틀림");
 			return false;
 		}
-		
+		logger.info("나는 정상같음");
 		//정상 로그인
 		return true;
 	}
