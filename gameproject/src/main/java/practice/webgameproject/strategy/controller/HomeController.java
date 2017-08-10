@@ -66,10 +66,6 @@ public class HomeController {
 		if(game.isValidLogin(member)){
 			member = game.getUserInfo(member);
 			model.addAttribute("isLogedin", "true");
-			model.addAttribute("usernickname", member.getUserNicName());
-			model.addAttribute("resource", member.getSaveProduction());
-			
-			member.setUserPW(null);
 			session.setAttribute("UserInfo", member);
 			
 			
@@ -79,6 +75,15 @@ public class HomeController {
 		model.addAttribute("isLogedin", "false");
 		
 		return "index";
+	}
+	
+	@RequestMapping(value = "/children/loginAfter", method = RequestMethod.GET)
+	public String refresher(Model model, HttpSession session){
+		ModelMembers member = (ModelMembers)session.getAttribute("UserInfo");
+		member = game.getUserInfo(member);
+		session.setAttribute("UserInfo", member);
+		
+		return "/children/loginAfter";
 	}
 	
 }

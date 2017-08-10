@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 
 import practice.webgameproject.strategy.engine.Engine;
 
+/**
+ * unit and building construct order to be here
+ */
 @Controller
 public class BuildController {
 	private static final Logger logger = LoggerFactory.getLogger(BuildController.class);

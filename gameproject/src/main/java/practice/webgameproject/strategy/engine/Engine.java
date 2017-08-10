@@ -309,15 +309,17 @@ public class Engine {
 		}
 	}
 	
-	public int refreshResource(){
+	public int refreshResource(ModelMembers member){
 		/**
 		 * TODO 안만들었음
 		 * 반영해야하는 것
 		 * 		자원 변화
 		 * 		공격/회군/건설 남은시간 표기
+		 * 나중에 분해할것.
 		 */
+		member = service.getMember(member);
 		
-		return -1;
+		return member.getSaveProduction();
 	}
 	
 	/**

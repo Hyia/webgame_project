@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import practice.webgameproject.strategy.engine.Engine;
 
+/**
+ * for admin page.
+ * FIXME maybe needs login for administer
+ */
 @Controller
 public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);

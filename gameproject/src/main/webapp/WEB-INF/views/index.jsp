@@ -42,6 +42,11 @@ body{
     	if((${isLogedin == false})){
     		alert("!?!!?");
     	}
+       	setInterval(function(){
+       		if(${isLogedin == true}){
+     		   $('#sidebar').load('/children/loginAfter');
+           	}
+   		}, 1000) /* time in milliseconds (ie 2 seconds)*/    	
     });
 	</script>
 </head>
