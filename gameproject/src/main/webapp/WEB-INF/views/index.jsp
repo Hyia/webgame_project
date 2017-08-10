@@ -9,7 +9,7 @@ body{
 #wrapper{
 	border:1px solid #FFBB00;
 	width:1000px;
-	height:500px;
+	height:auto;
 	padding:10px;
 	position:absolute;
 	top:10px;
@@ -17,51 +17,41 @@ body{
 	margin-right:10%;
 	overflow:hidden;
 }
+#maincontent{
+	border:2px solid #300;
+	width:700px;
+	height:450px;
+	float:left;
+	margin:10px;
+}
 #contents{
 	border:1px solid #487be1;
 	width:700px;
 	float:left;
 	padding:10px;
 }
-#contents..align-center { text-align: center; }
 #sidebar{
-	border:1px solid #487be1;
-	width:200px;
-	height:400px;
-	float:right;
-	padding:10px;	
-	margin-left:3%;
-}
-div{
-	border:1px solid #487be1;
+	border: 1px solid #487be1;
+	width: 200px;
+	height: 550px;
+	float: right;
+	padding: 10px;
+	margin-left: 3%;
 }
 </style>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Login Page</title>
 
-	<script src='http://code.jquery.com/jquery-3.1.0.js'></script>
-    <script>
-    $(document).ready( function(e){
-    	if((${isLogedin == false})){
-    		alert("!?!!?");
-    	}
-       	setInterval(function(){
-       		if(${isLogedin == true}){
-     		   $('#sidebar').load('/children/loginAfter');
-           	}
-   		}, 1000) /* time in milliseconds (ie 1 seconds)*/    	
-    });
-	</script>
 </head>
 
 <body>
 <div id="wrapper">
 	<div id="contents" >
-       <h1>Web Game Project</h1>
+       <h1 align="center">Web Game Project</h1>
     </div>
     
-    <div id="sidebar">
+  <div id="sidebar">
 	    <div id="loginArea">
 	    <!-- login wait -->
 	    	<c:if test="${isLogedin == null ||  isLogedin == false}">
@@ -83,10 +73,10 @@ div{
 	    		<%@ include file="children/loginAfter.jsp" %>
 	    	</c:if>
 	   </div>
-	    
-	    
-	    
-        
+    </div>
+    
+    <div id="maincontent" >
+       Main
     </div>
 </div>
 </body>
