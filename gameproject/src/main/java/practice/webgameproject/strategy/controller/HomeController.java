@@ -64,8 +64,6 @@ public class HomeController {
 	@RequestMapping(value = "/loginreq", method = RequestMethod.POST)
 	public String cliced_btn_test(Model model, HttpServletRequest request, HttpSession session) {
 		
-		logger.info("뷁");
-		
 		String userID = request.getParameter("id");
 		String userPWD = request.getParameter("pwd");
 		ModelMembers member = new ModelMembers(userID, userPWD, null, null, null, null);
@@ -83,7 +81,6 @@ public class HomeController {
 		}
 
 		model.addAttribute("isLogedin", "false");
-		model.addAttribute("errorMsg", "ㅈㄹ");
 		
 		return "index";
 	}
