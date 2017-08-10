@@ -1,10 +1,7 @@
 package practice.webgameproject.strategy.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -21,8 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import practice.webgameproject.strategy.engine.Engine;
 import practice.webgameproject.strategy.model.ModelMembers;
-import practice.webgameproject.strategy.service.ServiceGame;
-import practice.webgameproject.strategy.service.TempararyServiceGame;
 
 /**
  * Handles requests for the application home page.
@@ -87,31 +82,6 @@ public class HomeController {
 		model.addAttribute("errorMsg", "ㅈㄹ");
 		
 		return "index";
-	}
-	
-	@RequestMapping(value = "/admin_orders_initialize_game", method = RequestMethod.GET)
-	public String adminPage(Model model){
-		return "/admin_orders_initialize_game";
-	}
-	@RequestMapping(value = "/admin_orders_initialize_game", method = RequestMethod.POST)
-	public String adminPageClicked(@RequestParam("value") String str, Model model){
-		logger.info("=====================================");
-		logger.info(str);
-		logger.info("=====================================");
-		
-		if(str.equals("startServer")){
-			game.EngineInitalizer();
-			model.addAttribute("status", "start");
-			return "/admin_orders_initialize_game";
-		}
-		if(str.equals("stopServer")){
-			game.shutDown();
-			model.addAttribute("status", "stop");
-			return "/admin_orders_initialize_game";
-		}
-		
-		
-		return "/admin_orders_initialize_game";
 	}
 	
 }
