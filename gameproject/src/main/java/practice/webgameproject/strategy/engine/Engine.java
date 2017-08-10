@@ -5,10 +5,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.UniqueConstraint;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import practice.webgameproject.strategy.engine.child.Army;
 import practice.webgameproject.strategy.engine.child.BattleLogMaker;
@@ -30,9 +37,12 @@ import practice.webgameproject.strategy.model.ModelWaitList_Unit;
 import practice.webgameproject.strategy.model.ModelXYval;
 import practice.webgameproject.strategy.service.ServiceGame;
 
+@Service("gameEngine")
+@Configurable
 public class Engine {
 	private static final Logger logger = LoggerFactory.getLogger(Engine.class);
 
+	@Autowired
 	private ServiceGame service;
 	
 	private static final int STARTING_USER_RESOURCE_AMOUNT = 0;// 신규유저 시작자원량
@@ -53,14 +63,18 @@ public class Engine {
 	private List<List<ModelUnit>> unitTierList;
 	
 	//엔진 초기화
-	public Engine(ServiceGame service){
+//	public Engine(ServiceGame service){
+	public Engine(){
 		//서비스를 가져옴
-		this.service = service;
+//		this.service = service;
 		//쓰레드 홀더 초기화
 		threadsHolder = new ArrayList<ThreadHolder>();
-		
+
+	}
+	
+	public void EngineInitalizer(){
 		//나은 제조시간을 가져옴
-		List<Object> producions = this.service.getProducingList();
+		List<Object> producions = service.getProducingList();
 		for(int i=0 ; i < producions.size(); i++){
 			Object target = producions.get(i);
 			
