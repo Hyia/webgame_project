@@ -42,25 +42,16 @@ body{
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Login Page</title>
-<script src='http://code.jquery.com/jquery-3.1.0.js'></script>
-    <script>
-     $(document).ready( function(e){
-     	if((${isLogedin == false})){
-     		alert("!?!!?");
-     	}
-        	setInterval(function(){
-        		if(${isLogedin == true}){
-      		   $('#sidebar').load('/children/loginAfter');
-            	}
-    		}, 1000) /* time in milliseconds (ie 1 seconds)*/    	
-     });
- 	</script>
+
 </head>
 
 <body>
 <div id="wrapper">
 	<div id="contents" >
        <h1 align="center">Web Game Project</h1>
+       <div id="menubar">
+       
+       </div>
     </div>
     
   <div id="sidebar">
@@ -75,9 +66,7 @@ body{
 		            	<input type="submit" name="login" value="Login">
 		            </p>
 		            
-		            <c:if test="${isLogedin != null && isLogedin == false}">
-		            	<p> ${errorMsg} </p>
-		            </c:if>
+		            
 		        </form>
 		   </c:if>
 		<!-- login after -->
@@ -88,7 +77,7 @@ body{
     </div>
     
     <div id="maincontent" >
-       Main
+       <%@ include file="children/city.jsp" %>
     </div>
 </div>
 </body>
