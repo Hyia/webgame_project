@@ -17,14 +17,6 @@
         	$mapTable += "<tr>";
     		for(var j=0; j<width; j++, k++){
             	$mapTable += "<td><a hrf='/maps/ >'";
-            	
-            	/*
-	public static final int LOCATION_TYPE_INVAILD = -1;
-	public static final int LOCATION_TYPE_NORMAL = 1;
-	public static final int LOCATION_TYPE_CASTLE = 2;
-	public static final int LOCATION_TYPE_EXTERNALRESOURCE = 3;
-            	
-            	*/
             	switch(kind[k]){
             	case -1:
                 	$mapTable += "<img src='/images/img_invaild.png' />";
