@@ -5,9 +5,6 @@
 	<title>Home</title>
 </head>
 <body>
-<h1>
-	this is index page<br>
-	이것은 인덱스 페이지로 제일 먼저 나타나는 페이지.
-</h1>
+<img src="images/img_mael.png">
 </body>
 </html>
