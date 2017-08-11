@@ -213,6 +213,41 @@ public class Engine {
 	}
 
 	/**
+	 * XYval 테이블 전체를 제거하고 재작성한다.
+	 */
+	public void resetMap(int max_width, int max_height, double outresourceRate){
+		//몽땅제거
+		//야외자원지 제거
+
+		//성 제거
+		
+		//XYval 제거
+		List<ModelXYval> allList = service.getAllXYval();
+		for(int i=0; i< allList.size(); i++){
+			service.deleteXYval(allList.get(i).getLocationID());
+		}
+		
+
+		//맨땅, 자원지 생성
+		for(int i=0; i<max_width; i++){
+			for(int j=0; j<max_height; j++){
+				int kind = IServices.LOCATION_TYPE_NORMAL;
+				if( Math.random()*100 < ((int)(outresourceRate*100)) ){
+					kind = IServices.LOCATION_TYPE_EXTERNALRESOURCE;
+				}
+				service.insertXYval(new ModelXYval(null, i, j, kind));
+			}
+		}
+		
+		//유저 성 생성 TODO 게임에 '세션' 개념을 도입하려면 만듬. 회원 없을 때 맵 초기화용이면 필요없음.
+//		List<ModelMembers> members = service.get
+		
+		
+		
+		
+	}
+
+	/**
 	 * 새 건물 건설용 메서드.
 	 * @param targetCastle
 	 * @param kind
@@ -265,6 +300,36 @@ public class Engine {
 		}
 		
 		return IServices.ERROR_INVAILD_ACCESS;
+	}
+	
+	public List<ModelXYval> getMap(int max_width, int max_height, Integer center_locationID){
+		List<ModelXYval> result = new ArrayList<ModelXYval>();
+		
+		int halfWidth = (int) (max_width/2);
+		int halfHeight = (int) (max_height/2);
+		
+		ModelXYval center = service.getXYval_LocationID(center_locationID);
+		
+		int centerX = center.getCastleX();
+		int centerY = center.getCastleY();
+		
+		int arrayStartX = centerX - halfWidth;
+		int arrayStartY = centerY - halfHeight;
+		
+		for(int x=arrayStartX; x< max_width+arrayStartX; x++){
+			for(int y=arrayStartY; y<max_height+arrayStartY; y++){
+				ModelXYval xyval = service.getXYval_XY(new ModelXYval(null, x, y, null));
+				if(xyval != null){
+					result.add(xyval);
+				}else{
+					//없는 경우 ( 맵 바깥 )
+					result.add(new ModelXYval(null, x, y, IServices.LOCATION_TYPE_INVAILD));
+				}
+			}
+		}
+		
+		
+		return result;
 	}
 	
 	/**

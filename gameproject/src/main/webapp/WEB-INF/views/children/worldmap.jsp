@@ -8,7 +8,7 @@
     	
     	var width = ${mapWidth};
     	var height = ${mapHeight};
-    	var kind = ${kindList};
+    	var kind = ${mapData};
     	
     	var $mapTable = "<table>";
     	
@@ -16,7 +16,7 @@
     	for(var i=0; i<height; i++){
         	$mapTable += "<tr>";
     		for(var j=0; j<width; j++, k++){
-            	$mapTable += "<td><a hrf='/maps/ >'";
+            	$mapTable += "<td><a hrf='/maps/"+width+" >'";
             	switch(kind[k]){
             	case -1:
                 	$mapTable += "<img src='/images/img_invaild.png' />";
@@ -40,6 +40,7 @@
     	}
 
     	$mapTable += "</table>";
+    	
     	
     	
     	$("#map").html($mapTable);
