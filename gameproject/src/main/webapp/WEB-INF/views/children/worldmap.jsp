@@ -2,48 +2,54 @@
 <%@ page session="true" %>
 <html>
 <head>
-	<script src='/js/jquery-3.1.0.js'></script>
+<script src='http://code.jquery.com/jquery-3.1.0.js'></script>
     <script>
     $(document).ready( function(e){
-    	
+
+    	var $mapTable = "<table>";
     	var width = ${mapWidth};
     	var height = ${mapHeight};
-    	var kind = ${mapData};
-    	
-    	var $mapTable = "<table>";
-    	
+    	var kind = ${kind};
+    	var locationID = ${locations};
+
+    	//var $mapTable = "<table>";
+
+    	<% int counter = 0; %>
     	var k = 0;
     	for(var i=0; i<height; i++){
-        	$mapTable += "<tr>";
+    		$mapTable += "<tr>";
     		for(var j=0; j<width; j++, k++){
-            	$mapTable += "<td><a hrf='/maps/"+width+" >'";
-            	switch(kind[k]){
-            	case -1:
-                	$mapTable += "<img src='/images/img_invaild.png' />";
-            		break;
-            	case 1:
-                	$mapTable += "<img src='/images/img_grass.png' />";
-            		break;
-            	case 2:
-                	$mapTable += "<img src='/images/img_castle.png' />";
-            		break;
-            	case 3:
-                	$mapTable += "<img src='/images/img_outresource.png' />";
-            		break;
-            		default:
-                    	$mapTable += "<img src='/images/img_invaild.png' />";
-            	}
-    			
-            	$mapTable += "</a></td>";
+    	    	
+    	    	$mapTable += "<td>";
+    	    	if(locationID[k] !=null){ 	    		
+    	   	    	$mapTable += "<a href='/map/"+locationID[k]+"/info' >";
+      	    	}
+    	    	switch(kind[k]){
+    	    	case -1:
+    	        	$mapTable += "<img src='/images/img_invaild.png' />";
+    	    		break;
+    	    	case 1:
+    	        	$mapTable += "<img src='/images/img_grass.png' />";
+    	    		break;
+    	    	case 2:
+    	        	$mapTable += "<img src='/images/img_castle.png' />";
+    	    		break;
+    	    	case 3:
+    	        	$mapTable += "<img src='/images/img_outresource.png' />";
+    	    		break;
+    	    		default:
+    	            	$mapTable += "<img src='/images/img_invaild.png' />";
+    	    	}
+    			<% counter++; %>
+    	    	$mapTable += "</a></td>";
     		}
-        	$mapTable += "</tr>";
+    		$mapTable += "</tr>";
     	}
 
     	$mapTable += "</table>";
-    	
-    	
-    	
-    	$("#map").html($mapTable);
+
+
+        $("#map").append($mapTable);
     	
     	
     	
@@ -53,7 +59,8 @@
 </head>
 <body>
 <input type="text" id="maplocation" hidden='true' value='null'>
-<div id='map'></div>
+<div id='map'>
+</div>
 
 
 </body>
