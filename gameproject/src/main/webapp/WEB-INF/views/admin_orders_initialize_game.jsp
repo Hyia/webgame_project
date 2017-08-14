@@ -53,10 +53,11 @@ body{
 </head>
 
 <body>
-<form action="/admin_page" method="post">
+<form action="/admin_orders_initialize_game" method="post">
 	<input type="text" id="value" hidden="true" name="value" value="startServcer">
 	<input type="submit" id="startServer" value="startServer"/>
 	<input type="submit" id="stopServer" value="stopServer"/>
+	<input type="submit" id="resultMapr" value="makeMap"/>
 </form>
 
 <p id="textarea">status: stop</p>
