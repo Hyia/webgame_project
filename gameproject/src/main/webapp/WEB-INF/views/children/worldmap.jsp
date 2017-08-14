@@ -2,17 +2,20 @@
 <%@ page session="true" %>
 <html>
 <head>
+<style type="text/css">
+ table { border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;}
+ td { border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;}
+</style>
 <script src='http://code.jquery.com/jquery-3.1.0.js'></script>
     <script>
     $(document).ready( function(e){
 
-    	var $mapTable = "<table>";
     	var width = ${mapWidth};
     	var height = ${mapHeight};
     	var kind = ${kind};
     	var locationID = ${locations};
 
-    	//var $mapTable = "<table>";
+    	var $mapTable = "<table>";
 
     	<% int counter = 0; %>
     	var k = 0;
@@ -59,8 +62,11 @@
 </head>
 <body>
 <input type="text" id="maplocation" hidden='true' value='null'>
-<div id='map'>
-</div>
+<table>
+<tr><td align="center" colspan="${mapWidth+2}">▲</td></tr>
+<tr><td>◀</td><td><div id='map'></div></td><td>▶</td></tr>
+<tr><td align="center" colspan="${mapWidth+2}">▼</td></tr>
+</table>
 
 
 </body>

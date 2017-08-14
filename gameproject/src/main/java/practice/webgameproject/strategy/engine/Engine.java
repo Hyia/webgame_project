@@ -1056,6 +1056,11 @@ public class Engine {
 		return buildableUnits;
 	}
 	
+	public List<ModelBuilding> getBuildingInTown(Integer locationID){
+		List<ModelBuilding> buildings = service.getBuilding(new ModelCastle(null, null, null, locationID, null));
+		return buildings;
+	}
+	
 	public List<ModelStructures> getBuildableBuildings(ModelCastle target){
 		List<ModelStructures> structures = service.getStructures();
 		return structures;
