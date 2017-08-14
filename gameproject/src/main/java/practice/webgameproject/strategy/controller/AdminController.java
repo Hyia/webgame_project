@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import practice.webgameproject.strategy.engine.Engine;
+import practice.webgameproject.strategy.interfaces.IServices;
 
 /**
  * for admin page.
@@ -44,7 +45,11 @@ public class AdminController {
 			model.addAttribute("status", "stop");
 			return "/admin_orders_initialize_game";
 		}
-		
+		if(str.equals("makeMap")){
+			game.resetMap(IServices.MAP_MAX_WIDTH, IServices.MAP_MAX_HEIGHT, 0.05);
+			model.addAttribute("status", "initialized");
+			return "/admin_orders_initialize_game";
+		}
 		
 		return "/admin_orders_initialize_game";
 	}
