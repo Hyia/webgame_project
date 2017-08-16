@@ -3,7 +3,9 @@ package practice.webgameproject.strategy.engine;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.UniqueConstraint;
 
@@ -650,10 +652,15 @@ public class Engine {
 	private String fight(List<ModelHeroTable> attacker, List<Army> localArmy){
 		//로그 생성 준비
 		BattleLogMaker logMaker = new BattleLogMaker();
+		Map<String,Object> rewards = new HashMap<String,Object>();
+		Map<String,Integer> arewards = new HashMap<String, Integer>();
+		Map<String,Integer> drewards = new HashMap<String, Integer>();		
 		int sum_of_atk_exp = 0;//공격자가 얻는 경험치
-		int aheros = 0;//공격자 영웅수
 		int sum_of_def_exp = 0;//방어자가 얻는 경험치
+
+		int aheros = 0;//공격자 영웅수
 		int dheros = 0;//방어자 영웅수
+		
 		
 		//공격자측 정보+보정
 		List<Army> attackerArms = new ArrayList<Army>();
@@ -809,7 +816,7 @@ public class Engine {
 					myHpSum = myHpSum - unithp;
 					myAtkSum = myAtkSum - unit.getATK().intValue();
 					unitAmount.set(j, amount-1);
-					sum_of_def_exp += unit.get
+					sum_of_def_exp += unit.getEXP();
 					
 					//한줄이 모두 1씩 감소했는데 여전히 오버딜을 받은 상태인 경우
 					if(tempDefAtk > 0 && j == units.size()-1){
@@ -869,7 +876,7 @@ public class Engine {
 					defHpSum = defHpSum - unithp;
 					defAtkSum = defAtkSum - unit.getATK().intValue();
 					unitAmount.set(j, amount-1);
-					sum_of_atk_exp+= unit.get
+					sum_of_atk_exp+= unit.getEXP();
 					//한줄이 모두 1씩 감소했는데 여전히 오버딜을 받은 상태인 경우
 					if(tempMyAtk > 0 && j == units.size()-1){
 						//다시 첫번째 슬롯부터 딜을 받는다.
@@ -899,9 +906,35 @@ public class Engine {
 		 * 그런데 어느 쪽이든 병력 소모된 양을 구해서 DB갱신하면 되잖아?
 		 * 어차피 승패는 로그보면 암;
 		 */
+		//양측 전리품을 넣는 곳 TODO: DB에도 넣어야함.
+
+		/**
+		int aheros = 0;//공격자 영웅수
+		int dheros = 0;//방어자 영웅수
+		 */
+		for(int i=0; i< attacker.size();i++){
+			ModelHeroTable hero =attacker.get(i); 
+			hero.setExp(hero.getExp()+ (int)(sum_of_atk_exp/aheros));
+			service.updateHero(hero, hero);
+		}
+		for(int i=0; i< defHeros.size();i++){
+			ModelHeroTable hero =defHeros.get(i); 
+			if(hero.getOwner()!=null && hero.getOwner().equals("")){
+				hero.setExp(hero.getExp()+ (int)(sum_of_atk_exp/aheros));
+				service.updateHero(hero, hero);
+			}
+		}
+		
+		arewards.put("exp", sum_of_atk_exp);
+		drewards.put("exp", sum_of_atk_exp);
+
+		
+		
+		rewards.put("attacker", arewards);
+		rewards.put("defender", drewards);
 		
 		//로그파일 쓰기
-		logMaker.writeLog();
+		logMaker.writeLog(rewards);
 		// TODO 2.로그정보를 DB에 넣기
 		ModelLog logger = new ModelLog(logMaker.getLogName(), logMaker.getAttacker_ID(), logMaker.getDefender_ID(), false, false, logMaker.getLogDate());
 
