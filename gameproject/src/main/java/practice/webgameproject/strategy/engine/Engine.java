@@ -332,6 +332,10 @@ public class Engine {
 		return result;
 	}
 	
+	public ModelXYval getXYval_ID(Integer locationID){
+		return service.getXYval_LocationID(locationID);
+	}
+	
 	/**
 	 * 건물 업그레이드. 놈의 자원을 빼먹어라
 	 * @param who
