@@ -9,10 +9,14 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.action.internal.UnresolvedEntityInsertActions;
 
+import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelUnit;
 
@@ -174,7 +178,7 @@ public class BattleLogMaker {
 		return round;
 	}
 
-	public void writeLog() {
+	public void writeLog(Map<String,Object> rewards) {
 		logName = new SimpleDateFormat("YYYYMMDDhhmmssSSS").format(logDate)+"-"+attacker_ID+"-"+defender_ID;
 		BufferedWriter out = null;
 	    try {
@@ -187,7 +191,7 @@ public class BattleLogMaker {
 		        //out.newLine();
 	        }
 	        //전투 결산 부분
-	        out.write(makeTail());
+	        out.write(makeTail(rewards));
 	        
 	        out.close();
 	      } catch (IOException e) {
@@ -196,43 +200,79 @@ public class BattleLogMaker {
 	
 	private String makeHeader(){
 		//TODO 초기병력 정보를 담는 가장 위쪽을 만들 것
-		String str = "<div id='log' class='logarea'><table class='logtable'><tr><td colspan='12' class='logtitle' align='left'>"+logDate+"</td>"+
-		"</tr><tr><td colspan='6' class='logtitle'>"+attacker_ID+"</td><td colspan='6' class='logtitle'>"+defender_ID+"</td>"+
-        "</tr>";
-		for(int i=0; i<attacker.size();i++){
-			if(attacker.get(i).getHeroID()!=null){
-				for(int j=0; j<attackerArmy.size();j++){
-					
-				}
-			}
-		}
+		String str = "<table class='logtable'><tr>"
+				+ "<td colspan='12' align='left' class='logdate'>"+new SimpleDateFormat("YYYY/MM/DD/hh:mm:ss").format(logDate)+"</td></tr>"
+				+ "<tr><td colspan='6' class='log_userid'>"+attacker_ID+"</td>"
+				+ "<td colspan='6' class='log_userid'>"+defender_ID+"</td></tr>";
 		
-		/*
-		<tr><td colspan='6'>${공격자영웅ID}</td>
-            <td colspan='6'>${방어자영웅ID}</td>
-        </tr>
-        <tr>
-            <td colspan='2'>${슬롯}</td>
-            <td colspan='2'>${슬롯}</td>
-            <td colspan='2'>${슬롯}</td>
-            <td colspan='2'>${슬롯}</td>
-            <td colspan='2'>${슬롯}</td>
-            <td colspan='2'>${슬롯}</td>
-        </tr>
-        <tr><td colspan=12><hr></td></tr>
-        <tr>
-            <td colspan='3'>${공격자총공}</td>
-            <td colspan='3'>${공격자총체}</td>
-            <td colspan='3'>${방어자총공}</td>
-            <td colspan='3'>${방어자총체}</td>
-        </tr>
-";
-*/
+		str += armStatus(attackerArmy, defenderArmy);
+		
 		return str;
 	}
-	private String makeTail(){
-		//TODO 초기병력 정보를 담는 가장 위쪽을 만들 것
-		String str = "여기에 로그 결산이 붙어요. 어떻게 보여줄지는 상의필요.";
+	
+	@SuppressWarnings("unchecked")
+	private String makeTail(Map<String,Object> rewards){
+		String str = "<tr><td colspan=12 class=logtitle>피해</td></tr><tr>"
+				+ "<td colspan='6'><table width='100%'>";
+		
+		for(int i=0; i<attackerArmy.size();i++){
+			List<Integer> unitInitAmounts = attackerArmy.get(i).getUnitAmountList();
+			List<Integer> unitAfterAmounts = round.get(round.size()-1).attackerArmy.get(i).getUnitAmountList();
+			str+= "<tr>";
+			
+			Army arm = attackerArmy.get(i);
+			if(arm.getHeroID()!=null && arm.getHeroID().intValue() != IServices.HEROID_NO_HERO_TROOPS){
+				str += "<tr><td colspan='100%'>무명의 영웅("+arm.getHeroID()+")</td></tr>";// FIXME 영웅 이름에 대한 컬럼이 추가되면 변경할것.
+			}
+			for(int j=0; j<unitInitAmounts.size();j++){
+				if(unitInitAmounts.get(j).intValue() != unitAfterAmounts.get(j).intValue()){
+					String imgName = arm.getUnits().get(j).getName();
+					str += "<td><img src='/images/"+imgName+".png' alt='"+imgName+"'>"+""
+							+ "["+unitInitAmounts.get(j).intValue()+" - "+(unitInitAmounts.get(j).intValue()-unitAfterAmounts.get(j).intValue())+" ="+unitAfterAmounts.get(j).intValue()+"]</td>";
+				}
+			}
+			str += "</tr>";
+		}
+		
+		str+="</table></td><td colspan='6'><table width='100%'>";
+
+		for(int i=0; i<defenderArmy.size();i++){
+			List<Integer> unitInitAmounts = defenderArmy.get(i).getUnitAmountList();
+			List<Integer> unitAfterAmounts = round.get(round.size()-1).defenderArmy.get(i).getUnitAmountList();
+			str+= "<tr>";
+			
+			Army arm = defenderArmy.get(i);
+			if(arm.getHeroID()!=null && arm.getHeroID().intValue() != IServices.HEROID_NO_HERO_TROOPS){
+				str += "<tr><td colspan='100%'>무명의 영웅("+arm.getHeroID()+")</td></tr>";// FIXME 영웅 이름에 대한 컬럼이 추가되면 변경할것.
+			}
+			for(int j=0; j<unitInitAmounts.size();j++){
+				if(unitInitAmounts.get(j).intValue() != unitAfterAmounts.get(j).intValue()){
+					String imgName = arm.getUnits().get(j).getName();
+					str += "<td><img src='/images/"+imgName+".png' alt='"+imgName+"'>"+""
+							+ "["+unitInitAmounts.get(j).intValue()+" - "+(unitInitAmounts.get(j).intValue()-unitAfterAmounts.get(j).intValue())+" ="+unitAfterAmounts.get(j).intValue()+"]</td>";
+				}
+			}
+			str += "</tr>";
+		}
+
+		str+="</table></td</tr> <tr><td colspan=12><hr></td></tr>";
+		str+= armStatus(round.get(round.size()-1).attackerArmy, round.get(round.size()-1).defenderArmy);
+		
+		//전리품
+		str += "<tr><td colspan='12' class='logtitle'>노획물</td></tr><tr><td colspan=12><hr></td></tr>";
+		
+		Map<String,Integer> aitem = (Map<String, Integer>) rewards.get("attacker");
+		Map<String,Integer> ditem = (Map<String, Integer>) rewards.get("defender");
+
+		str+= "<tr><td colspan='6'><table>";
+		for(String key : aitem.keySet()){
+			str+="<tr><td>"+key+" : "+aitem.get(key)+"</td></tr>";
+		}
+		str+="</table></td><td colspan='6'><table>";
+		for(String key : ditem.keySet()){
+			str+="<tr><td>"+key+" : "+ditem.get(key)+"</td></tr>";
+		}
+		str+="</table></td></tr></table>";
 		return str;
 	}
 	public static String getLogFile(String logName,String attacker_ID, String defender_ID){
@@ -282,6 +322,51 @@ public class BattleLogMaker {
 		return "";
 	}
 	
+	private String armStatus(List<Army> attackerArmy, List<Army> defenderArmy){
+		String str = "<tr><td colspan='6'><table width='100%'>";
+		int aatksum=0;
+		int ahpsum=0;
+		int datksum=0;
+		int dhpsum=0;
+		
+		for(int i=0; i<attackerArmy.size();i++){
+			Army arm = attackerArmy.get(i);
+			//영웅이 있으면 영웅을 달아줌
+			if(arm.getHeroID()!=null && arm.getHeroID().intValue() != IServices.HEROID_NO_HERO_TROOPS){
+				str += "<tr><td colspan='100%'>무명의 영웅("+arm.getHeroID()+")</td></tr>";// FIXME 영웅 이름에 대한 컬럼이 추가되면 변경할것.
+			}
+			str +="<tr>";
+			List<ModelUnit> units = arm.getUnits();
+			for(int j=0; j<units.size(); j++){
+				String imgName = units.get(j).getName();
+				str += "<td><img src='/images/"+imgName+".png' alt='"+imgName+"'>"+"["+arm.getUnitAmountList().get(j).intValue()+"]</td>";
+				aatksum += units.get(j).getATK();
+				ahpsum += units.get(j).getHP();
+			}
+			str +="</tr>";
+		}
+		str += "</table></td><td colspan='6'><table width='100%'>";
+		for(int i=0; i<defenderArmy.size();i++){
+			Army arm = defenderArmy.get(i);
+			//영웅이 있으면 영웅을 달아줌
+			if(arm.getHeroID()!=null && arm.getHeroID().intValue() != IServices.HEROID_NO_HERO_TROOPS){
+				str += "<tr><td colspan='100%'>무명의 영웅("+arm.getHeroID()+")</td></tr>";// FIXME 영웅 이름에 대한 컬럼이 추가되면 변경할것.
+			}
+			str +="<tr>";
+			List<ModelUnit> units = arm.getUnits();
+			for(int j=0; j<units.size(); j++){
+				String imgName = units.get(j).getName();
+				str += "<td><img src='/images/"+imgName+".png' alt='"+imgName+"'>"+"["+arm.getUnitAmountList().get(j).intValue()+"]</td>";
+				datksum += units.get(j).getATK();
+				dhpsum += units.get(j).getHP();
+			}
+			str +="</tr>";
+		}
+		str += "</table></td></tr><tr><td colspan='3'>총 공격력: "+aatksum+"</td><td colspan='3'>총 체력: "+ahpsum+"</td>"
+				+ "<td colspan='3'>총 공격력: "+datksum+"</td><td colspan='3'>총 체력: "+dhpsum+"</td></tr>";
+
+		return str;
+	}
 	
 	public class Round{
 		int round;
@@ -306,9 +391,11 @@ public class BattleLogMaker {
 		
 		@Override
 		public String toString() {
-			//TODO 각 라운드 정보를 작성할것.
-			String str= "여기에  라운드("+round+")에 대한 교전기록이 붙어요";
-			
+			String str= "<tr><td colspan='12'><div name='round' class=logtable><table width='100%'><tr>"
+					+ "<td colspan='12' class='logtitle' align='left'>"+round+"번째 회합</td></tr>";
+					
+			str += armStatus(attackerArmy, defenderArmy);
+
 			return str;
 		}
 	}
