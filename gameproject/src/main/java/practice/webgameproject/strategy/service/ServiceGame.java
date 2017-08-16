@@ -978,8 +978,7 @@ public class ServiceGame extends DaoGame{
 
 	//건물 DB를 갱신
 	public int updateBuilding(ModelBuilding target) {
-
-		return ERROR_NOT_MAKE_YET;
+		return updateBuilding(target, target);
 	}
 
 	//유저의 자원만을 갱신. TODO 자원 외의 정보만 갱신할 매서드. 코딩 중 헷갈리지 않기 위함.+ DB에 필요이상의 변화 방지.

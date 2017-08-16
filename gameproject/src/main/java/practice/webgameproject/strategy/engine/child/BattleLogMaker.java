@@ -196,7 +196,38 @@ public class BattleLogMaker {
 	
 	private String makeHeader(){
 		//TODO 초기병력 정보를 담는 가장 위쪽을 만들 것
-		String str = "여기에 HTML을 포함한 로그 앞머리가 붙어요. 어떻게 보여줄지는 상의필요";
+		String str = "<div id='log' class='logarea'><table class='logtable'><tr><td colspan='12' class='logtitle' align='left'>"+logDate+"</td>"+
+		"</tr><tr><td colspan='6' class='logtitle'>"+attacker_ID+"</td><td colspan='6' class='logtitle'>"+defender_ID+"</td>"+
+        "</tr>";
+		for(int i=0; i<attacker.size();i++){
+			if(attacker.get(i).getHeroID()!=null){
+				for(int j=0; j<attackerArmy.size();j++){
+					
+				}
+			}
+		}
+		
+		/*
+		<tr><td colspan='6'>${공격자영웅ID}</td>
+            <td colspan='6'>${방어자영웅ID}</td>
+        </tr>
+        <tr>
+            <td colspan='2'>${슬롯}</td>
+            <td colspan='2'>${슬롯}</td>
+            <td colspan='2'>${슬롯}</td>
+            <td colspan='2'>${슬롯}</td>
+            <td colspan='2'>${슬롯}</td>
+            <td colspan='2'>${슬롯}</td>
+        </tr>
+        <tr><td colspan=12><hr></td></tr>
+        <tr>
+            <td colspan='3'>${공격자총공}</td>
+            <td colspan='3'>${공격자총체}</td>
+            <td colspan='3'>${방어자총공}</td>
+            <td colspan='3'>${방어자총체}</td>
+        </tr>
+";
+*/
 		return str;
 	}
 	private String makeTail(){
