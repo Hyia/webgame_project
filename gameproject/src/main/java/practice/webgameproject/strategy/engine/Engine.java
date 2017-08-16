@@ -575,6 +575,14 @@ public class Engine {
 		return false;
 	}
 	
+	public boolean isInConstruct(Integer locationID, Integer roomNumber){
+		ModelWaitList_Building finder = new ModelWaitList_Building(null, locationID, null, roomNumber);
+		int index = threadsHolder.indexOf(finder);
+		
+		if(index != -1) return true;//쓰레드홀더가 없으면 건설중이 아님.
+		return false;
+	}
+	
 	/**
 	 * 특기 유닛에 대한 능력치 보정
 	 * @param basicUnitStat
@@ -642,6 +650,10 @@ public class Engine {
 	private String fight(List<ModelHeroTable> attacker, List<Army> localArmy){
 		//로그 생성 준비
 		BattleLogMaker logMaker = new BattleLogMaker();
+		int sum_of_atk_exp = 0;//공격자가 얻는 경험치
+		int aheros = 0;//공격자 영웅수
+		int sum_of_def_exp = 0;//방어자가 얻는 경험치
+		int dheros = 0;//방어자 영웅수
 		
 		//공격자측 정보+보정
 		List<Army> attackerArms = new ArrayList<Army>();
@@ -650,6 +662,7 @@ public class Engine {
 		for(int i=0; i<attacker.size(); i++){
 			//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장
 			ModelHeroTable hero = attacker.get(i);
+			aheros++;
 			List<ModelSlot> heroUnits = service.getHeroTroop_SlotList(hero.getHeroID());
 			Army heroArmy = new Army(attacker.get(i).getHeroID());
 			for(int j=0; j< heroUnits.size(); j++){
@@ -703,6 +716,7 @@ public class Engine {
 				//영웅 있는 병력
 				//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장				
 				ModelHeroTable hero = service.getHero(new ModelHeroTable(HeroID, null, null, null, null, null, null, null, null, null));
+				dheros++;
 				logMaker.setDefender_ID(hero.getOwner());
 				for(int j=0; j< units.size(); j++){
 					ModelUnit unit = units.get(j);
@@ -795,6 +809,7 @@ public class Engine {
 					myHpSum = myHpSum - unithp;
 					myAtkSum = myAtkSum - unit.getATK().intValue();
 					unitAmount.set(j, amount-1);
+					sum_of_def_exp += unit.get
 					
 					//한줄이 모두 1씩 감소했는데 여전히 오버딜을 받은 상태인 경우
 					if(tempDefAtk > 0 && j == units.size()-1){
@@ -854,7 +869,7 @@ public class Engine {
 					defHpSum = defHpSum - unithp;
 					defAtkSum = defAtkSum - unit.getATK().intValue();
 					unitAmount.set(j, amount-1);
-					
+					sum_of_atk_exp+= unit.get
 					//한줄이 모두 1씩 감소했는데 여전히 오버딜을 받은 상태인 경우
 					if(tempMyAtk > 0 && j == units.size()-1){
 						//다시 첫번째 슬롯부터 딜을 받는다.
@@ -1198,6 +1213,18 @@ public class Engine {
 		
 		return creeps;
 	}
+	public void destroyThread(Thread thread) {
+		int index = threadsHolder.indexOf(thread);
+		Thread tr = threadsHolder.get(index).thread;
+		try {
+			tr.join(0);
+			
+		} catch (InterruptedException e) {
+
+			e.printStackTrace();
+		}
+		threadsHolder.remove(index);
+	}
 	
 	private ModelUnit getRandomUnitAtTier(int tier){
 		int index = (int)(Math.random()*unitTierList.get(tier).size());
@@ -1221,7 +1248,7 @@ public class Engine {
 			if(obj instanceof ThreadHolder){
 				ThreadHolder target = (ThreadHolder) obj;
 				if(locationID.intValue() == target.locationID.intValue()){
-						return target.equals(thread);
+						return target.thread.equals(thread);
 				}else{
 					return false;
 				}
@@ -1290,6 +1317,8 @@ public class Engine {
 				}
 				return;
 			}
+			
+			destroyThread(this);
 		}
 		@Override
 		public boolean equals(Object obj) {
@@ -1431,6 +1460,7 @@ public class Engine {
 				timeleft = currentTime - 가던시간;
 			}
 			//도착은 페이지 새로고침될 때 이 쓰레드를 isAlive()를 호출함으로 알 수 있을걸?
+			destroyThread(this);//쓰레드를 제거하는 쓰레드를 만들기 귀찮았다.
 			//end of method
 		}
 		
@@ -1452,6 +1482,7 @@ public class Engine {
 		}
 
 	}
+
 
 
 }
