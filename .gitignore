@@ -8,3 +8,4 @@
 /gameproject/.gradle
 /gameproject/bin
 bin
+/.recommenders/
