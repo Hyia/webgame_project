@@ -53,6 +53,8 @@ body{
        		   $('#sidebar').load('/children/loginAfter');
              	}
      		}, 1000) /* time in milliseconds (ie 1 seconds)*/    	
+     		
+      
       });
   	</script>
 </head>
@@ -89,7 +91,7 @@ body{
     </div>
     
     <div id="maincontent" >
-       <%@ include file="children/city.jsp" %>
+	    		<%@ include file="children/town.jsp" %>
     </div>
 </div>
 </body>

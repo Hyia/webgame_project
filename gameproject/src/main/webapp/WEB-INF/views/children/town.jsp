@@ -9,37 +9,22 @@
     	var width = ${mapWidth};
     	var height = ${mapHeight};
     	var kind = ${kind};
+    	var roomNumber= ${roomNumber};
     	var locationID = ${locations};
 
     	
 
-    	<% int counter = 0; %>
     	var k = 0;
     	for(var i=0; i<height; i++){
     		$mapTable += "<tr>";
     		for(var j=0; j<width; j++, k++){
     	    	
     	    	$mapTable += "<td>";
-    	    	if(locationID[k] !=null){ 	    		
-    	   	    	$mapTable += "<a href='/map/"+locationID[k]+"/info' >";
-      	    	}
-    	    	switch(kind[k]){
-    	    	case -1:
-    	        	$mapTable += "<img src='/images/img_invaild.png' />";
-    	    		break;
-    	    	case 1:
-    	        	$mapTable += "<img src='/images/img_grass.png' />";
-    	    		break;
-    	    	case 2:
-    	        	$mapTable += "<img src='/images/img_castle.png' />";
-    	    		break;
-    	    	case 3:
-    	        	$mapTable += "<img src='/images/img_outresource.png' />";
-    	    		break;
-    	    		default:
-    	            	$mapTable += "<img src='/images/img_invaild.png' />";
-    	    	}
-    			<% counter++; %>
+    	    		    		
+    	   	    	$mapTable += "<a href='/map/"+locationID[k]+"/cityinfo' >";
+      	    	
+    	        	$mapTable += "<img src='/images/img_maelBuildTyle.png' />";
+    	    		
     	    	$mapTable += "</a></td>";
     		}
     		$mapTable += "</tr>";
@@ -48,7 +33,7 @@
     	$mapTable += "</table>";
 
 
-        $("#map").append($mapTable);
+        $("#city").append($mapTable);
     	
     	
     	
@@ -58,7 +43,9 @@
 </head>
 <body>
 <input type="text" id="maplocation" hidden='true' value='null'>
-<div id='map'>
+
+
+<div id='city'>
 </div>
 
 

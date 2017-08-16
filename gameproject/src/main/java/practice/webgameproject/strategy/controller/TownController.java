@@ -44,8 +44,9 @@ public class TownController {
 		 * 
 		 */
 		
-		List<ModelBuilding> mapData = game.get
+		List<ModelBuilding> mapData = game.getBuildingInTown(locationID);
 		List<Integer> kinds = new ArrayList<Integer>();
+		List<Integer> roomNumber = new ArrayList<Integer>();
 		List<Integer> locations = new ArrayList<Integer>();
 		
 		for(int i=0; i<mapData.size(); i++){
@@ -56,12 +57,25 @@ public class TownController {
 		model.addAttribute("mapWidth", MAX_WIDTH_IN_SCREEN);
 		model.addAttribute("mapHeight", MAX_HEIGHT_IN_SCREEN);
 		model.addAttribute("kind", kinds); //TODO 만들어
+		model.addAttribute("roomNumber", roomNumber); //TODO 만들어
 		model.addAttribute("locations", locations); //TODO 만들어
 		model.addAttribute("mapData", mapData); //TODO 만들어
 		model.addAttribute("centerLocation", locationID);
 		
 		
-		return "/children/worldmap";
+		return "/children/town";
+	}
+	
+	@RequestMapping("/{locationID}/cityinfo")
+	public String cityDetail(HttpSession session, Model model, @PathVariable("locationID") Integer locationID){
+		
+		model.addAttribute("mapWidth", MAX_WIDTH_IN_SCREEN);
+		model.addAttribute("mapHeight", MAX_HEIGHT_IN_SCREEN);
+		model.addAttribute("kindList", "");
+		model.addAttribute("centerLocation", locationID);
+		
+		
+		return "/children/town";//TODO 지형 상세 페이지로 이동시킬것.
 	}
 	
 	
