@@ -125,7 +125,6 @@ body{
     </div>
     
     <div id="maincontent" >
-	    		<%@ include file="children/town.jsp" %>
     </div>
 </div>
 </body>
