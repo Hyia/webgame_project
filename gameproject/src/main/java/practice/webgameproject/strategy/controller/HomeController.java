@@ -27,6 +27,8 @@ import practice.webgameproject.strategy.model.ModelMembers;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	public static final String SESSION_NAME_MODELMEMBERS = "UserInfo";
+	public static final String SESSION_NAME_USERINIT_LOCATIONID = "userInitLocationID";
 
 //	@Autowired
 //	ServiceGame service;
@@ -45,8 +47,8 @@ public class HomeController {
 		
 		if(session.getAttribute("UserInfo") !=null){
 			model.addAttribute("isLogedin", "true");
-			model.addAttribute("usernickname", ((ModelMembers)session.getAttribute("UserInfo")).getUserNicName());
-			model.addAttribute("resource", ((ModelMembers)session.getAttribute("UserInfo")).getSaveProduction());
+			model.addAttribute("usernickname", ((ModelMembers)session.getAttribute(SESSION_NAME_MODELMEMBERS)).getUserNicName());
+			model.addAttribute("resource", ((ModelMembers)session.getAttribute(SESSION_NAME_MODELMEMBERS)).getSaveProduction());
 		}
 		
 		return "index";
@@ -67,25 +69,27 @@ public class HomeController {
 			member = game.getUserInfo(member);
 			model.addAttribute("isLogedin", "true");
 			
+			Integer locationID = game.getUserInitLocation(member);
+
+			session.setAttribute(SESSION_NAME_MODELMEMBERS, member);
+			session.setAttribute(SESSION_NAME_USERINIT_LOCATIONID, locationID);
 			
-			session.setAttribute("UserInfo", member);
-			session.setAttribute("locationID", game.getUserInitLocation(member));
 			
 			
-			
-			return "index";
+			return "redirect:index?locationID="+ locationID ;
+//			return "redirect:/town/"+locationID;
 		}
 
 		model.addAttribute("isLogedin", "false");
-		
+
 		return "index";
 	}
 	
 	@RequestMapping(value = "/children/loginAfter", method = RequestMethod.GET)
 	public String refresher(Model model, HttpSession session){
-		ModelMembers member = (ModelMembers)session.getAttribute("UserInfo");
+		ModelMembers member = (ModelMembers)session.getAttribute(SESSION_NAME_MODELMEMBERS);
 		member = game.getUserInfo(member);
-		session.setAttribute("UserInfo", member);
+		session.setAttribute(SESSION_NAME_MODELMEMBERS, member);
 		
 		return "/children/loginAfter";
 	}

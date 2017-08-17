@@ -816,7 +816,7 @@ public class Engine {
 					myHpSum = myHpSum - unithp;
 					myAtkSum = myAtkSum - unit.getATK().intValue();
 					unitAmount.set(j, amount-1);
-					sum_of_def_exp += unit.getEXP();
+//					sum_of_def_exp += unit.getEXP();
 					
 					//한줄이 모두 1씩 감소했는데 여전히 오버딜을 받은 상태인 경우
 					if(tempDefAtk > 0 && j == units.size()-1){
@@ -876,7 +876,7 @@ public class Engine {
 					defHpSum = defHpSum - unithp;
 					defAtkSum = defAtkSum - unit.getATK().intValue();
 					unitAmount.set(j, amount-1);
-					sum_of_atk_exp+= unit.getEXP();
+//					sum_of_atk_exp+= unit.getEXP();
 					//한줄이 모두 1씩 감소했는데 여전히 오버딜을 받은 상태인 경우
 					if(tempMyAtk > 0 && j == units.size()-1){
 						//다시 첫번째 슬롯부터 딜을 받는다.
@@ -914,13 +914,13 @@ public class Engine {
 		 */
 		for(int i=0; i< attacker.size();i++){
 			ModelHeroTable hero =attacker.get(i); 
-			hero.setExp(hero.getExp()+ (int)(sum_of_atk_exp/aheros));
+//			hero.setExp(hero.getExp()+ (int)(sum_of_atk_exp/aheros));
 			service.updateHero(hero, hero);
 		}
 		for(int i=0; i< defHeros.size();i++){
 			ModelHeroTable hero =defHeros.get(i); 
 			if(hero.getOwner()!=null && hero.getOwner().equals("")){
-				hero.setExp(hero.getExp()+ (int)(sum_of_atk_exp/aheros));
+//				hero.setExp(hero.getExp()+ (int)(sum_of_atk_exp/aheros));
 				service.updateHero(hero, hero);
 			}
 		}
