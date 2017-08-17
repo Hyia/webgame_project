@@ -38,6 +38,22 @@ body{
 	padding: 10px;
 	margin-left: 3%;
 }
+.tab-menu { list-style: block; height: 40px; float: center;}
+        .tab-menu li {
+            width: 99px;
+            height: 40px;
+            background-position-y: 0;
+            text-indent: -1000px;
+            overflow: hidden;
+            display: inline-block;
+            float: center;
+        }
+ .tab-menu li:hover     { background-position-y: -40px; }
+ .tab-menu li.select    { background-position-y: -80px; height: 80px; }
+ .tab-menu li.menuitem1 { background-image: url(images/tabbtn_town.png); }
+ .tab-menu li.menuitem2 { background-image: url(images/tabbtn_map.png); }
+ .tab-menu li.menuitem3 { background-image: url(images/tabbtn_hero.png); }
+ .tab-menu li.menuitem4 { background-image: url(images/tabbtn_log.png); }
 </style>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -67,7 +83,12 @@ body{
 	<div id="contents" >
        <h1 align="center">Web Game Project</h1>
        <div id="menubar">
-       
+       		<ul class="tab-menu" id="tabMenu1">
+        		<li class="menuitem1">town</li>
+        		<li class="menuitem2">map</li>
+      		  	<li class="menuitem3">hero</li>
+      		  	<li class="menuitem4">battleLog</li>
+   			</ul>
        </div>
     </div>
     
