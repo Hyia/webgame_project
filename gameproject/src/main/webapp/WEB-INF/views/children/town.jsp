@@ -1,7 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="true" %>
-<html>
-<head>
+
 <style type="text/css">
  table { border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;
  background-color: #ffcd28;}
@@ -64,8 +63,7 @@
     });
 	</script>
 
-</head>
-<body>
+
 <input type="text" id="maplocation" hidden='true' value='null'>
 
 <div id='town'>
@@ -89,5 +87,3 @@
 </div>
 
 
-</body>
-</html>
