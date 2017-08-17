@@ -8,6 +8,7 @@ public class ModelUnit {
 	private Integer ATK 	;//	INT(11) 
 	private Integer SPD 	;//	INT(11) 
 	private Integer HP 		;//INT(11)
+	private Integer EXP		;//INT(11)
 
 	public Integer getUnitID() {
 		return UnitID;
@@ -44,23 +45,27 @@ public class ModelUnit {
 	public ModelUnit() {
 		super();
 	}
-	public ModelUnit(String name, Integer aTK, Integer sPD, Integer hP) {
-		super();
-		Name = name;
-		ATK = aTK;
-		SPD = sPD;
-		HP = hP;
-	}
-	public ModelUnit(Integer unitID,String name, Integer aTK, Integer sPD, Integer hP) {
-		this.UnitID = unitID;
-		Name = name;
-		ATK = aTK;
-		SPD = sPD;
-		HP = hP;
-	}
 	
+	public ModelUnit(Integer unitID, String name, Integer aTK, Integer sPD, Integer hP, Integer eXP) {
+		super();
+		UnitID = unitID;
+		Name = name;
+		ATK = aTK;
+		SPD = sPD;
+		HP = hP;
+		EXP = eXP;
+	}
+
+	public Integer getEXP() {
+		return EXP;
+	}
+
+	public void setEXP(Integer eXP) {
+		EXP = eXP;
+	}
+
 	public ModelUnit(ModelUnit unitInfo) {
-		this(unitInfo.UnitID,unitInfo.Name,unitInfo.ATK,unitInfo.SPD,unitInfo.HP);
+		this(unitInfo.UnitID,unitInfo.Name,unitInfo.ATK,unitInfo.SPD,unitInfo.HP,unitInfo.EXP);
 	}
 	
 	@Override
