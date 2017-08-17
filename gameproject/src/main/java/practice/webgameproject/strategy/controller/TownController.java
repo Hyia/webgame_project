@@ -54,14 +54,12 @@ public class TownController {
 			roomNumber.add(mapData.get(i).getRoomNumber());
 		}
 		
-		model.addAttribute("mapWidth", MAX_WIDTH_IN_SCREEN);
-		model.addAttribute("mapHeight", MAX_HEIGHT_IN_SCREEN);
-		model.addAttribute("kind", kinds); //TODO 만들어
+		//model.addAttribute("mapWidth", MAX_WIDTH_IN_SCREEN);
+		//model.addAttribute("mapHeight", MAX_HEIGHT_IN_SCREEN);
+		model.addAttribute("kinds", kinds); //TODO 만들어
 		model.addAttribute("roomNumber", roomNumber); //TODO 만들어
 		model.addAttribute("mapData", mapData); //TODO 만들어
 		model.addAttribute("locationID", locationID);
-		
-		
 		return "/children/town";
 	}
 	

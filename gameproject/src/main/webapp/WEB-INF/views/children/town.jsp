@@ -13,9 +13,7 @@
     $(document).ready( function(e){
 
     	var $imgS="";
-    	var width = ${mapWidth};
-    	var height = ${mapHeight};
-    	var kind = ${kind};
+    	var kind = ${kinds};
     	var roomNumber= ${roomNumber};
     	var locationID = ${locationID};
     	

@@ -38,7 +38,8 @@ body{
 	padding: 10px;
 	margin-left: 3%;
 }
-.tab-menu { list-style: block; height: 40px; float: center;}
+#menubar {align:center;}
+.tab-menu { list-style: block; height: 40px;}
         .tab-menu li {
             width: 99px;
             height: 40px;
@@ -73,6 +74,15 @@ body{
      
      	
      		$('#maincontent').load('/town/${param.locationID}');
+         	$('#tabMenu1 li').eq(1).addClass('select');
+         	
+         	$('#tabMenu1').click(function(e) {
+         		swicth(this){
+         			case:
+         		}
+         		$('#tabMenu1').children().removeClass('select');
+         	})
+                
       
       });
   	</script>
@@ -82,7 +92,7 @@ body{
 <div id="wrapper">
 	<div id="contents" >
        <h1 align="center">Web Game Project</h1>
-       <div id="menubar">
+       <div id="menubar" align="center">
        		<ul class="tab-menu" id="tabMenu1">
         		<li class="menuitem1">town</li>
         		<li class="menuitem2">map</li>
