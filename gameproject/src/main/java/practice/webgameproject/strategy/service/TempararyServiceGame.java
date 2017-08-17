@@ -69,9 +69,9 @@ public class TempararyServiceGame extends ServiceGame{
 		structures.add(new ModelStructures("Tavern", IServices.BUILDING_TYPE_TAVERN, 20, 500));
 		
 		//units		unit_id name atk spd hp
-		units.add(new ModelUnit(IServices.UNIT_TYPE_LV1,"Infantry", 5, 3, 20));
-		units.add(new ModelUnit(IServices.UNIT_TYPE_LV2,"Archer", 10, 2, 14));
-		units.add(new ModelUnit(IServices.UNIT_TYPE_LV3,"Cavalry", 7, 5, 30));
+		units.add(new ModelUnit(IServices.UNIT_TYPE_LV1,"Infantry", 5, 3, 20,5));
+		units.add(new ModelUnit(IServices.UNIT_TYPE_LV2,"Archer", 10, 2, 14,10));
+		units.add(new ModelUnit(IServices.UNIT_TYPE_LV3,"Cavalry", 7, 5, 30,15));
 
 		//make map
 		for(int i=0,k=0; i< IServices.MAP_MAX_WIDTH;i++){

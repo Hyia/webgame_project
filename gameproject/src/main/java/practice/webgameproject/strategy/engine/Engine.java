@@ -1,6 +1,7 @@
 package practice.webgameproject.strategy.engine;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -86,7 +87,15 @@ public class Engine {
 				tr.setFinish_time(((ModelWaitList_Building) target).getWaitTime().getTime());
 				tr.setTarget(target);
 				tr.start();
-				threadsHolder.add(new ThreadHolder(((ModelWaitList_Building) target).getLocationID(), tr));
+//				threadsHolder.add(new ThreadHolder(((ModelWaitList_Building) target).getLocationID(), tr));
+				int index = threadsHolder.indexOf(((ModelWaitList_Building) target).getLocationID());
+				if(index == -1){
+					ThreadHolder holder = new ThreadHolder(((ModelWaitList_Building) target).getLocationID());
+					holder.threads.add(tr);
+					threadsHolder.add(holder);
+				}else{
+					threadsHolder.get(index).threads.add(tr);
+				}
 			}
 			//유닛인 경우
 			if(target instanceof ModelWaitList_Unit){
@@ -94,7 +103,16 @@ public class Engine {
 				tr.setFinish_time(((ModelWaitList_Unit) target).getWaitTime().getTime());
 				tr.setTarget(target);
 				tr.start();
-				threadsHolder.add(new ThreadHolder(((ModelWaitList_Unit) target).getLocationID(), tr));
+//				threadsHolder.add(new ThreadHolder(((ModelWaitList_Unit) target).getLocationID(), tr));
+				int index = threadsHolder.indexOf(((ModelWaitList_Unit) target).getLocationID());
+				if(index == -1){
+					ThreadHolder holder = new ThreadHolder(((ModelWaitList_Unit) target).getLocationID());
+					holder.threads.add(tr);
+					threadsHolder.add(holder);
+				}else{
+					threadsHolder.get(index).threads.add(tr);
+				}
+				
 			}
 		}
 		
@@ -129,12 +147,16 @@ public class Engine {
 		//큐 테이블 재작성
 		List<ModelWaitList_Building> buildQueue = new ArrayList<ModelWaitList_Building>();
 		List<ModelWaitList_Unit> unitQueue = new ArrayList<ModelWaitList_Unit>();
+		
 		for( int i=0; i < threadsHolder.size() ; i++){
-			Thread tr = threadsHolder.get(i).thread;
-			if(((ProductThread)tr).target instanceof ModelWaitList_Building){
-				buildQueue.add((ModelWaitList_Building)(((ProductThread)tr).getTarget()));
-			}else{
-				unitQueue.add((ModelWaitList_Unit)(((ProductThread)tr).getTarget()));
+			ThreadHolder holder = threadsHolder.get(i);
+			for(int j=0; j< holder.threads.size(); j++){
+				Thread tr = threadsHolder.get(i).threads.get(j);
+				if(((ProductThread)tr).target instanceof ModelWaitList_Building){
+					buildQueue.add((ModelWaitList_Building)(((ProductThread)tr).getTarget()));
+				}else{
+					unitQueue.add((ModelWaitList_Unit)(((ProductThread)tr).getTarget()));
+				}
 			}
 		}
 		
@@ -165,6 +187,39 @@ public class Engine {
 		
 		//정상 로그인
 		return true;
+	}
+	
+	public List<String> remainUnitBuildTime(Integer locationID){
+		List<String> remainTimes = new ArrayList<String>();
+		int index = threadsHolder.indexOf(locationID);
+		if(index == -1) return null;
+		for(int i=0; i<threadsHolder.get(index).threads.size(); i++){
+			if(threadsHolder.get(index).threads.get(i) instanceof ProductThread){
+				ProductThread ptr = (ProductThread) threadsHolder.get(index).threads.get(i);
+				if(ptr.target instanceof ModelWaitList_Unit){
+					Date time = new Date(ptr.timeleft - new Date().getTime());
+					remainTimes.add(new SimpleDateFormat("HH:mm:ss").format(time));
+				}
+			}
+		}
+		
+		return remainTimes;
+	}
+	public List<String> remainConstructBuildTime(Integer locationID){
+		List<String> remainTimes = new ArrayList<String>();
+		int index = threadsHolder.indexOf(locationID);
+		if(index == -1) return null;
+		for(int i=0; i<threadsHolder.get(index).threads.size(); i++){
+			if(threadsHolder.get(index).threads.get(i) instanceof ProductThread){
+				ProductThread ptr = (ProductThread) threadsHolder.get(index).threads.get(i);
+				if(ptr.target instanceof ModelWaitList_Building){
+					Date time = new Date(ptr.timeleft - new Date().getTime());
+					remainTimes.add(new SimpleDateFormat("HH:mm:ss").format(time));
+				}
+			}
+		}
+		
+		return remainTimes;
 	}
 	
 	/**
@@ -296,7 +351,16 @@ public class Engine {
 			tr.setTarget(queueBuilding);
 			tr.setFinish_time(queueBuilding.getWaitTime().getTime());
 			tr.start();
-			threadsHolder.add(new ThreadHolder(queueBuilding.getLocationID(), tr));
+//			threadsHolder.add(new ThreadHolder(queueBuilding.getLocationID(), tr));
+			int index = threadsHolder.indexOf(locationID);
+			if(index == -1){
+				ThreadHolder holder = new ThreadHolder(locationID);
+				holder.threads.add(tr);
+				threadsHolder.add(holder);
+			}else{
+				threadsHolder.get(index).threads.add(tr);
+			}
+			
 
 			return IServices.SUCCESS;
 		}
@@ -380,7 +444,15 @@ public class Engine {
 			tr.setTarget(queueBuilding);
 			tr.setFinish_time(queueBuilding.getWaitTime().getTime());
 			tr.start();
-			threadsHolder.add(new ThreadHolder(queueBuilding.getLocationID(), tr));
+//			threadsHolder.add(new ThreadHolder(queueBuilding.getLocationID(), tr));
+			int index = threadsHolder.indexOf(locationID);
+			if(index == -1){
+				ThreadHolder holder = new ThreadHolder(locationID);
+				holder.threads.add(tr);
+				threadsHolder.add(holder);
+			}else{
+				threadsHolder.get(index).threads.add(tr);
+			}
 			
 			return IServices.SUCCESS;
 		}else{
@@ -449,7 +521,18 @@ public class Engine {
 			tr.setTarget(queueUnit);
 			tr.setFinish_time(queueUnit.getWaitTime().getTime());
 			tr.start();
-			threadsHolder.add(new ThreadHolder(locationID, tr));
+//			threadsHolder.add(new ThreadHolder(locationID, tr));
+			int index = threadsHolder.indexOf(locationID);
+			if(index == -1){
+				ThreadHolder holder = new ThreadHolder(locationID);
+				holder.threads.add(tr);
+				threadsHolder.add(holder);
+			}else{
+				threadsHolder.get(index).threads.add(tr);
+			}
+			
+			
+			
 			return IServices.SUCCESS;
 		}else{
 			return IServices.ERROR_INVAILD_ACCESS;
@@ -518,7 +601,16 @@ public class Engine {
 			march.setFinish_time(travelTime + (new Date()).getTime());//이동시간에 현재시간을 더해서 이동완료시간으로 변환
 			march.setTravelLength((long)travelLength);
 			march.start();
-			threadsHolder.add(new ThreadHolder(hero.getLocationID(), march));
+//			threadsHolder.add(new ThreadHolder(hero.getLocationID(), march));
+			int index = threadsHolder.indexOf(hero.getLocationID());
+			if(index == -1){
+				ThreadHolder holder = new ThreadHolder(hero.getLocationID());
+				holder.threads.add(march);
+				threadsHolder.add(holder);
+			}else{
+				threadsHolder.get(index).threads.add(march);
+			}
+			
 			return IServices.SUCCESS;
 		}
 		
@@ -529,11 +621,12 @@ public class Engine {
 	
 	private boolean hasAddableConstructOrder(Integer locationID){
 		int counter = 0;
-		for(int i=0; i< threadsHolder.size(); i++){
-			ThreadHolder holder =threadsHolder.get(i); 
-			if(holder.thread instanceof ProductThread){
-				if( (((ProductThread)holder.thread).target) instanceof ModelWaitList_Building){
-					ModelWaitList_Building building = (ModelWaitList_Building)(((ProductThread)holder.thread).target);
+
+		ThreadHolder holder =threadsHolder.get(locationID); 
+		for(int i=0; i< holder.threads.size(); i++){
+			if(holder.threads.get(i) instanceof ProductThread){
+				if( (((ProductThread)holder.threads.get(i)).target) instanceof ModelWaitList_Building){
+					ModelWaitList_Building building = (ModelWaitList_Building)(((ProductThread)holder.threads.get(i)).target);
 					if(building.getLocationID().equals(locationID)){
 						counter++;
 					}
@@ -556,10 +649,10 @@ public class Engine {
 	 */
 	private boolean hasAddableMarch(Integer locationID) {
 		int counter = 0;
-		for(int i=0; i< threadsHolder.size(); i++){
-			ThreadHolder holder =threadsHolder.get(i); 
-			if(holder.thread instanceof MarchThread){
-				if( ((MarchThread)holder.thread).target.getLocationID() == locationID){
+		ThreadHolder holder =threadsHolder.get(locationID); 
+		for(int i=0; i< holder.threads.size(); i++){
+			if(holder.threads.get(i) instanceof MarchThread){
+				if( ((MarchThread)holder.threads.get(i)).target.getLocationID() == locationID){
 					counter++;
 				}
 			}
@@ -920,13 +1013,13 @@ public class Engine {
 		for(int i=0; i< defHeros.size();i++){
 			ModelHeroTable hero =defHeros.get(i); 
 			if(hero.getOwner()!=null && hero.getOwner().equals("")){
-				hero.setHeroEXP(hero.getHeroEXP()+ (int)(sum_of_atk_exp/aheros));
+				hero.setHeroEXP(hero.getHeroEXP()+ (int)(sum_of_atk_exp/dheros));
 				service.updateHero(hero, hero);
 			}
 		}
 		
 		arewards.put("exp", sum_of_atk_exp);
-		drewards.put("exp", sum_of_atk_exp);
+		drewards.put("exp", sum_of_def_exp);
 
 		
 		
@@ -1246,9 +1339,17 @@ public class Engine {
 		
 		return creeps;
 	}
-	public void destroyThread(Thread thread) {
-		int index = threadsHolder.indexOf(thread);
-		Thread tr = threadsHolder.get(index).thread;
+	public void destroyThread(Integer locationID, Thread thread) {
+		int index = threadsHolder.indexOf(locationID);
+		int targetThreadIndex = -1;
+		Thread tr = thread;
+
+		for(int i=0; i<threadsHolder.get(index).threads.size(); i++){
+			if(threadsHolder.get(index).threads.get(i).equals(thread)){
+				tr = threadsHolder.get(index).threads.get(i);
+				targetThreadIndex = i;
+			}
+		}
 		try {
 			tr.join(0);
 			
@@ -1256,7 +1357,7 @@ public class Engine {
 
 			e.printStackTrace();
 		}
-		threadsHolder.remove(index);
+		threadsHolder.get(index).threads.remove(targetThreadIndex);
 	}
 	
 	private ModelUnit getRandomUnitAtTier(int tier){
@@ -1267,26 +1368,26 @@ public class Engine {
 
 	private class ThreadHolder{
 		Integer locationID;
-		Thread thread;
+		List<Thread> threads;
 		
-		public ThreadHolder(Integer locationID, Thread thread) {
+		public ThreadHolder(Integer locationID, List<Thread> threads) {
 			this.locationID = locationID;
-			this.thread = thread;
+			this.threads = threads;
 		}
 		public ThreadHolder(Integer locationID) {
 			this.locationID = locationID;
+			threads = new ArrayList();
 		}
 		@Override
 		public boolean equals(Object obj) {
 			if(obj instanceof ThreadHolder){
 				ThreadHolder target = (ThreadHolder) obj;
-				if(locationID.intValue() == target.locationID.intValue()){
-						return target.thread.equals(thread);
-				}else{
-					return false;
-				}
+				return locationID.intValue() == target.locationID.intValue();
 			}
-			
+			if(obj instanceof Integer){
+				Integer target = (Integer)obj;
+				return target.intValue() == this.locationID.intValue();
+			}
 			return false;
 		}
 	}
@@ -1295,6 +1396,7 @@ public class Engine {
 	private class ProductThread extends Thread{
 		private long finish_time = -1;
 		private boolean quickdone = false;
+		private long timeleft = -1;
 		private Object target = null;
 		
 		public void setFinish_time(long finish_time) {
@@ -1312,7 +1414,10 @@ public class Engine {
 		@Override
 		public void run() {
 			//wait until time elapsed or quick done
-			while((new Date()).getTime() - finish_time >= 0 && !quickdone);
+			timeleft = finish_time - (new Date()).getTime();
+			while(timeleft >= 0 && !quickdone){
+				timeleft = finish_time - (new Date()).getTime();
+			}
 			
 			//건물인 경우
 			if(target instanceof ModelWaitList_Building){
@@ -1322,7 +1427,8 @@ public class Engine {
 				//레벨업
 				building.setLevel(building.getLevel()+1);
 				service.updateBuilding(building);
-				return;
+				
+				destroyThread(((ModelWaitList_Building) target).getLocationID(),this);
 			}
 			//유닛인 경우
 			if(target instanceof ModelWaitList_Unit){
@@ -1348,10 +1454,9 @@ public class Engine {
 					ModelSlot slot = new ModelSlot(((ModelWaitList_Unit) target).getUnitID(), amount);
 					service.insertSlotToCastle(locationID, slot);
 				}
-				return;
+				destroyThread(((ModelWaitList_Unit) target).getLocationID(),this);
 			}
 			
-			destroyThread(this);
 		}
 		@Override
 		public boolean equals(Object obj) {
@@ -1468,11 +1573,11 @@ public class Engine {
 			long currentTime = startTime;
 
 			status_isAttacking = true;			
-			timeleft = currentTime - finish_time; 
+			timeleft = finish_time - currentTime; 
 			//wait until time elapsed or quick done
 			while(timeleft >= 0 && !order_return){
 				currentTime = (new Date()).getTime();
-				timeleft = currentTime - finish_time; 
+				timeleft = finish_time - currentTime;
 			}
 			
 			//arrived war location
@@ -1490,10 +1595,10 @@ public class Engine {
 			order_return = false;
 			while(timeleft >= 0 && !order_return){
 				currentTime = (new Date()).getTime();
-				timeleft = currentTime - 가던시간;
+				timeleft = 가던시간 - currentTime;
 			}
 			//도착은 페이지 새로고침될 때 이 쓰레드를 isAlive()를 호출함으로 알 수 있을걸?
-			destroyThread(this);//쓰레드를 제거하는 쓰레드를 만들기 귀찮았다.
+			destroyThread(target.getLocationID(), this);//쓰레드를 제거하는 쓰레드를 만들기 귀찮았다.
 			//end of method
 		}
 		
