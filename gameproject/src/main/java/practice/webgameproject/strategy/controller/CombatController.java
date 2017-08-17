@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import practice.webgameproject.strategy.engine.Engine;
@@ -33,7 +35,7 @@ public class CombatController {
 	Engine game;
 
 	@RequestMapping(value = "/loglist", method=RequestMethod.GET)
-	public String getLog(Model model,HttpSession session){
+	public String getLoglist(Model model,HttpSession session){
 		if(session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS) == null){
 			return "redirect:/error/"+IServices.ERROR_INVAILD_ACCESS;
 		}
@@ -51,5 +53,19 @@ public class CombatController {
 	}
 	
 	
+	@RequestMapping(value = "/loglist/{logName}", method=RequestMethod.GET)
+	@ResponseBody
+	public String getLog(Model model,HttpSession session, @PathVariable("logName") String logName){
+		String log = game.getLogFile(logName);
+		ModelMembers user = (ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS);
+		
+		if(log.contains(user.getUserID())){
+			return game.getLogFile(logName);
+		}
+		
+		
+		
+		return "권한이 없습니다.";
+	}
 	
 }

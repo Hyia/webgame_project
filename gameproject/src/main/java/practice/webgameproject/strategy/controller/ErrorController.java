@@ -34,7 +34,7 @@ public class ErrorController {
 		String msg = game.getErrorMsg(errorcode);
 		
 		model.addAttribute("errormsg", msg);
-		return "errorpage";
+		return "/children/errorpage";
 	}
 
 

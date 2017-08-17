@@ -80,6 +80,18 @@ public class ModelHeroTable {
 		Sex = sex;
 	}
 	
+	public Integer getHeroLevel() {
+		return HeroLevel;
+	}
+	public void setHeroLevel(Integer heroLevel) {
+		HeroLevel = heroLevel;
+	}
+	public Integer getHeroEXP() {
+		return HeroEXP;
+	}
+	public void setHeroEXP(Integer heroEXP) {
+		HeroEXP = heroEXP;
+	}
 	public ModelHeroTable(){
 		
 	}
@@ -112,6 +124,22 @@ public class ModelHeroTable {
 	}
 	
 	
+	public ModelHeroTable(Integer heroID, Integer sTR, Integer aGI, Integer cON, String owner, Integer locationID,
+			Integer statuus, Integer specialty, Integer potrait, Boolean sex, Integer heroLevel, Integer heroEXP) {
+		super();
+		HeroID = heroID;
+		STR = sTR;
+		AGI = aGI;
+		CON = cON;
+		Owner = owner;
+		LocationID = locationID;
+		Statuus = statuus;
+		Specialty = specialty;
+		Potrait = potrait;
+		Sex = sex;
+		HeroLevel = heroLevel;
+		HeroEXP = heroEXP;
+	}
 	@Override
 	public String toString() {
 		return "ModelHeroTable [HeroID=" + HeroID + ", STR=" + STR + ", AGI=" + AGI + ", CON=" + CON + ", Owner="
