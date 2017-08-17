@@ -62,10 +62,13 @@ public class CombatController {
 		if(log.contains(user.getUserID())){
 			return game.getLogFile(logName);
 		}
-		
-		
-		
 		return "권한이 없습니다.";
 	}
+	
+	
+	
+	
+	
+	
 	
 }
