@@ -87,9 +87,9 @@ public class HomeController {
 	
 	@RequestMapping(value = "/children/loginAfter", method = RequestMethod.GET)
 	public String refresher(Model model, HttpSession session){
-//		ModelMembers member = (ModelMembers)session.getAttribute(SESSION_NAME_MODELMEMBERS);
-//		member = game.getUserInfo(member);
-//		session.setAttribute(SESSION_NAME_MODELMEMBERS, member);
+		ModelMembers member = (ModelMembers)session.getAttribute(SESSION_NAME_MODELMEMBERS);
+		member = game.getUserInfo(member);
+		session.setAttribute(SESSION_NAME_MODELMEMBERS, member);
 //		session.setAttribute("ffdsa",	game.remain);
 		
 		return "/children/loginAfter";
