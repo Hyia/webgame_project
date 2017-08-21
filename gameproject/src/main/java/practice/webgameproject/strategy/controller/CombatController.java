@@ -39,14 +39,13 @@ public class CombatController {
 		if(session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS) == null){
 			return "redirect:/error/"+IServices.ERROR_INVAILD_ACCESS;
 		}
-		
 		String userID = ((ModelMembers)session.getAttribute("UserInfo")).getUserID();
 		
 		List<ModelLog> logs = game.getUserLogs(userID);
 		if(logs == null){
 			logs = new ArrayList<ModelLog>();
 		}
-		model.addAttribute("type", "list");
+		model.addAttribute("pageType", "list");
 		model.addAttribute("loglist", logs);
 		
 		return "/children/combatlog";

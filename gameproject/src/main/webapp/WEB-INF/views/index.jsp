@@ -84,8 +84,8 @@ body{
      			 if(value == "hero"){
      				 
      			 }
-     			 if(value == "battlelog"){
-      	     		$('#maincontent').load('/map/${param.locationID}');
+     			 if(value == "battleLog"){
+      	     		$('#maincontent').load('/combat/loglist');
      			 }
              });
       });
