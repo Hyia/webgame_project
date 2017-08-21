@@ -69,12 +69,24 @@ body{
              	}
      		}, 1000); /* time in milliseconds (ie 1 seconds)*/    	
      
-     			//$('#maincontent').load('/town/${param.locationID}');
-     		$('#maincontent').load('/map/${param.locationID}');
+     		$('#maincontent').load('/town/${param.locationID}');
+     		
+//     		$('#maincontent').load('/map/${param.locationID}');
              $('#tabMenu > li').click(function (event) {
      			 var index = $(this).index();
-     			 
-     			 
+     			 var value = $(this).html();
+     			 if(value == "town"){
+     	     		$('#maincontent').load('/town/${param.locationID}');
+     			 }
+     			 if(value == "map"){
+     	     		$('#maincontent').load('/map/${param.locationID}');
+     			 }
+     			 if(value == "hero"){
+     				 
+     			 }
+     			 if(value == "battlelog"){
+     				 
+     			 }
              });
       });
       
@@ -120,8 +132,6 @@ body{
     
     
     <div id="maincontent" >
-    		 <!-- <%@ include file="children/town.jsp" %> -->
-    		 <%@  include file="children/worldmap.jsp" %>
     </div>
 </div>
 </body>
