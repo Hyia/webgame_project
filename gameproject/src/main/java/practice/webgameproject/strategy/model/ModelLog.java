@@ -89,6 +89,20 @@ public class ModelLog {
 			DefenseUserUseYN = defenseUserUseYN;
 			BattleDate = battleDate;
 		}
+
+		public ModelLog(String logName, String attackUserID, String defenseUserID,
+				boolean attackUserUseYN, boolean defenseUserUseYN, Date battleDate, String whoWins) {
+			super();
+			LogName = logName;
+			AttackUserID = attackUserID;
+			DefenseUserID = defenseUserID;
+			AttackUserUseYN = attackUserUseYN;
+			DefenseUserUseYN = defenseUserUseYN;
+			BattleDate = battleDate;
+			WhoWins = whoWins;
+		}
+		
+		
 		
 		
 }

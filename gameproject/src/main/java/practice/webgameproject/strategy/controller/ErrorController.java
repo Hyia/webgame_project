@@ -32,11 +32,15 @@ public class ErrorController {
 	@RequestMapping(value = "/{errorcode}", method = RequestMethod.GET)
 	public String errors(@PathVariable("errorcode") Integer errorcode, Model model) {
 		String msg = game.getErrorMsg(errorcode);
-		
+		logger.error("errcode:"+errorcode);
 		model.addAttribute("errormsg", msg);
-		return "/children/errorpage";
+		return "/errorpage";
 	}
 
+	
+	public static String getErrorPage(int errorCode){
+		return "/error/"+errorCode;
+	}
 
 
 }

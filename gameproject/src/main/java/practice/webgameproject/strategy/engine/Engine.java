@@ -166,6 +166,16 @@ public class Engine {
 		return true;
 	}
 	
+	public String getResourceOwner(Integer locationID){
+		ModelOutResource outresource = service.getOutResource(locationID);
+		
+		if(outresource==null){
+			return null;
+		}
+		
+		return outresource.getUserID();
+	}
+	
 	/**
 	 * 로그인시 사용, 이 유저가 등록된 유저놈이었는지를 판단한다.
 	 * @param member
@@ -665,7 +675,7 @@ public class Engine {
 		return false;
 	}
 	
-	private boolean isAliance(String owner, String userID) {
+	public boolean isAliance(String owner, String userID) {
 		// TODO 동맹 미구현.
 		return false;
 	}
@@ -1029,7 +1039,15 @@ public class Engine {
 		//로그파일 쓰기
 		logMaker.writeLog(rewards);
 		// TODO 2.로그정보를 DB에 넣기
-		ModelLog logger = new ModelLog(logMaker.getLogName(), logMaker.getAttacker_ID(), logMaker.getDefender_ID(), false, false, logMaker.getLogDate());
+		String whoWins = "";
+		if(myHpSum <=0 && defHpSum <= 0){
+			whoWins = "Draw";
+		}else if(myHpSum <= 0){
+			whoWins = logMaker.getDefender_ID();
+		}else{
+			whoWins = logMaker.getAttacker_ID();
+		}
+		ModelLog logger = new ModelLog(logMaker.getLogName(), logMaker.getAttacker_ID(), logMaker.getDefender_ID(), false, false, logMaker.getLogDate(),whoWins);
 
 		service.insertLog(logger);
 
@@ -1619,6 +1637,11 @@ public class Engine {
 			return false;
 		}
 
+	}
+
+	public ModelHeroTable getHero(Integer heroID) {
+		ModelHeroTable hero = service.getHero(new ModelHeroTable(heroID, null, null, null, null, null, null, null, null));
+		return hero;
 	}
 
 

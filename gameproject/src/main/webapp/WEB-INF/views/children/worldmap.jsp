@@ -28,7 +28,7 @@
     	    	
     	    	$mapTable += "<td>";
     	    	if(locationID[k] !=null){ 	    		
-    	   	    	$mapTable += "<a href='/map/"+locationID[k]+"/info' >";
+    	   	    	$mapTable += "<a href='/map/"+locationID[k]+"/info' name='info'>";
       	    	}
     	    	switch(kind[k]){
     	    	case -1:
@@ -85,6 +85,10 @@
     		});
     	}
     	
+    	$('a[name="info"]').click(function(e){
+    		$(this).parents("#maincontent").load($(this).attr("href"));
+    		return false;
+    	});
     	
     });
 	</script>
