@@ -63,15 +63,15 @@ body{
      <script>
       $(document).ready( function(e){
     	  
+   		if(${isLogedin == true}){
+     		$('#menubar').show();
          	setInterval(function(){
-         		if(${isLogedin == true}){
        		   $('#sidebar').load('/children/loginAfter');
-             	}
      		}, 1000); /* time in milliseconds (ie 1 seconds)*/    	
+     	}
      
      		$('#maincontent').load('/town/${param.locationID}');
      		
-//     		$('#maincontent').load('/map/${param.locationID}');
              $('#tabMenu > li').click(function (event) {
      			 var index = $(this).index();
      			 var value = $(this).html();
@@ -85,7 +85,7 @@ body{
      				 
      			 }
      			 if(value == "battlelog"){
-     				 
+      	     		$('#maincontent').load('/map/${param.locationID}');
      			 }
              });
       });
@@ -98,7 +98,7 @@ body{
 <div id="wrapper">
 	<div id="contents" >
        <h1 align="center">Web Game Project</h1>
-       <div id="menubar" align="center">
+       <div id="menubar" align="center" hidden="true">
        		<ul class="tab-menu" id="tabMenu">
         		<li class="menuitem1">town</li>
         		<li class="menuitem2">map</li>
