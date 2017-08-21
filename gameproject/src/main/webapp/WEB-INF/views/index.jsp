@@ -62,29 +62,23 @@ body{
 <script src='http://code.jquery.com/jquery-3.1.0.js'></script>
      <script>
       $(document).ready( function(e){
-      	if((${isLogedin == false})){
-      		alert("!?!!?");
-      		return;
-      	}
+    	  
          	setInterval(function(){
          		if(${isLogedin == true}){
        		   $('#sidebar').load('/children/loginAfter');
              	}
-     		}, 1000) /* time in milliseconds (ie 1 seconds)*/    	
+     		}, 1000); /* time in milliseconds (ie 1 seconds)*/    	
      
-     	
-     		$('#maincontent').load('/town/${param.locationID}');
-         	$('#tabMenu1 li').eq(1).addClass('select');
-         	
-         	$('#tabMenu1').click(function(e) {
-         		swicth(this){
-         			case:
-         		}
-         		$('#tabMenu1').children().removeClass('select');
-         	})
-                
-      
+     			//$('#maincontent').load('/town/${param.locationID}');
+     		$('#maincontent').load('/map/${param.locationID}');
+             $('#tabMenu > li').click(function (event) {
+     			 var index = $(this).index();
+     			 
+     			 
+             });
       });
+      
+         	
   	</script>
 </head>
 
@@ -93,7 +87,7 @@ body{
 	<div id="contents" >
        <h1 align="center">Web Game Project</h1>
        <div id="menubar" align="center">
-       		<ul class="tab-menu" id="tabMenu1">
+       		<ul class="tab-menu" id="tabMenu">
         		<li class="menuitem1">town</li>
         		<li class="menuitem2">map</li>
       		  	<li class="menuitem3">hero</li>
@@ -124,7 +118,10 @@ body{
 	   </div>
     </div>
     
+    
     <div id="maincontent" >
+    		 <!-- <%@ include file="children/town.jsp" %> -->
+    		 <%@  include file="children/worldmap.jsp" %>
     </div>
 </div>
 </body>

@@ -2,9 +2,11 @@
 <%@ page session="true" %>
 
 <style type="text/css">
- table { border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;
+table{width: 100%; height: 100%}
+ table { width:100%; height:100% border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;
  background-color: #ffcd28;}
  td { border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;}
+ img{width: 100%; height: 100%}
 </style>
 
 
@@ -13,9 +15,9 @@
     $(document).ready( function(e){
 
     	var $imgS="";
-    	var kind = ${kinds};
+    	var kind = ${kind};  	
     	var roomNumber= ${roomNumber};
-    	var locationID = ${locationID};
+    	var locationID =${locationID};
     	
     	//"<a href='/town/"+locationID[k]+"/towninfo' >";
     	//$mapTable = "<a><img src='/images/img_rampart_1.png' /></a>";

@@ -56,9 +56,9 @@ public class TownController {
 		
 		//model.addAttribute("mapWidth", MAX_WIDTH_IN_SCREEN);
 		//model.addAttribute("mapHeight", MAX_HEIGHT_IN_SCREEN);
-		model.addAttribute("kinds", kinds); //TODO 만들어
-		model.addAttribute("roomNumber", roomNumber); //TODO 만들어
-		model.addAttribute("mapData", mapData); //TODO 만들어
+		model.addAttribute("kind", kinds.size() > 0 ? kinds : "null" ); // 만들어
+		model.addAttribute("roomNumber", roomNumber.size() > 0 ? kinds : "null"); // 만들어
+		model.addAttribute("mapData", mapData.size() > 0 ? kinds : "null"); //TODO 만들어
 		model.addAttribute("locationID", locationID);
 		return "/children/town";
 	}

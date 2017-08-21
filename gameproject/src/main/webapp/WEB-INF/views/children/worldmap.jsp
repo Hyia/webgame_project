@@ -3,9 +3,12 @@
 <html>
 <head>
 <style type="text/css">
- table { border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;
+ table {width:100%;height:100%; border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;
  background-color: #ffcd28;}
  td { border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;}
+ #map img{width: 100%;height:100%;}
+ #worldmap{width: 100%;height:100%;}
+ #worldmapoutside{width: 100%;height:100%;}
 </style>
 <script src='http://code.jquery.com/jquery-3.1.0.js'></script>
     <script>
@@ -89,11 +92,13 @@
 </head>
 <body>
 <input type="text" id="maplocation" hidden='true' value='null'>
-<table>
+<div id="worldmap">
+<table id="worldmapoutside">
 	<tr><td align="center" colspan="${mapWidth+2}">	<img id="img_up"/></td></tr>
-	<tr><td><img id="img_left"/></td><td><div id='map'></div></td><td><img id="img_right"/></td></tr>
+	<tr id="tr"><td><img id="img_left"/></td><td><div id='map'></div></td><td><img id="img_right"/></td></tr>
 	<tr><td align="center" colspan="${mapWidth+2}"><img id="img_down"/></td></tr>
 </table>
+</div>
 
 
 </body>
