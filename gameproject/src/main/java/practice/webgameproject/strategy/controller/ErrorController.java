@@ -37,6 +37,10 @@ public class ErrorController {
 		return "/errorpage";
 	}
 
+	
+	public static String getErrorPage(int errorCode){
+		return "/error/"+errorCode;
+	}
 
 
 }
