@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import practice.webgameproject.strategy.engine.Engine;
+import practice.webgameproject.strategy.interfaces.IServices;
+import practice.webgameproject.strategy.model.ModelCastle;
+import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelXYval;
 
 @Controller
@@ -86,12 +89,93 @@ public class MapController {
 	}
 	@RequestMapping("/{locationID}/info")
 	public String mapDetail(HttpSession session, Model model, @PathVariable("locationID") Integer locationID){
+		logger.info("map info!["+locationID+"]");
 		
-		model.addAttribute("mapWidth", MAX_WIDTH_IN_SCREEN);
-		model.addAttribute("mapHeight", MAX_HEIGHT_IN_SCREEN);
-		model.addAttribute("centerLocation", locationID);
+		ModelMembers user = (ModelMembers) session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS);
+		ModelXYval xyval = game.getXYval_ID(locationID);
+		String targetOwner;
+		switch(xyval.getKind()){
+		case IServices.LOCATION_TYPE_CASTLE:
+			//성
+			logger.info("locationType castle");
+			targetOwner = game.getCastleHost(locationID);
+			if(targetOwner.equals(user.getUserID())){
+				//내 성
+				model.addAttribute("btnbex", "주둔");
+				model.addAttribute("btnb", "alert('아직 안만듬 ㅋ')");
+				model.addAttribute("btncex", "안보임\" hidden=\"true");
+			}else{
+				//적 혹은 동맹 성
+				if(game.isAliance(user.getUserID(), targetOwner)){
+					//동맹성
+				}else{
+					//적 성
+					model.addAttribute("btnbex", "공격");
+					model.addAttribute("btnb", "alert('아직 안만듬 ㅋ')");
+					model.addAttribute("btncex", "안보임\" hidden=\"true");
+				}
+			}
+			
+			model.addAttribute("btnaex", "취소");
+			model.addAttribute("btna", "$(this).parents('#maincontent').load('/map/"+locationID+"')");
+			model.addAttribute("pic", "<img src='/images/img_castle.png'/>");
+			model.addAttribute("expl", "성입니다.");
+			break;
+		case IServices.LOCATION_TYPE_NORMAL:
+			//일반 필드
+			logger.info("locationType normal");
+			model.addAttribute("btnaex", "취소");
+			model.addAttribute("btna", "$(this).parents('#maincontent').load('/map/"+locationID+"')");
+
+			model.addAttribute("btnbex", "채집");
+			model.addAttribute("btnb", "alert('아직 안만듬 ㅋ')");
+
+			model.addAttribute("btncex", "사냥");
+			model.addAttribute("btnc", "alert('아직 안만듬 ㅋ')");
+			
+			model.addAttribute("pic", "<img src='/images/img_grass.png'/>");
+			model.addAttribute("expl", "풀떼기.");
+			break;
+		case IServices.LOCATION_TYPE_EXTERNALRESOURCE:
+			//자원지
+			logger.info("locationType resource");
+			targetOwner = game.getResourceOwner(locationID); 
+			if(targetOwner == null){
+				//중립 자원지
+				model.addAttribute("btnbex", "점령");
+				model.addAttribute("btnb", "alert('아직 안만듬 ㅋ')");
+				model.addAttribute("btncex", "채집");
+				model.addAttribute("btnc", "alert('아직 안만듬 ㅋ')");
+				
+			}else if(targetOwner.equals(user.getUserID())){
+				//내 자원지
+				model.addAttribute("btnbex", "주둔");
+				model.addAttribute("btnb", "alert('아직 안만듬 ㅋ')");
+				model.addAttribute("btncex", "안보임\" hidden=\"true");
+			}else{
+				//적 혹은 동맹 자원지
+				if(game.isAliance(user.getUserID(), targetOwner)){
+					//동맹 자원지
+				}else{
+					//적 자원지
+					model.addAttribute("btnbex", "공격");
+					model.addAttribute("btnb", "alert('아직 안만듬 ㅋ')");
+					model.addAttribute("btncex", "안보임\" hidden=\"true");
+				}
+			}
+			
+			model.addAttribute("btnaex", "취소");
+			model.addAttribute("btna", "$(this).parents('#maincontent').load('/map/"+locationID+"')");
+			model.addAttribute("pic", "<img src='/images/img_outresource.png'/>");
+			model.addAttribute("expl", "자원집니다..");
+			break;
+			default:
+				//에러잼
+				return ErrorController.getErrorPage(IServices.ERROR_INVAILD_ACCESS);
+		}
 		
 		
-		return "/children/worldmap";//TODO 지형 상세 페이지로 이동시킬것.
+		return "/children/detail_info";//TODO 지형 상세 페이지로 이동시킬것.
 	}
+	
 }

@@ -166,6 +166,16 @@ public class Engine {
 		return true;
 	}
 	
+	public String getResourceOwner(Integer locationID){
+		ModelOutResource outresource = service.getOutResource(locationID);
+		
+		if(outresource==null){
+			return null;
+		}
+		
+		return outresource.getUserID();
+	}
+	
 	/**
 	 * 로그인시 사용, 이 유저가 등록된 유저놈이었는지를 판단한다.
 	 * @param member
@@ -665,7 +675,7 @@ public class Engine {
 		return false;
 	}
 	
-	private boolean isAliance(String owner, String userID) {
+	public boolean isAliance(String owner, String userID) {
 		// TODO 동맹 미구현.
 		return false;
 	}
