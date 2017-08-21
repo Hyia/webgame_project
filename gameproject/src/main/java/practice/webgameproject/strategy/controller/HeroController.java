@@ -75,15 +75,15 @@ public class HeroController {
 		ModelHeroTable hero = game.getHero(heroID);
 		
 		model.addAttribute("pic", hero.getPotrait());
-		model.addAttribute("expl", ("무명의 영웅("+hero.getHeroID()+")의 설명이 들어감"));
+		model.addAttribute("expl", ("무명의 영웅("+hero.getHeroID()+")입니다. 영웅은 병력을 이끌며 사기에 영향을 미칩니다."));
 		
-		model.addAttribute("btnaex", "버튼1설명");
-		model.addAttribute("btnbex", "버튼2설명");
-		model.addAttribute("btncex", "버튼3설명");
+		model.addAttribute("btnaex", "사진변경");
+		model.addAttribute("btnbex", "이름변경");
+		model.addAttribute("btncex", "해고");
 		
-		model.addAttribute("btna", "alert('btn1에 해당하는 스크립트');");
-		model.addAttribute("btnb", "alert('btn2에 해당하는 스크립트');");
-		model.addAttribute("btnc", "alert('btn3에 해당하는 스크립트');");
+		model.addAttribute("btna", "alert('사진변경은 미구현입니다.');");
+		model.addAttribute("btnb", "alert('이름변경은 미구현입니다.');");
+		model.addAttribute("btnc", "alert('해고는 미구현입니다.');");
 		
 		return "/children/detail_info";
 	}
