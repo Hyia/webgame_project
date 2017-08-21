@@ -59,18 +59,19 @@ body{
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Login Page</title>
-<script src='http://code.jquery.com/jquery-3.1.0.js'></script>
+<!-- <script src='http://code.jquery.com/jquery-3.1.0.js'></script> -->
+<script src='/resources/js/jquery-3.1.0.js'></script>
      <script>
       $(document).ready( function(e){
     	  
    		if(${isLogedin == true}){
      		$('#menubar').show();
+     		$('#maincontent').load('/town/${param.locationID}');
          	setInterval(function(){
        		   $('#sidebar').load('/children/loginAfter');
      		}, 1000); /* time in milliseconds (ie 1 seconds)*/    	
      	}
      
-     		$('#maincontent').load('/town/${param.locationID}');
      		
              $('#tabMenu > li').click(function (event) {
      			 var index = $(this).index();
@@ -82,7 +83,7 @@ body{
      	     		$('#maincontent').load('/map/${param.locationID}');
      			 }
      			 if(value == "hero"){
-     				 
+      	     		$('#maincontent').load('/hero/herolist');
      			 }
      			 if(value == "battleLog"){
       	     		$('#maincontent').load('/combat/loglist');
@@ -132,6 +133,7 @@ body{
     
     
     <div id="maincontent" >
+    대문
     </div>
 </div>
 </body>
