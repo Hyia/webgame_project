@@ -1629,6 +1629,11 @@ public class Engine {
 
 	}
 
+	public ModelHeroTable getHero(Integer heroID) {
+		ModelHeroTable hero = service.getHero(new ModelHeroTable(heroID, null, null, null, null, null, null, null, null));
+		return hero;
+	}
+
 
 
 }

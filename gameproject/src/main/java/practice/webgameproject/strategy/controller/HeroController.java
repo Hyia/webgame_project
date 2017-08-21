@@ -67,10 +67,27 @@ public class HeroController {
 	
 	
 	@RequestMapping(value = "/{heroId}", method=RequestMethod.GET)
-	public String getHero(Model model,HttpSession session, @PathVariable("heroId") String logName){
+	public String getHero(Model model,HttpSession session, @PathVariable("heroId") Integer heroID){
+		if(session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS) == null){
+			return "redirect:/error/"+IServices.ERROR_INVAILD_ACCESS;
+		}
+		String userID = ((ModelMembers)session.getAttribute("UserInfo")).getUserID();
+		ModelHeroTable hero = game.getHero(heroID);
+		
+		model.addAttribute("pic", hero.getPotrait());
+		model.addAttribute("expl", ("무명의 영웅("+hero.getHeroID()+")의 설명이 들어감"));
+		
+		model.addAttribute("btnaex", "버튼1설명");
+		model.addAttribute("btnbex", "버튼2설명");
+		model.addAttribute("btncex", "버튼3설명");
+		
+		model.addAttribute("btna", "alert('btn1에 해당하는 스크립트');");
+		model.addAttribute("btnb", "alert('btn2에 해당하는 스크립트');");
+		model.addAttribute("btnc", "alert('btn3에 해당하는 스크립트');");
 		
 		return "/children/detail_info";
 	}
+	
 	
 	
 	

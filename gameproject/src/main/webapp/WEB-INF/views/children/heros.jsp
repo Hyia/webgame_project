@@ -7,8 +7,9 @@
 <script src='http://code.jquery.com/jquery-3.1.0.js'></script>
     <script>
       $(document).ready( function(e){
+			$('#heroinfo').load('/hero/${heros.get(0).heroID}');
+			
 			$('table').click(function(e) {
-				alert($(this).attr('id'));
 				$('#heroinfo').load('/hero/'+$(this).attr('id'));
 			})
 			
