@@ -63,7 +63,7 @@ public class TownController {
 		return "/children/town";
 	}
 	
-	@RequestMapping("/{locationID}/towninfo")
+	@RequestMapping("/{locationID}/10/towninfo")
 	public String cityDetail(HttpSession session, Model model, @PathVariable("locationID") Integer locationID){
 		
 		model.addAttribute("mapWidth", MAX_WIDTH_IN_SCREEN);
@@ -72,7 +72,7 @@ public class TownController {
 		model.addAttribute("centerLocation", locationID);
 		
 		
-		return "/children/town";//TODO 지형 상세 페이지로 이동시킬것.
+		return "/children/popup_Castle";//TODO 지형 상세 페이지로 이동시킬것.
 	}
 	
 	

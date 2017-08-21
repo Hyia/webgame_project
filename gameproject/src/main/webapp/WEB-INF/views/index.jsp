@@ -60,6 +60,7 @@ body{
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Login Page</title>
 <script src='http://code.jquery.com/jquery-3.1.0.js'></script>
+<script src='http://cdn.rawgit.com/vast-engineering/jquery-popup-overlay/1.7.13/jquery.popupoverlay.js'></script>
      <script>
       $(document).ready( function(e){
     	  
@@ -87,6 +88,7 @@ body{
      			 if(value == "battlelog"){
       	     		$('#maincontent').load('/map/${param.locationID}');
      			 }
+             });
       });
       
          	

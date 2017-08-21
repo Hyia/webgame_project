@@ -2,6 +2,10 @@
 <%@ page session="false" %>
 <html>
 <head>
+<style>
+        #my_popup{width: 70%;height: 70%; background: white;}
+        #my_popup button{position:absolute;right: 0; bottom: 0;}
+    </style>
     <meta charset="utf-8">
     <title>Castle PopUp</title>
 </head>
@@ -13,6 +17,7 @@
 
         // Initialize the plugin
         $('#my_popup').popup();
+        $('#my_popup').addClass("my_popup_open");
 
     });
 </script>

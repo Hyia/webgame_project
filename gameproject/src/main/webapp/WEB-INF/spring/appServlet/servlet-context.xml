@@ -34,7 +34,7 @@
     
     <mvc:resources mapping="/css/**" location="/css/" />
     <mvc:resources mapping="/images/**" location="/images/" />
-    <mvc:resources location="/js/" mapping="/js/**" />
+    <mvc:resources mapping="/js/**" location="/resources/js/" />
     <mvc:annotation-driven />    
         
     <!-- step1. annotation 설정 -->
