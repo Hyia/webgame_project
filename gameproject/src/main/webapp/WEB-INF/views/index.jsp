@@ -69,13 +69,13 @@ body{
              	}
      		}, 1000); /* time in milliseconds (ie 1 seconds)*/    	
      
-     			//$('#maincontent').load('/town/${param.locationID}');
-     		$('#maincontent').load('/map/${param.locationID}');
-             $('#tabMenu > li').click(function (event) {
-     			 var index = $(this).index();
-     			 
-     			 
-             });
+     			$('#maincontent').load('/town/${param.locationID}');
+     		//$('#maincontent').load('/map/${param.locationID}');
+            // $('#tabMenu > li').click(function (event) {
+     		//	 var index = $(this).index();
+     		//	 
+     		//	 
+            // });
       });
       
          	
@@ -120,8 +120,8 @@ body{
     
     
     <div id="maincontent" >
-    		 <!-- <%@ include file="children/town.jsp" %> -->
-    		 <%@  include file="children/worldmap.jsp" %>
+    		 <%@ include file="children/town.jsp" %>
+    		 <!-- <%@  include file="children/worldmap.jsp" %> -->
     </div>
 </div>
 </body>

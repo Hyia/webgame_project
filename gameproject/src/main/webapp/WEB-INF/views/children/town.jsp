@@ -23,7 +23,9 @@ table{width: 100%; height: 100%}
     	//$mapTable = "<a><img src='/images/img_rampart_1.png' /></a>";
     	var k = 0;
     	var imgn=1;
-    	for(var i=0;i<5;i++){
+    	
+    	
+    	 for(var i=0;i<5;i++){
     		if(i==0||i==4){
     			
     			$imgS="<a href='/town/"+locationID+"/towninfo'><img src='/images/img_rampart_"+imgn+".png' /></a>";
@@ -46,8 +48,6 @@ table{width: 100%; height: 100%}
     			}
     			
     		}else if(i>0&&i<4){
-    			$imgS="<a href='/town/"+locationID+"/towninfo'><img src='/images/img_maelBuildTyle.png' /></a>";
-    			$('tr:eq('+i+')>td:gt(0):lt(3)').append($imgS);
     			
     			$imgS="<a href='/town/"+locationID+"/towninfo'><img src='/images/img_rampart_4.png' /></a>";
     			$('tr:eq('+i+')>td:eq(0)').append($imgS);
@@ -55,16 +55,24 @@ table{width: 100%; height: 100%}
     			$imgS="<a href='/town/"+locationID+"/towninfo'><img src='/images/img_rampart_6.png' /></a>";
     			$('tr:eq('+i+')>td:eq(4)').append($imgS);
     		}
-    	
-    		
     	}
+    	
+    	var kinds=0;
+     	for(var k=1;k<4;k++){
+ 			for(var j=1;j<4;j++,kinds++){
+ 				if(kind[kinds]==null){
+ 					$imgS="<a href='/town/"+locationID+"/towninfo'><img src='/images/img_maelBuildTyle.png' /></a>";
+ 				}else{
+ 					$imgS="<a href='/town/"+locationID+"/towninfo'><img src='/images/img_mael"+kind[kinds]+".png' /></a>";
+ 				}
+ 				$('tr:eq('+k+')>td:eq('+j+')').append($imgS);
+ 			}
+ 		}
+    	
     	//$('tr:eq(0)>td:eq(0)').append($mapTable);
     	
     });
 	</script>
-
-
-<input type="text" id="maplocation" hidden='true' value='null'>
 
 <div id='town'>
 		<table>
