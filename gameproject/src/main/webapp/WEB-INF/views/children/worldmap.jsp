@@ -60,28 +60,28 @@
     		$("#img_up").attr("src","/images/img_move_arrow_up_unclickable.png");
     	}else{
     		$("#img_up").attr("src","/images/img_move_arrow_up.png").click(function(e){
-    			location.href="/map/${locations.get(mapWidth/2)}";
+    			$(this).parents("#maincontent").load("/map/${locations.get(mapWidth/2)}");
     		});
     	}
     	if(udlr.includes("dua")){
     		$("#img_down").attr("src","/images/img_move_arrow_down_unclickable.png");
     	}else{
     		$("#img_down").attr("src","/images/img_move_arrow_down.png").click(function(e){
-    			location.href="/map/${locations.get( mapWidth * mapHeight - (mapWidth/2) )}";
+    			$(this).parents("#maincontent").load("/map/${locations.get( mapWidth * mapHeight - (mapWidth/2) )}");
     		});
     	}
     	if(udlr.includes("lua")){
     		$("#img_left").attr("src","/images/img_move_arrow_left_unclickable.png");
     	}else{
     		$("#img_left").attr("src","/images/img_move_arrow_left.png").click(function(e){
-    			location.href="/map/${locations.get(((mapHeight/2)*mapWidth) - Math.floor(mapWidth/2))}";
+    			$(this).parents("#maincontent").load("/map/${locations.get(((mapHeight/2)*mapWidth) - Math.floor(mapWidth/2))}");
     		});
     	}
     	if(udlr.includes("rua")){
     		$("#img_right").attr("src","/images/img_move_arrow_right_unclickable.png");
     	}else{
     		$("#img_right").attr("src","/images/img_move_arrow_right.png").click(function(e){
-    			location.href="/map/${locations.get( (mapHeight/2)*mapWidth + Math.floor(mapWidth/2)) }";
+    			$(this).parents("#maincontent").load("/map/${locations.get( (mapHeight/2)*mapWidth + Math.floor(mapWidth/2)) }");
     		});
     	}
     	

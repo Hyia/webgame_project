@@ -1,7 +1,9 @@
 package practice.webgameproject.strategy.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -22,8 +24,8 @@ import practice.webgameproject.strategy.model.ModelXYval;
 public class MapController {
 	private static final Logger logger = LoggerFactory.getLogger(MapController.class);
 	
-	private static final int MAX_WIDTH_IN_SCREEN = 15;
-	private static final int MAX_HEIGHT_IN_SCREEN = 15;
+	private static final int MAX_WIDTH_IN_SCREEN = 11;
+	private static final int MAX_HEIGHT_IN_SCREEN = 11;
 	
 	@Autowired
 	@Qualifier("gameEngine")
@@ -34,7 +36,6 @@ public class MapController {
 		Integer locationID = (Integer)session.getAttribute("locationID");
 		return "redirect:/map/"+locationID;
 	}
-	
 	@RequestMapping("/{locationID}")
 	public String worldmap(HttpSession session, Model model, @PathVariable("locationID") Integer locationID){
 		
@@ -47,20 +48,38 @@ public class MapController {
 		 */
 		
 		List<ModelXYval> mapData = game.getMap(MAX_WIDTH_IN_SCREEN, MAX_HEIGHT_IN_SCREEN, locationID);
+		ModelXYval center = game.getXYval_ID(locationID);
 		List<Integer> kinds = new ArrayList<Integer>();
 		List<Integer> locations = new ArrayList<Integer>();
+		Map<String, Boolean> udlr = new HashMap<String, Boolean>();
 		
 		for(int i=0; i<mapData.size(); i++){
-			kinds.add(mapData.get(i).getKind());
-			locations.add(mapData.get(i).getLocationID());
+			ModelXYval xy = mapData.get(i);
+			kinds.add(xy.getKind());
+			locations.add(xy.getLocationID());
+			
+			if(xy.getLocationID() == null){
+				if(i == (int)(MAX_WIDTH_IN_SCREEN/2)){
+					//반드시 위쪽이 널
+					udlr.putIfAbsent("uua", true);
+				}else if(i == (int)(MAX_HEIGHT_IN_SCREEN/2)*MAX_WIDTH_IN_SCREEN){
+					//왼쪽이 널
+					udlr.putIfAbsent("lua", true);
+				}else if(i == (int)(MAX_HEIGHT_IN_SCREEN/2)*MAX_WIDTH_IN_SCREEN + (int)Math.floor(MAX_WIDTH_IN_SCREEN)-1 ){
+					//오른쪽이 널
+					udlr.putIfAbsent("rua", true);
+				}else if(i == MAX_WIDTH_IN_SCREEN * MAX_HEIGHT_IN_SCREEN - (int)(MAX_WIDTH_IN_SCREEN/2)){
+					//아래쪽이 널
+					udlr.putIfAbsent("dua", true);
+				}
+			}
 		}
 		
-		model.addAttribute("mapWidth", MAX_WIDTH_IN_SCREEN);
+		model.addAttribute("mapWidth", MAX_WIDTH_IN_SCREEN); // FIXME 화면 크기에 맞춰서 계산된 가로세로 크기를 넣을것...
 		model.addAttribute("mapHeight", MAX_HEIGHT_IN_SCREEN);
-		model.addAttribute("kind", kinds.size() > 0 ? kinds : "null"); //TODO 만들어
-		model.addAttribute("locations", locations.size() > 0 ? kinds : "null"); //TODO 만들어
-		model.addAttribute("mapData", mapData.size() > 0 ? kinds : "null"); //TODO 만들어
-		model.addAttribute("centerLocation", locationID);
+		model.addAttribute("kind", kinds); //TODO 만들어
+		model.addAttribute("locations", locations); //TODO 만들어
+		model.addAttribute("udlr", udlr); //TODO 만들어
 		
 		
 		return "/children/worldmap";
@@ -70,7 +89,6 @@ public class MapController {
 		
 		model.addAttribute("mapWidth", MAX_WIDTH_IN_SCREEN);
 		model.addAttribute("mapHeight", MAX_HEIGHT_IN_SCREEN);
-		model.addAttribute("kindList", "");
 		model.addAttribute("centerLocation", locationID);
 		
 		
