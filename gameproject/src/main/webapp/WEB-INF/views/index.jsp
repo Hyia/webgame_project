@@ -66,7 +66,7 @@ body{
     	  
    		if(${isLogedin == true}){
      		$('#menubar').show();
-     		$('#maincontent').load('/town/${param.locationID}');
+     		$('#maincontent').load('/town/${locationID}');
          	setInterval(function(){
        		   $('#sidebar').load('/children/loginAfter');
      		}, 1000); /* time in milliseconds (ie 1 seconds)*/    	
@@ -77,10 +77,10 @@ body{
      			 var index = $(this).index();
      			 var value = $(this).html();
      			 if(value == "town"){
-     	     		$('#maincontent').load('/town/${param.locationID}');
+     	     		$('#maincontent').load('/town/${locationID}');
      			 }
      			 if(value == "map"){
-     	     		$('#maincontent').load('/map/${param.locationID}');
+     	     		$('#maincontent').load('/map/${locationID}');
      			 }
      			 if(value == "hero"){
       	     		$('#maincontent').load('/hero/herolist');

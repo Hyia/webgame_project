@@ -37,10 +37,10 @@
 <c:forEach var="i" items="${logs}" varStatus="status">
 <tr><a href="/combat/loglist/${logs.LogName}" target="_self">
 <td>${status.count}</td>
-<td>${logs.AttackUserID}</td>
-<td>${logs.DefenseUserID}</td>
-<td>${logs.BattleDate}</td>
-<td>${logs.WhoWins}</td>
+<td>${logs.attackUserID}</td>
+<td>${logs.defenseUserID}</td>
+<td>${logs.battleDate}</td>
+<td>${logs.whoWins}</td>
 </a></tr>
 </c:forEach>
 </table>

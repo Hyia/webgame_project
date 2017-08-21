@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import practice.webgameproject.strategy.engine.Engine;
 import practice.webgameproject.strategy.model.ModelMembers;
@@ -41,7 +43,7 @@ public class HomeController {
 	Engine game;
 	
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "/")
 	public String home(Locale locale, Model model, HttpSession session) {
 		logger.info("index page in");
 		
@@ -49,6 +51,7 @@ public class HomeController {
 			model.addAttribute("isLogedin", "true");
 			model.addAttribute("usernickname", ((ModelMembers)session.getAttribute(SESSION_NAME_MODELMEMBERS)).getUserNicName());
 			model.addAttribute("resource", ((ModelMembers)session.getAttribute(SESSION_NAME_MODELMEMBERS)).getSaveProduction());
+			model.addAttribute("locationID", ((Integer)session.getAttribute(SESSION_NAME_USERINIT_LOCATIONID)));
 		}
 		
 		return "index";
@@ -60,24 +63,25 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/loginreq", method = RequestMethod.POST)
-	public String cliced_btn_test(Model model, HttpServletRequest request, HttpSession session) {
+	public String cliced_btn_test(Model model, HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttributes) {
 		
 		String userID = request.getParameter("id");
 		String userPWD = request.getParameter("pwd");
 		ModelMembers member = new ModelMembers(userID, userPWD, null, null, null, null);
 		if(game.isValidLogin(member)){
 			member = game.getUserInfo(member);
-			model.addAttribute("isLogedin", "true");
 			
 			Integer locationID = game.getUserInitLocation(member);
+
+			redirectAttributes.addFlashAttribute("isLogedin", "true");
+			redirectAttributes.addFlashAttribute("locationID", locationID);
 
 			session.setAttribute(SESSION_NAME_MODELMEMBERS, member);
 			session.setAttribute(SESSION_NAME_USERINIT_LOCATIONID, locationID);
 			
 			
 			
-			return "redirect:index?locationID="+ locationID ;
-//			return "redirect:/town/"+locationID;
+			return "redirect:/index";
 		}
 
 		model.addAttribute("isLogedin", "false");
