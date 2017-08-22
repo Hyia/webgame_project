@@ -10,7 +10,7 @@
  #town { width:100%; height:100%; border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;
  background-color: #ffcd28;}
  #town td { border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;}
- img{width: 100%; height: 100%}
+ #town img,#my_popup img{width: 100%; height: 100%}
  #my_popup{width: 70%;height: 70%; background: white;}
  #my_popup button{position:absolute;right: 0; bottom: 0;}
  #div1{height: 98%;width: 48%; left: 0; position: absolute; margin:5px;border:1px solid #00aaed;}
