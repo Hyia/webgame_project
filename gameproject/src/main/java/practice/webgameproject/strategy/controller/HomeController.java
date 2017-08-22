@@ -1,6 +1,8 @@
 package practice.webgameproject.strategy.controller;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import practice.webgameproject.strategy.engine.Engine;
+import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelMembers;
 
 /**
@@ -31,6 +34,7 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	public static final String SESSION_NAME_MODELMEMBERS = "UserInfo";
 	public static final String SESSION_NAME_USERINIT_LOCATIONID = "userInitLocationID";
+	public static final String SESSION_NAME_USERCURRENT_LOCATIONID = "userCurrentLocationID";
 
 //	@Autowired
 //	ServiceGame service;
@@ -78,7 +82,7 @@ public class HomeController {
 
 			session.setAttribute(SESSION_NAME_MODELMEMBERS, member);
 			session.setAttribute(SESSION_NAME_USERINIT_LOCATIONID, locationID);
-			
+			session.setAttribute(SESSION_NAME_USERCURRENT_LOCATIONID, locationID);
 			
 			
 			return "redirect:/index";
@@ -94,8 +98,8 @@ public class HomeController {
 		ModelMembers member = (ModelMembers)session.getAttribute(SESSION_NAME_MODELMEMBERS);
 		member = game.getUserInfo(member);
 		session.setAttribute(SESSION_NAME_MODELMEMBERS, member);
-//		session.setAttribute("ffdsa",	game.remain);
-		
+		Map<ModelCastle,Map<Integer, String>> remainConstructTime = game.remainConsructTimeAll(member);
+		model.addAttribute("constructTimes", remainConstructTime);
 		return "/children/loginAfter";
 	}
 	

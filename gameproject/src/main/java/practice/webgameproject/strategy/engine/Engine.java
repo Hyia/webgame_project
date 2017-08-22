@@ -215,8 +215,8 @@ public class Engine {
 		
 		return remainTimes;
 	}
-	public List<String> remainConstructBuildTime(Integer locationID){
-		List<String> remainTimes = new ArrayList<String>();
+	public Map<Integer, String> remainConstructBuildTime(Integer locationID){
+		Map<Integer, String> remainTimes = new HashMap<Integer,String>();
 		int index = threadsHolder.indexOf(locationID);
 		if(index == -1) return null;
 		for(int i=0; i<threadsHolder.get(index).threads.size(); i++){
@@ -224,12 +224,33 @@ public class Engine {
 				ProductThread ptr = (ProductThread) threadsHolder.get(index).threads.get(i);
 				if(ptr.target instanceof ModelWaitList_Building){
 					Date time = new Date(ptr.timeleft - new Date().getTime());
-					remainTimes.add(new SimpleDateFormat("HH:mm:ss").format(time));
+					remainTimes.put(((ModelWaitList_Building)ptr.target).getRoomNumber(),new SimpleDateFormat("HH:mm:ss").format(time));
 				}
 			}
 		}
 		
 		return remainTimes;
+	}
+	
+	public Map<ModelCastle, Map<Integer, String>> remainConsructTimeAll(ModelMembers member){
+		ModelMembers members = service.getMember(member);
+		if(members == null) return null;
+
+		List<ModelCastle> castles =	service.getCastleList(members);
+		if(castles == null || castles.isEmpty()) return null;
+		
+		Map<ModelCastle, Map<Integer, String>> map = new HashMap<ModelCastle, Map<Integer, String>>();
+		for(int i=0; i<castles.size();i++){
+			Map<Integer, String> value = remainConstructBuildTime(castles.get(i).getLocationID());
+			if(value != null && value.size() > 0){
+				map.put(castles.get(i), value);
+			}
+		}
+		
+		return map;
+	}
+	public Map<ModelCastle, Map<Integer, String>> remainConsructTimeAll(String userID){
+		return remainConsructTimeAll(new ModelMembers(userID, null, null, null));
 	}
 	
 	/**
