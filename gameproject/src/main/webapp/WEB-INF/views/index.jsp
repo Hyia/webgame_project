@@ -127,7 +127,10 @@ body{
 		            
 		        </form>
 		   </c:if>
-		
+		<!-- login after -->
+	    	<c:if test="${isLogedin != null && isLogedin == true}">
+	    		<%@ include file="children/loginAfter.jsp" %>
+	    	</c:if>
 	   </div>
     </div>
     

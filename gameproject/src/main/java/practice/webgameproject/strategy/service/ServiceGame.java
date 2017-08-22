@@ -1025,16 +1025,7 @@ public class ServiceGame extends DaoGame{
 		return ERROR_NOT_MAKE_YET;
 	}
 
-	//x와 y값으로 xyval을 리턴
-	public ModelXYval getModelXYval(int x, int y) {
 
-		return null;
-	}
-	//로케이션id로 xyval을 리턴
-	public ModelXYval getModelXYval(Integer locationID) {
-
-		return null;
-	}
 
 	//히당 위치의 병력을 리턴. 성이든 야외자원지이든....
 	public List<ModelSlot> getLocalArmySlotList(Integer targetLocationID) {
