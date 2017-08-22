@@ -1,6 +1,9 @@
 package practice.webgameproject.strategy.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -11,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,8 +24,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import practice.webgameproject.strategy.engine.Engine;
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
+import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelXYval;
+import practice.webgameproject.strategy.service.ServiceGame;
 
 @Controller
 @RequestMapping(value="/town")
@@ -44,6 +50,12 @@ public class TownController {
 		 * 4x4의 시티 내부
 		 * 
 		 */
+		List<ModelCastle> castleList=game.getUserCastleList((ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS));
+		List<Integer> castleLocationID = new ArrayList<Integer>();
+		for(int c=0;c<castleList.size();c++){
+			castleLocationID.add(castleList.get(c).getLocationID());
+		}
+		
 		
 		List<ModelBuilding> mapData = game.getBuildingInTown(locationID);
 		List<Integer> kinds = new ArrayList<Integer>();
@@ -59,20 +71,22 @@ public class TownController {
 		model.addAttribute("kind", kinds.size() > 0 ? kinds : "null" ); // 만들어
 		model.addAttribute("roomNumber", roomNumber.size() > 0 ? kinds : "null"); // 만들어
 		model.addAttribute("mapData", mapData.size() > 0 ? kinds : "null"); //TODO 만들어
+		model.addAttribute("castleLocationID",castleLocationID);
 		model.addAttribute("locationID", locationID);
 		return "/children/town";
 	}
 	
-	@RequestMapping("/{locationID}/10/towninfo")
-	public String cityDetail(HttpSession session, Model model, @PathVariable("locationID") Integer locationID){
+	@RequestMapping("/{locationID}/{roomNumber}/{unitid}/{amount}")
+	public String cityDetail(HttpSession session, Model model,
+			@PathVariable("locationID") Integer locationID
+			,@PathVariable("roomNumber") Integer roomNumber
+			,@PathVariable("unitid") Integer unitid
+			,@PathVariable("amount") Integer amount){
 		
-		model.addAttribute("mapWidth", MAX_WIDTH_IN_SCREEN);
-		model.addAttribute("mapHeight", MAX_HEIGHT_IN_SCREEN);
-		model.addAttribute("kindList", "");
-		model.addAttribute("centerLocation", locationID);
+		game.productUnit((ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS), locationID, unitid, amount);
 		
 		
-		return "/children/popup_Castle";//TODO 지형 상세 페이지로 이동시킬것.
+		return "redirect:/index";//TODO 지형 상세 페이지로 이동시킬것.
 	}
 	
 	
