@@ -112,7 +112,7 @@ public class MapController {
 				}else{
 					//적 성
 					model.addAttribute("btnbex", "공격");
-					model.addAttribute("btnb", "alert('아직 안만듬 ㅋ')");
+					model.addAttribute("btnb", "$(this).parents('#maincontent').load('/combat/select/"+locationID+"')");
 					model.addAttribute("btncex", "안보임\" hidden=\"true");
 				}
 			}
@@ -132,7 +132,7 @@ public class MapController {
 			model.addAttribute("btnb", "alert('아직 안만듬 ㅋ')");
 
 			model.addAttribute("btncex", "사냥");
-			model.addAttribute("btnc", "alert('아직 안만듬 ㅋ')");
+			model.addAttribute("btnc", "$(this).parents('#maincontent').load('/combat/select/"+locationID+"')");
 			
 			model.addAttribute("pic", "<img src='/images/img_grass.png'/>");
 			model.addAttribute("expl", "풀떼기.");
@@ -160,7 +160,7 @@ public class MapController {
 				}else{
 					//적 자원지
 					model.addAttribute("btnbex", "공격");
-					model.addAttribute("btnb", "alert('아직 안만듬 ㅋ')");
+					model.addAttribute("btnb", "$(this).parents('#maincontent').load('/combat/select/"+locationID+"')");
 					model.addAttribute("btncex", "안보임\" hidden=\"true");
 				}
 			}

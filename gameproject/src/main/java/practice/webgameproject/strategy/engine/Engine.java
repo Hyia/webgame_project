@@ -44,6 +44,7 @@ import practice.webgameproject.strategy.service.ServiceGame;
 @Configurable
 public class Engine {
 	private static final Logger logger = LoggerFactory.getLogger(Engine.class);
+	public static boolean isEngineRunning = false;
 
 	@Autowired
 	private ServiceGame service;
@@ -88,7 +89,7 @@ public class Engine {
 				tr.setTarget(target);
 				tr.start();
 //				threadsHolder.add(new ThreadHolder(((ModelWaitList_Building) target).getLocationID(), tr));
-				int index = threadsHolder.indexOf(((ModelWaitList_Building) target).getLocationID());
+				int index = threadsHolder.indexOf(new ThreadHolder(((ModelWaitList_Building) target).getLocationID()));
 				if(index == -1){
 					ThreadHolder holder = new ThreadHolder(((ModelWaitList_Building) target).getLocationID());
 					holder.threads.add(tr);
@@ -104,7 +105,7 @@ public class Engine {
 				tr.setTarget(target);
 				tr.start();
 //				threadsHolder.add(new ThreadHolder(((ModelWaitList_Unit) target).getLocationID(), tr));
-				int index = threadsHolder.indexOf(((ModelWaitList_Unit) target).getLocationID());
+				int index = threadsHolder.indexOf(new ThreadHolder(((ModelWaitList_Unit) target).getLocationID()));
 				if(index == -1){
 					ThreadHolder holder = new ThreadHolder(((ModelWaitList_Unit) target).getLocationID());
 					holder.threads.add(tr);
@@ -114,6 +115,7 @@ public class Engine {
 				}
 				
 			}
+			isEngineRunning = true;
 		}
 		
 		//유닛 티어분류
@@ -201,7 +203,7 @@ public class Engine {
 	
 	public List<String> remainUnitBuildTime(Integer locationID){
 		List<String> remainTimes = new ArrayList<String>();
-		int index = threadsHolder.indexOf(locationID);
+		int index = threadsHolder.indexOf(new ThreadHolder(locationID));
 		if(index == -1) return null;
 		for(int i=0; i<threadsHolder.get(index).threads.size(); i++){
 			if(threadsHolder.get(index).threads.get(i) instanceof ProductThread){
@@ -215,9 +217,53 @@ public class Engine {
 		
 		return remainTimes;
 	}
+	
+	
+	public Army getHeroTroops(Integer heroID){
+		Army arm = new Army(heroID);
+		List<ModelSlot> slots = service.getHeroTroop_SlotList(heroID);
+		for(int i=0; i<slots.size();i++){
+			arm.addUnit(service.getUnitInformation(slots.get(i).getSlotUID()), slots.get(i).getSlotAmount(), slots.get(i).getSlotID());
+		}
+		return arm;
+	}
+	
+	public Map<Integer,String> remainMarchTime(Integer locationID){
+		Map<Integer, String> remainTimes = new HashMap<Integer,String>();
+		int index = threadsHolder.indexOf(new ThreadHolder(locationID));
+		if(index == -1){
+			return null;
+		}
+		for(int i=0; i<threadsHolder.get(index).threads.size(); i++){
+			if(threadsHolder.get(index).threads.get(i) instanceof MarchThread){
+				MarchThread mtr = (MarchThread) threadsHolder.get(index).threads.get(i);
+					Date time = new Date(mtr.timeleft - new Date().getTime());
+					remainTimes.put(mtr.target.getHeroID(),new SimpleDateFormat("HH:mm:ss").format(time));
+			}
+		}
+		
+		return remainTimes;
+	}
+	public Map<ModelCastle, Map<Integer, String>> remainMarchTimeAll(ModelMembers member){
+		ModelMembers members = service.getMember(member);
+		if(members == null) return null;
+		List<ModelCastle> castles =	service.getCastleList(members);
+		if(castles == null || castles.isEmpty()) return null;
+		
+		Map<ModelCastle, Map<Integer, String>> map = new HashMap<ModelCastle, Map<Integer, String>>();
+		for(int i=0; i<castles.size();i++){
+			Map<Integer, String> value = remainMarchTime(castles.get(i).getLocationID());
+			if(value != null && value.size() > 0){
+				map.put(castles.get(i), value);
+			}
+		}
+		
+		return map;
+	}
+	
 	public Map<Integer, String> remainConstructBuildTime(Integer locationID){
 		Map<Integer, String> remainTimes = new HashMap<Integer,String>();
-		int index = threadsHolder.indexOf(locationID);
+		int index = threadsHolder.indexOf(new ThreadHolder(locationID));
 		if(index == -1) return null;
 		for(int i=0; i<threadsHolder.get(index).threads.size(); i++){
 			if(threadsHolder.get(index).threads.get(i) instanceof ProductThread){
@@ -393,7 +439,7 @@ public class Engine {
 			tr.setFinish_time(queueBuilding.getWaitTime().getTime());
 			tr.start();
 //			threadsHolder.add(new ThreadHolder(queueBuilding.getLocationID(), tr));
-			int index = threadsHolder.indexOf(locationID);
+			int index = threadsHolder.indexOf(new ThreadHolder(locationID));
 			if(index == -1){
 				ThreadHolder holder = new ThreadHolder(locationID);
 				holder.threads.add(tr);
@@ -486,7 +532,7 @@ public class Engine {
 			tr.setFinish_time(queueBuilding.getWaitTime().getTime());
 			tr.start();
 //			threadsHolder.add(new ThreadHolder(queueBuilding.getLocationID(), tr));
-			int index = threadsHolder.indexOf(locationID);
+			int index = threadsHolder.indexOf(new ThreadHolder(locationID));
 			if(index == -1){
 				ThreadHolder holder = new ThreadHolder(locationID);
 				holder.threads.add(tr);
@@ -563,7 +609,7 @@ public class Engine {
 			tr.setFinish_time(queueUnit.getWaitTime().getTime());
 			tr.start();
 //			threadsHolder.add(new ThreadHolder(locationID, tr));
-			int index = threadsHolder.indexOf(locationID);
+			int index = threadsHolder.indexOf(new ThreadHolder(locationID));
 			if(index == -1){
 				ThreadHolder holder = new ThreadHolder(locationID);
 				holder.threads.add(tr);
@@ -590,20 +636,25 @@ public class Engine {
 	}
 	
 	//전투이동 명령
+	public int goBattle(Integer heroID, Integer locationID){
+		ModelHeroTable hero = service.getHero(new ModelHeroTable(heroID, null, null, null, null, null, null, null, null, null));
+		if(hero == null) return IServices.ERROR_INVAILD_ACCESS;
+		return goBattle(hero,locationID);
+	}
 	public int goBattle(ModelHeroTable hero, ModelXYval targetLocation){
 		return goBattle(hero, targetLocation.getLocationID());
 	}
-	public int goBattle(ModelHeroTable hero, int x, int y){
-		ModelXYval xy = service.getModelXYval(x,y);
-		return goBattle(hero,xy);
-	}
+//	public int goBattle(ModelHeroTable hero, int x, int y){
+//		ModelXYval xy = service.getModelXYval(x,y);
+//		return goBattle(hero,xy);
+//	}
 	public int goBattle(ModelHeroTable hero, Integer locationID){
 		//지금 좌표랑 공격목표 좌표랑 이동시간 계산
-		ModelXYval startPoint = service.getModelXYval(hero.getLocationID());
+		ModelXYval startPoint = service.getXYval_LocationID(hero.getLocationID());
 		int startX = startPoint.getCastleX();
 		int startY = startPoint.getCastleY();
 		
-		ModelXYval endPoint = service.getModelXYval(locationID);
+		ModelXYval endPoint = service.getXYval_LocationID(locationID);
 		int endX = endPoint.getCastleX();
 		int endY = endPoint.getCastleY();
 		
@@ -618,9 +669,11 @@ public class Engine {
 		//보정 들어간 단순합
 		for(int i=0; i<herosUnits.size();i++){
 			// TODO : 나중에 이거 간소화좀 시켜봐
-			ModelUnit unit = getUnit(herosUnits.get(i).getSlotUID());
-			int unitSPD = unit.getSPD().intValue();
-			speed_sum += correction(unitSPD, hero.getAGI(), (hero.getSpecialty().intValue() == unit.getUnitID().intValue()));
+			if(herosUnits.get(i).getSlotUID() !=null){
+				ModelUnit unit = getUnit(herosUnits.get(i).getSlotUID());
+				int unitSPD = unit.getSPD().intValue();
+				speed_sum += correction(unitSPD, hero.getAGI(), (hero.getSpecialty().intValue() == unit.getUnitID().intValue()));
+			}
 		}
 		//나눔
 		average_unitmove_speed = speed_sum / herosUnits.size();
@@ -630,6 +683,7 @@ public class Engine {
 		
 		//쓰레드 시작
 		if(hasAddableMarch(hero.getLocationID())){
+			logger.info("엔진: addablemarch가 true");
 			//병력을 보낼 수 있으면 쓰레드를 붙여주고 성공 리턴
 			/**
 			 * 필요사항
@@ -642,18 +696,22 @@ public class Engine {
 			march.setFinish_time(travelTime + (new Date()).getTime());//이동시간에 현재시간을 더해서 이동완료시간으로 변환
 			march.setTravelLength((long)travelLength);
 			march.start();
+			logger.info("엔진: 쓰레드가 만들어지고 시작됨");
 //			threadsHolder.add(new ThreadHolder(hero.getLocationID(), march));
-			int index = threadsHolder.indexOf(hero.getLocationID());
+			int index = threadsHolder.indexOf(new ThreadHolder(hero.getLocationID()));
 			if(index == -1){
+				logger.info("엔진: 기존에 없어서 추가됨");
 				ThreadHolder holder = new ThreadHolder(hero.getLocationID());
 				holder.threads.add(march);
 				threadsHolder.add(holder);
 			}else{
+				logger.info("엔진: 기존에 있어서 더함");
 				threadsHolder.get(index).threads.add(march);
 			}
 			
 			return IServices.SUCCESS;
 		}
+		logger.info("엔진: addablemarch가 false");
 		
 		//공격 도착은 리플레시할 때 되도록 만들것. 이 메서드는 전투를 보내는 것 까지만.
 		// TODO 에러 종류 "더 보낼 수 없는 상태"를 IServices에 추가.
@@ -690,7 +748,13 @@ public class Engine {
 	 */
 	private boolean hasAddableMarch(Integer locationID) {
 		int counter = 0;
-		ThreadHolder holder =threadsHolder.get(locationID); 
+		int index = threadsHolder.indexOf(new ThreadHolder(locationID));
+		ThreadHolder holder;
+		if(index != -1){
+			holder = threadsHolder.get(index); 
+		}else{
+			holder = new ThreadHolder(locationID);
+		}
 		for(int i=0; i< holder.threads.size(); i++){
 			if(holder.threads.get(i) instanceof MarchThread){
 				if( ((MarchThread)holder.threads.get(i)).target.getLocationID() == locationID){
@@ -713,7 +777,7 @@ public class Engine {
 	
 	public boolean isInConstruct(Integer locationID, Integer roomNumber){
 		ModelWaitList_Building finder = new ModelWaitList_Building(null, locationID, null, roomNumber);
-		int index = threadsHolder.indexOf(finder);
+		int index = threadsHolder.indexOf(new ThreadHolder(finder.getLocationID()));
 		
 		if(index != -1) return true;//쓰레드홀더가 없으면 건설중이 아님.
 		return false;
@@ -808,19 +872,20 @@ public class Engine {
 			Army heroArmy = new Army(attacker.get(i).getHeroID());
 			for(int j=0; j< heroUnits.size(); j++){
 				ModelSlot slot = heroUnits.get(j);
-				ModelUnit unitInfo = getUnit(slot.getSlotUID());
-				ModelUnit unit = new ModelUnit(unitInfo);
-				int amount = slot.getSlotAmount();
-				int atk = correction(unit.getATK(), hero.getSTR().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
-				int hp = correction(unit.getHP(), hero.getCON().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
+				if(slot.getSlotUID() != null){
+					ModelUnit unitInfo = getUnit(slot.getSlotUID());
+					ModelUnit unit = new ModelUnit(unitInfo);
+					int amount = slot.getSlotAmount();
+					int atk = correction(unit.getATK(), hero.getSTR().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
+					int hp = correction(unit.getHP(), hero.getCON().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
 
-				unit.setATK(atk);
-				unit.setHP(hp);
-				heroArmy.addUnit(unit, amount,slot.getSlotID());
-				
-				myAtkSum += (atk*amount);
-				myHpSum += (hp*amount);
-				
+					unit.setATK(atk);
+					unit.setHP(hp);
+					heroArmy.addUnit(unit, amount,slot.getSlotID());
+					
+					myAtkSum += (atk*amount);
+					myHpSum += (hp*amount);
+				}				
 			}
 			attackerArms.add(heroArmy);
 		}
@@ -1291,7 +1356,7 @@ public class Engine {
 	//진격지 도착
 	private void makeBattle(ModelHeroTable target, Integer targetLocationID, long distance) {
 		// 도착한 곳은 어떤곳인가
-		ModelXYval xy =  service.getModelXYval(targetLocationID);
+		ModelXYval xy =  service.getXYval_LocationID(targetLocationID);
 		int targetLocationKind = xy.getKind();
 		String logName = "";
 		switch(targetLocationKind){
@@ -1389,7 +1454,7 @@ public class Engine {
 		return creeps;
 	}
 	public void destroyThread(Integer locationID, Thread thread) {
-		int index = threadsHolder.indexOf(locationID);
+		int index = threadsHolder.indexOf(new ThreadHolder(locationID));
 		int targetThreadIndex = -1;
 		Thread tr = thread;
 
@@ -1430,10 +1495,12 @@ public class Engine {
 		@Override
 		public boolean equals(Object obj) {
 			if(obj instanceof ThreadHolder){
+				logger.info("threadHolder의 equals가 불려보니 ThreadHolder더라");
 				ThreadHolder target = (ThreadHolder) obj;
 				return locationID.intValue() == target.locationID.intValue();
 			}
 			if(obj instanceof Integer){
+				logger.info("threadHolder의 equals가 불려보니 Integer더라");
 				Integer target = (Integer)obj;
 				return target.intValue() == this.locationID.intValue();
 			}

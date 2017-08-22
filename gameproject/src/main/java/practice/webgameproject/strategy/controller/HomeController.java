@@ -58,6 +58,10 @@ public class HomeController {
 			model.addAttribute("locationID", ((Integer)session.getAttribute(SESSION_NAME_USERINIT_LOCATIONID)));
 		}
 		
+		if(!game.isEngineRunning){
+			game.EngineInitalizer();
+		}
+		
 		return "index";
 	}
 	
@@ -98,8 +102,14 @@ public class HomeController {
 		ModelMembers member = (ModelMembers)session.getAttribute(SESSION_NAME_MODELMEMBERS);
 		member = game.getUserInfo(member);
 		session.setAttribute(SESSION_NAME_MODELMEMBERS, member);
+
 		Map<ModelCastle,Map<Integer, String>> remainConstructTime = game.remainConsructTimeAll(member);
 		model.addAttribute("constructTimes", remainConstructTime);
+		
+		Map<ModelCastle,Map<Integer, String>> remainMarchTime = game.remainMarchTimeAll(member);
+		model.addAttribute("marchTimes", remainMarchTime);
+		
+		
 		return "/children/loginAfter";
 	}
 	

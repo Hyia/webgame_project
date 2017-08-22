@@ -80,18 +80,14 @@ body{
      			 var index = $(this).index();
      			 var value = $(this).html();
      			 if(value == "town"){
-
      	     		$('#maincontent').load('/town/${locationID}');
      			 }
      			 if(value == "map"){
-
      	     		$('#maincontent').load('/map/${locationID}');
      			 }
      			 if(value == "hero"){
       	     		$('#maincontent').load('/hero/herolist');
      			 }
-
-
      			 if(value == "battleLog"){
       	     		$('#maincontent').load('/combat/loglist');
      			 }
@@ -131,10 +127,6 @@ body{
 		            
 		        </form>
 		   </c:if>
-		<!-- login after -->
-	    	<c:if test="${isLogedin != null && isLogedin == true}">
-	    		<%@ include file="children/loginAfter.jsp" %>
-	    	</c:if>
 	   </div>
     </div>
     
