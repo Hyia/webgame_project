@@ -2,7 +2,12 @@
 <%@ page session="true" %>
 
 <style type="text/css">
- #town table { width:100%; height:100%; border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;
+ #townTable{width:100%;height:100%;margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;}
+ #tt1{width:8%;height:100%;}
+ #tt2{width:92%;height:100%;}
+ #townSide{width:100%;height:100%;border:1px solid #300;}
+ #townSide td{border:1px solid #300;}
+ #town { width:100%; height:100%; border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;
  background-color: #ffcd28;}
  #town td { border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;}
  img{width: 100%; height: 100%}
@@ -33,11 +38,11 @@
     		if(i==0||i==4){
     			
     			$imgS="<a href='/town/"+locationID+"/"+11+"/towninfo'><img src='/images/img_rampart_"+imgn+".png' /></a>";
-    			$('tr:eq('+i+')>td:eq(0)').append($imgS);
+    			$('#town tr:eq('+i+')>td:eq(0)').append($imgS);
     			imgn+=2;
     			
     			$imgS="<a href='/town/"+locationID+"/"+11+"/towninfo'><img src='/images/img_rampart_"+imgn+".png' /></a>";
-    			$('tr:eq('+i+')>td:eq(4)').append($imgS);
+    			$('#town tr:eq('+i+')>td:eq(4)').append($imgS);
     			
     			if(imgn==3){
     				imgn=7;
@@ -45,19 +50,19 @@
     			
     			if(i==0){
     				$imgS="<a href='/town/"+locationID+"/"+10+"/towninfo'><img src='/images/img_rampart_2.png' /></a>";
-        			$('tr:eq(0)>td:gt(0):lt(3)').append($imgS);
+        			$('#town tr:eq(0)>td:gt(0):lt(3)').append($imgS);
     			}else if(i==4){
     				$imgS="<a href='/town/"+locationID+"/"+10+"/towninfo'><img src='/images/img_rampart_8.png' /></a>";
-        			$('tr:eq(4)>td:gt(0):lt(3)').append($imgS);
+        			$('#town tr:eq(4)>td:gt(0):lt(3)').append($imgS);
     			}
     			
     		}else if(i>0&&i<4){
     			
     			$imgS="<a href='/town/"+locationID+"/"+10+"/towninfo'><img src='/images/img_rampart_4.png' /></a>";
-    			$('tr:eq('+i+')>td:eq(0)').append($imgS);
+    			$('#town tr:eq('+i+')>td:eq(0)').append($imgS);
     			
     			$imgS="<a href='/town/"+locationID+"/"+10+"/towninfo'><img src='/images/img_rampart_6.png' /></a>";
-    			$('tr:eq('+i+')>td:eq(4)').append($imgS);
+    			$('#town tr:eq('+i+')>td:eq(4)').append($imgS);
     		}
     	}
     	
@@ -69,7 +74,7 @@
  				}else{
  					$imgS="<img src='/images/img_mael"+kind[kinds]+".png' class='my_popup_open' value='"+kind[kinds]+"'/>";
  				}
- 				$('tr:eq('+k+')>td:eq('+j+')').append($imgS);
+ 				$('#town tr:eq('+k+')>td:eq('+j+')').append($imgS);
  			}
  		}
      	
@@ -82,10 +87,13 @@
             
             switch(val){
 	    	case "1":
+	    		$('#div2').children().remove();
 	    		break;
 	    	case "2":
+	    		$('#div2').children().remove();
 	    		break;
 	    	case "3":
+	    		$('#div2').children().remove();
 	    		break;
 	    	case "4":
 	    		$('#div2').children().remove();
@@ -99,8 +107,21 @@
     });
 	</script>
 
-<div id='town'>
-		<table>
+<div id='towndiv'>
+<table id='townTable'>
+	<tr>
+		<td id='tt1'>
+		<table id='townSide'>
+		<tr><td></td></tr>
+		<tr><td></td></tr>
+		<tr><td></td></tr>
+		<tr><td></td></tr>
+		<tr><td></td></tr>
+		<tr><td></td></tr>
+		</table>
+		</td>
+		<td id='tt2'>
+		<table id='town'>
             <tr>
                 <td></td> <td></td> <td></td> <td></td> <td></td>
             </tr>
@@ -117,6 +138,9 @@
                 <td></td> <td></td> <td></td> <td></td> <td></td>
             </tr>
         </table>
+        </td>
+        </tr>
+</table>
 </div>
 
 <div id="my_popup">
