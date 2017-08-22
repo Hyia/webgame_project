@@ -215,8 +215,8 @@ public class Engine {
 		
 		return remainTimes;
 	}
-	public List<String> remainConstructBuildTime(Integer locationID){
-		List<String> remainTimes = new ArrayList<String>();
+	public Map<Integer, String> remainConstructBuildTime(Integer locationID){
+		Map<Integer, String> remainTimes = new HashMap<Integer,String>();
 		int index = threadsHolder.indexOf(locationID);
 		if(index == -1) return null;
 		for(int i=0; i<threadsHolder.get(index).threads.size(); i++){
@@ -224,12 +224,34 @@ public class Engine {
 				ProductThread ptr = (ProductThread) threadsHolder.get(index).threads.get(i);
 				if(ptr.target instanceof ModelWaitList_Building){
 					Date time = new Date(ptr.timeleft - new Date().getTime());
-					remainTimes.add(new SimpleDateFormat("HH:mm:ss").format(time));
+					remainTimes.put(((ModelWaitList_Building)ptr.target).getRoomNumber(),new SimpleDateFormat("HH:mm:ss").format(time));
 				}
 			}
 		}
 		
 		return remainTimes;
+	}
+	
+	public Map<ModelCastle, Map<Integer, String>> remainConsructTimeAll(ModelMembers member){
+		ModelMembers members = service.getMember(member);
+		if(members == null) return null;
+
+		List<ModelCastle> castles =	service.getCastleList(members);
+		if(castles == null || castles.isEmpty()) return null;
+		
+		Map<ModelCastle, Map<Integer, String>> map = new HashMap<ModelCastle, Map<Integer, String>>();
+		for(int i=0; i<castles.size();i++){
+			Map<Integer, String> value = remainConstructBuildTime(castles.get(i).getLocationID());
+			if(value != null && value.size() > 0){
+				map.put(castles.get(i), value);
+			}
+		}
+		
+		return map;
+	}
+	
+	public Map<ModelCastle, Map<Integer, String>> remainConsructTimeAll(String userID){
+		return remainConsructTimeAll(new ModelMembers(userID, null, null, null));
 	}
 	
 	/**
@@ -253,6 +275,15 @@ public class Engine {
 		ModelXYval location = service.getEmptyField();//'공터'상태인 맵 어딘가의 위치를 반납하줄 메서드.
 		int result = service.insertMapObject(location,IServices.LOCATION_TYPE_CASTLE);//위치랑 타입을 가지고 맵 오브젝트를 만들어줄 메서드. 이걸로 외부자원지도 만듬.
 		return result;
+	}
+	
+	public List<ModelCastle> getUserCastleList(String userID){
+		List<ModelCastle> castles = service.getCastleList(new ModelMembers(userID, null, null, null));
+		return castles;
+	}
+	public List<ModelCastle> getUserCastleList(ModelMembers user){
+		List<ModelCastle> castles = service.getCastleList(user);
+		return castles;
 	}
 	
 	/**

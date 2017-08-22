@@ -103,7 +103,8 @@ public class MapController {
 				//내 성
 				model.addAttribute("btnbex", "주둔");
 				model.addAttribute("btnb", "alert('아직 안만듬 ㅋ')");
-				model.addAttribute("btncex", "안보임\" hidden=\"true");
+				model.addAttribute("btncex", "입장");
+				model.addAttribute("btnc", "alert('아직 안만듬 ㅋ')");
 			}else{
 				//적 혹은 동맹 성
 				if(game.isAliance(user.getUserID(), targetOwner)){
