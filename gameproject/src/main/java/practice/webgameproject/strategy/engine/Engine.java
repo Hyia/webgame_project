@@ -17,11 +17,13 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Scope;
+import org.springframework.messaging.simp.stomp.Reactor11StompCodec;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import practice.webgameproject.strategy.engine.child.Army;
 import practice.webgameproject.strategy.engine.child.BattleLogMaker;
+import practice.webgameproject.strategy.engine.child.RemainMarchTimeReturner;
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
@@ -213,7 +215,7 @@ public class Engine {
 			if(threadsHolder.get(index).threads.get(i) instanceof ProductThread){
 				ProductThread ptr = (ProductThread) threadsHolder.get(index).threads.get(i);
 				if(ptr.target instanceof ModelWaitList_Unit){
-					Date time = new Date(ptr.timeleft - new Date().getTime());
+					Date time = new Date(ptr.timeleft -9*3600*1000);
 					remainTimes.add(new SimpleDateFormat("HH:mm:ss").format(time));
 				}
 			}
@@ -232,8 +234,8 @@ public class Engine {
 		return arm;
 	}
 	
-	public Map<Integer,String> remainMarchTime(Integer locationID){
-		Map<Integer, String> remainTimes = new HashMap<Integer,String>();
+	public Map<Integer,RemainMarchTimeReturner> remainMarchTime(Integer locationID){
+		Map<Integer, RemainMarchTimeReturner> remainTimes = new HashMap<Integer,RemainMarchTimeReturner>();
 		int index = threadsHolder.indexOf(new ThreadHolder(locationID));
 		if(index == -1){
 			return null;
@@ -241,22 +243,23 @@ public class Engine {
 		for(int i=0; i<threadsHolder.get(index).threads.size(); i++){
 			if(threadsHolder.get(index).threads.get(i) instanceof MarchThread){
 				MarchThread mtr = (MarchThread) threadsHolder.get(index).threads.get(i);
-					Date time = new Date(mtr.timeleft - new Date().getTime());
-					remainTimes.put(mtr.target.getHeroID(),new SimpleDateFormat("HH:mm:ss").format(time));
+				Date time = new Date(mtr.timeleft -9*3600*1000);
+//				Date time = new Date(0);
+					remainTimes.put(mtr.target.getHeroID(),new RemainMarchTimeReturner(mtr.status_isAttacking,new SimpleDateFormat("HH:mm:ss").format(time)));
 			}
 		}
 		
 		return remainTimes;
 	}
-	public Map<ModelCastle, Map<Integer, String>> remainMarchTimeAll(ModelMembers member){
+	public Map<ModelCastle, Map<Integer, RemainMarchTimeReturner>> remainMarchTimeAll(ModelMembers member){
 		ModelMembers members = service.getMember(member);
 		if(members == null) return null;
 		List<ModelCastle> castles =	service.getCastleList(members);
 		if(castles == null || castles.isEmpty()) return null;
 		
-		Map<ModelCastle, Map<Integer, String>> map = new HashMap<ModelCastle, Map<Integer, String>>();
+		Map<ModelCastle, Map<Integer, RemainMarchTimeReturner>> map = new HashMap<ModelCastle, Map<Integer, RemainMarchTimeReturner>>();
 		for(int i=0; i<castles.size();i++){
-			Map<Integer, String> value = remainMarchTime(castles.get(i).getLocationID());
+			Map<Integer, RemainMarchTimeReturner> value = remainMarchTime(castles.get(i).getLocationID());
 			if(value != null && value.size() > 0){
 				map.put(castles.get(i), value);
 			}
@@ -273,7 +276,7 @@ public class Engine {
 			if(threadsHolder.get(index).threads.get(i) instanceof ProductThread){
 				ProductThread ptr = (ProductThread) threadsHolder.get(index).threads.get(i);
 				if(ptr.target instanceof ModelWaitList_Building){
-					Date time = new Date(ptr.timeleft - new Date().getTime());
+					Date time = new Date(ptr.timeleft -9*3600*1000);
 					remainTimes.put(((ModelWaitList_Building)ptr.target).getRoomNumber(),new SimpleDateFormat("HH:mm:ss").format(time));
 				}
 			}
@@ -659,14 +662,15 @@ public class Engine {
 		ModelXYval startPoint = service.getXYval_LocationID(hero.getLocationID());
 		int startX = startPoint.getCastleX();
 		int startY = startPoint.getCastleY();
-		
+		logger.info("시작점 = "+startX+","+startY);
 		ModelXYval endPoint = service.getXYval_LocationID(locationID);
 		int endX = endPoint.getCastleX();
 		int endY = endPoint.getCastleY();
-		
+		logger.info("도착점 = "+endX+","+endY);
 		//HELP ME PYTHAGORAS!!!
-		double travelLength = Math.sqrt(Math.pow((startX-endX), 2)-Math.pow((startY-endY), 2));
+		double travelLength = Math.sqrt(Math.pow((startX-endX), 2)+Math.pow((startY-endY), 2));
 		long travelTime = (long) (travelLength * IServices.TRAVEL_UNIT_TIME);
+		logger.info("goBattle travelLength  = "+travelLength);
 		
 		//유닛 이동속도 보정
 		List<ModelSlot> herosUnits = service.getHeroTroop_SlotList(hero.getHeroID());
@@ -683,9 +687,10 @@ public class Engine {
 		}
 		//나눔
 		average_unitmove_speed = speed_sum / herosUnits.size();
+		logger.info("goBattle average_unitmove_speed = "+average_unitmove_speed);
 		
 		travelTime = (long) ((travelTime)	/average_unitmove_speed);//millisecond
-		
+		logger.info("goBattle travelTime = "+travelTime);
 		
 		//쓰레드 시작
 		if(hasAddableMarch(hero.getLocationID())){
@@ -1046,7 +1051,7 @@ public class Engine {
 							break;
 						}else{
 							//전멸이 아닌 경우 다시 첫 슬롯부터 깜.
-							j=0;
+							j=-1;
 						}
 					}
 				}//한 영웅이 쳐맞는 딜.
@@ -1106,7 +1111,7 @@ public class Engine {
 							break;
 						}else{
 							//전멸이 아닌 경우 다시 첫 슬롯부터 깜.
-							j=0;
+							j=-1;
 						}
 					}
 				}//한 영웅이 쳐맞는 딜.
@@ -1176,11 +1181,12 @@ public class Engine {
 		for(int i=0; i< attackerArms.size(); i++){
 			List<ModelSlot> heroSlots = 	service.getHeroTroop_SlotList(attackerArms.get(i).getHeroID());
 			for(int j=0; j< heroSlots.size(); j++){
-				ModelSlot slot = heroSlots.get(i);
+				ModelSlot slot = heroSlots.get(j);
 				
 				//아래 코드가 되는 전제 : attacker 리스트와 attackerArms리스트가 사이즈가 동일하고 순서도 같을 경우만 정상동작.
 				// FIXME : Army의 병력량을 Integer에서 Slot으로 바꾸면 해결되지 않을까?
 				int unitAmount = attackerArms.get(i).getUnitAmountList().get(j);
+				this.logger.info("그래서 영웅의 병력은 "+unitAmount+"이고 원래 "+slot.getSlotAmount()+"였다.");
 				if(unitAmount > 0 ){
 					//유닛수가 단순감소라면 변화한 병력량을 넣어줌
 					slot.setSlotAmount(unitAmount);
@@ -1208,10 +1214,13 @@ public class Engine {
 		//NPC는 슬롯ID가 null이므로 저장할 수도 없고 저장할 필요도 없다. 
 		if(!isCreep){
 			for(int i=0; i< localArmy.size(); i++){
-				for( int j = 0 ; j < localArmy.get(i).getUnitAmountList().size(); j++){
-					ModelSlot slot = new ModelSlot(localArmy.get(i).getUnitSlotIDList().get(j), localArmy.get(i).getUnits().get(j).getUnitID(), localArmy.get(i).getUnitAmountList().get(j));
+				List<ModelSlot> heroSlots = 	service.getHeroTroop_SlotList(localArmy.get(i).getHeroID());
+				for( int j = 0 ; j < heroSlots.size(); j++){
+					ModelSlot slot = heroSlots.get(j);
+					int unitAmount = localArmy.get(i).getUnitAmountList().get(j);
 					if(slot.getSlotAmount() > 0){
-						
+						//유닛수가 단순감소라면 변화한 병력량을 넣어줌
+						slot.setSlotAmount(unitAmount);
 					}else{
 						slot.setSlotUID(null);
 						slot.setSlotAmount(0);
@@ -1503,18 +1512,22 @@ public class Engine {
 
 		for(int i=0; i<threadsHolder.get(index).threads.size(); i++){
 			if(threadsHolder.get(index).threads.get(i).equals(thread)){
+				logger.info("지울거 찾았다.");
 				tr = threadsHolder.get(index).threads.get(i);
 				targetThreadIndex = i;
 			}
 		}
+		logger.info("홀더에서 제거");
+		threadsHolder.get(index).threads.remove(targetThreadIndex);
+		
 		try {
+			logger.info("제거시도");
 			tr.join(0);
 			
 		} catch (InterruptedException e) {
-
+			logger.info("실패ㅋ");
 			e.printStackTrace();
 		}
-		threadsHolder.get(index).threads.remove(targetThreadIndex);
 	}
 	
 	private ModelUnit getRandomUnitAtTier(int tier){
@@ -1728,6 +1741,8 @@ public class Engine {
 		public void run() {
 			long startTime = (new Date()).getTime();
 			long currentTime = startTime;
+			logger.info("쓰레드 시작시점 "+startTime);
+			logger.info("쓰레드 종료시점 "+finish_time);
 
 			status_isAttacking = true;			
 			timeleft = finish_time - currentTime; 
@@ -1747,7 +1762,7 @@ public class Engine {
 			status_isAttacking = false;			
 			//회군명령 또는 전투쾅 후 회군중
 			//지나갔던 시간만큼 되돌아오기.
-			long 가던시간 = currentTime - startTime;
+			long 가던시간 = currentTime - startTime + new Date().getTime();
 			//이 order_return이 다시 true가 되면 즉시회군(과금아이템?).
 			order_return = false;
 			timeleft = 가던시간 - currentTime;
@@ -1755,6 +1770,7 @@ public class Engine {
 				currentTime = (new Date()).getTime();
 				timeleft = 가던시간 - currentTime;
 			}
+			logger.info("쓰레드 뒤짐");
 			//도착은 페이지 새로고침될 때 이 쓰레드를 isAlive()를 호출함으로 알 수 있을걸?
 			destroyThread(target.getLocationID(), this);//쓰레드를 제거하는 쓰레드를 만들기 귀찮았다.
 			//end of method

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import practice.webgameproject.strategy.engine.Engine;
+import practice.webgameproject.strategy.engine.child.RemainMarchTimeReturner;
 import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelMembers;
 
@@ -106,9 +107,8 @@ public class HomeController {
 		Map<ModelCastle,Map<Integer, String>> remainConstructTime = game.remainConsructTimeAll(member);
 		model.addAttribute("constructTimes", remainConstructTime);
 		
-		Map<ModelCastle,Map<Integer, String>> remainMarchTime = game.remainMarchTimeAll(member);
+		Map<ModelCastle,Map<Integer, RemainMarchTimeReturner>> remainMarchTime = game.remainMarchTimeAll(member);
 		model.addAttribute("marchTimes", remainMarchTime);
-		
 		
 		return "/children/loginAfter";
 	}

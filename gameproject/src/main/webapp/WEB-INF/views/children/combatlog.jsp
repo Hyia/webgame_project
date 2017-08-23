@@ -15,7 +15,6 @@
       $(document).ready( function(e){
     
 			$('tr[id]').click(function(e) {
-				alert($(this).attr('id'));
 				$(this).parents('#maincontent').load('/combat/loglist/'+$(this).attr('id'));
 			});
 		});
