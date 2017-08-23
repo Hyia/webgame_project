@@ -59,6 +59,8 @@ public interface IServices {
 
 	public static final long TRAVEL_UNIT_TIME = 5000;
 
+	public static final String ARMY_NEUTRAL = "_NUTURAL_";
+
 
 
 	//general methods - members -GET

@@ -1015,7 +1015,13 @@ public class ServiceGame extends DaoGame{
 
 	//유닛 꼬라지를 가져온다.
 	public ModelUnitBuild getUnitBuild(int kind) {
-
+		List<ModelUnitBuild> buildlist = this.getUnitBuild();
+	
+		for(int i=0; i< buildlist.size(); i++){
+			if(buildlist.get(i).getUnitID().intValue() == kind){
+				return buildlist.get(i);
+			}
+		}
 		return null;
 	}
 

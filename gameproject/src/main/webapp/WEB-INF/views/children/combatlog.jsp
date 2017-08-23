@@ -14,11 +14,10 @@
     //머리
       $(document).ready( function(e){
     
-//		model.addAttribute("type", "list");
-//		model.addAttribute("loglist", logs);
-
-
-			
+			$('tr[id]').click(function(e) {
+				alert($(this).attr('id'));
+				$(this).parents('#maincontent').load('/combat/loglist/'+$(this).attr('id'));
+			});
 		});
     
     </script>    
@@ -26,7 +25,7 @@
 <body>
 <div id='log' class='logarea'>
 <c:if test="${pageType !=null && pageType == 'list' }">
-<table width="100%">
+<table id='logtable' width="100%">
 <tr>
 <td>No</td>
 <td>Attacker</td>
@@ -34,14 +33,14 @@
 <td>Date</td>
 <td>wins</td>
 </tr>
-<c:forEach var="i" items="${logs}" varStatus="status">
-<tr><a href="/combat/loglist/${logs.LogName}" target="_self">
+<c:forEach var="i" items="${loglist}" varStatus="status">
+<tr id='${i.logName}'>
 <td>${status.count}</td>
-<td>${logs.attackUserID}</td>
-<td>${logs.defenseUserID}</td>
-<td>${logs.battleDate}</td>
-<td>${logs.whoWins}</td>
-</a></tr>
+<td>${i.attackUserID}</td>
+<td>${i.defenseUserID}</td>
+<td>${i.battleDate}</td>
+<td>${i.whoWins}</td>
+</tr>
 </c:forEach>
 </table>
 </c:if>

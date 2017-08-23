@@ -55,14 +55,16 @@ public class CombatController {
 	}
 	
 	
-	@RequestMapping(value = "/loglist/{logName}", method=RequestMethod.GET)
+	@RequestMapping(value = "/loglist/{logName}", method=RequestMethod.GET, produces = "text/plain;charset=UTF-8")
 	@ResponseBody
 	public String getLog(Model model,HttpSession session, @PathVariable("logName") String logName){
 		String log = game.getLogFile(logName);
 		ModelMembers user = (ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS);
 		
+		logger.info("가져온 파일1:["+log+"]");
+
 		if(log.contains(user.getUserID())){
-			return game.getLogFile(logName);
+			return log;
 		}
 		return "권한이 없습니다.";
 	}

@@ -77,7 +77,7 @@ public class ModelUnit {
 	public boolean equals(Object obj) {
 		// TODO Auto-generated method stub
 		if(obj instanceof ModelUnit){
-			return getUnitID().equals(this.UnitID);
+			return this.UnitID.intValue() == ((ModelUnit)obj).UnitID.intValue();
 		}
 		return false;
 	}
