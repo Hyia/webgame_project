@@ -92,6 +92,23 @@ body{
       	     		$('#maincontent').load('/combat/loglist');
      			 }
              });
+             
+             $(window).scroll(function (e) {
+                 var y = $(document).scrollTop();
+                 var x = $(document).scrollLeft();
+                 var z = $(document).height();
+                 //$('#log').text("x="+x+", y="+y);
+
+
+                 if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+                     $("#treeData").append(function (e) {
+                         
+                     });
+
+                 }
+
+
+             })
       });
       
          	
@@ -127,10 +144,6 @@ body{
 		            
 		        </form>
 		   </c:if>
-		<!-- login after -->
-	    	<c:if test="${isLogedin != null && isLogedin == true}">
-	    		<%@ include file="children/loginAfter.jsp" %>
-	    	</c:if>
 	   </div>
     </div>
     

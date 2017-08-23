@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -19,8 +20,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import android.app.AlertDialog;
 import practice.webgameproject.strategy.engine.Engine;
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
@@ -76,16 +79,23 @@ public class TownController {
 		return "/children/town";
 	}
 	
-	@RequestMapping("/{locationID}/{roomNumber}/{unitid}/{amount}")
-	public String cityDetail(HttpSession session, Model model,
-			@PathVariable("locationID") Integer locationID
-			,@PathVariable("roomNumber") Integer roomNumber
-			,@PathVariable("unitid") Integer unitid
-			,@PathVariable("amount") Integer amount){
+	@RequestMapping(value = "/{locationID}/insertunit", method = RequestMethod.POST)
+	public String cityDetail(@RequestParam(value = "unit1") Integer unit1
+							,@RequestParam(value = "unit2") Integer unit2
+							,@RequestParam(value = "unit3") Integer unit3
+							,@PathVariable("locationID") Integer locationID
+							,HttpSession session){
 		
-		game.productUnit((ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS), locationID, unitid, amount);
-		
-		
+		if(unit1!=null&&unit1>0){
+			Integer unitid=1;
+			game.productUnit((ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS),locationID , unitid, unit1);
+		}else if(unit2!=null&&unit2>0){
+			Integer unitid=2;
+			game.productUnit((ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS),locationID , unitid, unit1);	
+		}else if(unit3!=null&&unit3>0){
+			Integer unitid=3;
+			game.productUnit((ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS),locationID , unitid, unit1);	
+		}
 		return "redirect:/index";//TODO 지형 상세 페이지로 이동시킬것.
 	}
 	

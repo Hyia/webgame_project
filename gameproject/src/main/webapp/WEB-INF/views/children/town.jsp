@@ -15,9 +15,9 @@
  #my_popup{width: 70%;height: 70%; background: white;}
  #my_popup button{position:absolute;right: 0; bottom: 0;}
  #div1{height: 98%;width: 48%; left: 0; position: absolute; margin:5px;border:1px solid #00aaed;}
- #div2{height: 48%;width: 48%; right: 0; top:0; position: absolute;margin:5px;border:1px solid #0b0b0b;}
+ #div2{height: 48%;width: 48%; right: 0; top:0; position: absolute;margin:5px;border:1px solid #0b0b0b;overflow:auto;}
  #div2 input{height: 100%;width:100%;}
- #div2 table{weidth:100%;height:40%;position:absolute;left: 0; bottom: 0;}
+ #div2 table{weidth:100%;height:40%;left: 0; bottom: 0;}
  #unitInfo td{border:1px solid #00aaed; }
  #div3{height: 48%;width: 48%; right: 0; bottom:0; position: absolute;margin:5px;border:1px solid #FFBB00;}
  #div3 table{position:absolute;left: 0; top: 0;}
@@ -117,7 +117,7 @@
 	    	case "1":
 	    		$('#div2').children().remove();
 	    		$('#div3').children().remove();
-	    		$kindHTML="<h2>회관</h2></br><p>회관입니다.</p></br>";
+	    		$kindHTML="<p><h2>회관</h2></br>회관입니다.</p></br>";
 	        	$('#div2').append($kindHTML);
 	        	
 	        	$kindHTML="<h3>컨텐츠 준비중</h3>";
@@ -134,8 +134,8 @@
 	    	case "4":
 	    		$('#div2').children().remove();
 	    		$('#div3').children().remove();
-	        	$kindHTML="<h2>군사기지</h2></br><p>하급, 중급, 상급 유닛을 생산하는 건물 입니다.</p></br>";
-	        	$kindHTML+="<table id='unitInfo'><tr> <td>UnitName</td> <td>ATK</td> <td>SPD</td> 	<td>HP</td> <td>BuildTime</td> 	<td>Production</td><td>Quantity</td></tr><tr> <td>하급</td>	<td>5</td> 	 <td>5</td> 	<td>5</td> 	<td>00:00:10</td> 	<td>50</td><td><input type='number' id='unit1val'></td><td><input type='button' id='unit1' value='Make' /></td> </tr><tr> <td>중급</td> 	<td>10</td>  <td>10</td> 	<td>10</td> <td>00:00:25</td> 	<td>100</td><td><input type='number' id='unit2val'></td><td><input type='button' id='unit2' value='Make'/></td> </tr><tr> <td>상급</td> 	<td>20</td>  <td>20</td> 	<td>20</td> <td>00:01:00</td> 	<td>200</td><td><input type='number' id='unit3val'></td><td><input type='button' id='unit3' value='Make'/></td> </tr></table>";
+	        	$kindHTML="<p><h2>군사기지</h2><br>하급, 중급, 상급 유닛을 생산하는 건물 입니다.</p></br>";
+	        	$kindHTML+="<form action='http://localhost:8080/town/"+locationID+"/insertunit' method='post'><table id='unitInfo'><tr> <td>UnitName</td> <td>ATK</td> <td>SPD</td> 	<td>HP</td> <td>BuildTime</td> 	<td>Production</td><td>Quantity</td></tr><tr> <td>하급</td>	<td>5</td> 	 <td>5</td> 	<td>5</td> 	<td>00:00:10</td> 	<td>50</td><td><input type='number' name='unit1'></td><td><input type='submit' id='unit1btn' value='Make' /></td> </tr><tr> <td>중급</td> 	<td>10</td>  <td>10</td> 	<td>10</td> <td>00:00:25</td> 	<td>100</td><td><input type='number' name='unit2'></td><td><input type='submit' id='unit2btn' value='Make'/></td> </tr><tr> <td>상급</td> 	<td>20</td>  <td>20</td> 	<td>20</td> <td>00:01:00</td> 	<td>200</td><td><input type='number' name='unit3'></td><td><input type='submit' id='unit3btn' value='Make'/></td> </tr></table>";
 	        	$('#div2').append($kindHTML);
 	        	
 	        	$kindHTML="<table><tr><td>WaitTime</td><td>UnitName</td><td>Amount</td></tr></table>"
@@ -145,39 +145,17 @@
         });
      	
      	
-     	$('#div2').on( 'click' ,'input[type="button"]', function(event){
+     	$('#div2').on( 'click' ,'input[type="submit"]', function(event){
 			switch($(this).attr('id')){
-			case "unit1":
-	                $.ajax({
-	                    url : 'http://localhost:3000/2446/1/1',
-	                    data: null, // 사용하는 경우에는 { data1:'test1', data2:'test2' }
-	                    type: 'get', // get, post
-	                    timeout: 1000, // 10초
-	                    dataType: 'json', // text, html, xml, json, jsonp, script
-	                    beforeSend : function() {
-	                        // 통신이 시작되기 전에 이 함수를 타게 된다.
-	                    }
-	                }).done( function(data, textStatus, xhr ){
-	                    // 통신이 성공적으로 이루어졌을 때 이 함수를 타게 된다.
+			case "unit1btn":
+				alert("클릭이벤트 들어왔다.");
 	                	var $insertUnit="";
 						$insertUnit ="<tr><td>00:10:00</td><td>하급</td><td>5</td></tr>";
 						$('#div3 table:last').append($insertUnit);
-
-	                }).fail( function(xhr, textStatus, error ) {
-	                    // 통신이 실패했을 때 이 함수를 타게 된다.
-	                    alert("false");
-
-	                }).always( function(data, textStatus, xhr ) {
-	                    // 통신이 실패했어도 성공했어도 이 함수를 타게 된다.
-	                    alert("true or talse")
-	                });
-
-	                return false;
-					
 				break;
-			case "unit2":
+			case "unit1btn":
 				break;
-			case "unit3":
+			case "unit1btn":
 				break;
 			}
      	});
