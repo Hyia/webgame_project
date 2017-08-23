@@ -135,7 +135,7 @@
 	    		$('#div2').children().remove();
 	    		$('#div3').children().remove();
 	        	$kindHTML="<h2>군사기지</h2></br><p>하급, 중급, 상급 유닛을 생산하는 건물 입니다.</p></br>";
-	        	$kindHTML+="<table id='unitInfo'><tr> <td>UnitName</td> <td>ATK</td> <td>SPD</td> 	<td>HP</td> <td>BuildTime</td> 	<td>Production</td><td>Quantity</td></tr><tr> <td>하급</td>	<td>5</td> 	 <td>5</td> 	<td>5</td> 	<td>00:00:10</td> 	<td>50</td><td><input type='number' id='unit1val'></td><td><input type='button' id='unit1' value='Make' onClick='location.href=""'/></td> </tr><tr> <td>중급</td> 	<td>10</td>  <td>10</td> 	<td>10</td> <td>00:00:25</td> 	<td>100</td><td><input type='number' id='unit2val'></td><td><input type='button' id='unit2' value='Make'/></td> </tr><tr> <td>상급</td> 	<td>20</td>  <td>20</td> 	<td>20</td> <td>00:01:00</td> 	<td>200</td><td><input type='number' id='unit3val'></td><td><input type='button' id='unit3' value='Make'/></td> </tr></table>";
+	        	$kindHTML+="<table id='unitInfo'><tr> <td>UnitName</td> <td>ATK</td> <td>SPD</td> 	<td>HP</td> <td>BuildTime</td> 	<td>Production</td><td>Quantity</td></tr><tr> <td>하급</td>	<td>5</td> 	 <td>5</td> 	<td>5</td> 	<td>00:00:10</td> 	<td>50</td><td><input type='number' id='unit1val'></td><td><input type='button' id='unit1' value='Make' /></td> </tr><tr> <td>중급</td> 	<td>10</td>  <td>10</td> 	<td>10</td> <td>00:00:25</td> 	<td>100</td><td><input type='number' id='unit2val'></td><td><input type='button' id='unit2' value='Make'/></td> </tr><tr> <td>상급</td> 	<td>20</td>  <td>20</td> 	<td>20</td> <td>00:01:00</td> 	<td>200</td><td><input type='number' id='unit3val'></td><td><input type='button' id='unit3' value='Make'/></td> </tr></table>";
 	        	$('#div2').append($kindHTML);
 	        	
 	        	$kindHTML="<table><tr><td>WaitTime</td><td>UnitName</td><td>Amount</td></tr></table>"
@@ -148,12 +148,32 @@
      	$('#div2').on( 'click' ,'input[type="button"]', function(event){
 			switch($(this).attr('id')){
 			case "unit1":
+	                $.ajax({
+	                    url : 'http://localhost:3000/2446/1/1',
+	                    data: null, // 사용하는 경우에는 { data1:'test1', data2:'test2' }
+	                    type: 'get', // get, post
+	                    timeout: 1000, // 10초
+	                    dataType: 'json', // text, html, xml, json, jsonp, script
+	                    beforeSend : function() {
+	                        // 통신이 시작되기 전에 이 함수를 타게 된다.
+	                    }
+	                }).done( function(data, textStatus, xhr ){
+	                    // 통신이 성공적으로 이루어졌을 때 이 함수를 타게 된다.
+	                	var $insertUnit="";
+						$insertUnit ="<tr><td>00:10:00</td><td>하급</td><td>5</td></tr>";
+						$('#div3 table:last').append($insertUnit);
+
+	                }).fail( function(xhr, textStatus, error ) {
+	                    // 통신이 실패했을 때 이 함수를 타게 된다.
+	                    alert("false");
+
+	                }).always( function(data, textStatus, xhr ) {
+	                    // 통신이 실패했어도 성공했어도 이 함수를 타게 된다.
+	                    alert("true or talse")
+	                });
+
+	                return false;
 					
-				    var a=$('#unit1val').val();
-				    alert(a);
-					var $insertUnit="";
-					$insertUnit ="<tr><td>00:10:00</td><td>하급</td><td>5</td></tr>";
-					$('#div3 table:last').append($insertUnit);
 				break;
 			case "unit2":
 				break;
