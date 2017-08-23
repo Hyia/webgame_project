@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import practice.webgameproject.strategy.dao.DaoGame;
+import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelCastleTroop;
@@ -1026,8 +1027,16 @@ public class ServiceGame extends DaoGame{
 
 	//슬롯을 하나 만들어서 성에 등록한다. 인자로 받은 슬롯의 정보를 쑤셔넣으면 됨.
 	public int insertSlotToCastle(int locationID, ModelSlot slot) {
+		List<ModelSlot> slotlist = dao.getCastleTroop_SlotList(new ModelCastle(null, null, null, locationID, null));
+		for(int i=0; i< slotlist.size(); i++){
+			if(slotlist.get(i).getSlotUID() == null){
+				slotlist.get(i).setSlotUID(slot.getSlotUID());
+				slotlist.get(i).setSlotAmount(slot.getSlotAmount());
+				return SUCCESS;
+			}
+		}
 
-		return ERROR_NOT_MAKE_YET;
+		return ERROR_UNHANDLED_EXCEPTION; // 아마도 슬롯종류를 초과한 유닛수를 가짐
 	}
 
 

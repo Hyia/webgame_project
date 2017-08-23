@@ -1,5 +1,8 @@
 package practice.webgameproject.strategy.engine.child;
 
+import static org.mockito.Matchers.intThat;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,24 @@ public class Army{
 		this.unitAmountList = new ArrayList<Integer>();
 		this.unitSlotIDList = new ArrayList<Integer>();
 	}
+	public Army(Army army) {
+		if(army.HeroID != null){
+			this.HeroID = army.HeroID.intValue();
+		}else{
+			this.HeroID = null;
+		}
+		
+		this.units = new ArrayList<ModelUnit>();
+		this.unitAmountList = new ArrayList<Integer>();
+		this.unitSlotIDList = new ArrayList<Integer>();
+		
+		for(int i=0; i< army.units.size(); i++){
+			ModelUnit prefUnit = army.units.get(i); 
+			ModelUnit unit = new ModelUnit(prefUnit.getUnitID(), prefUnit.getName(), prefUnit.getATK(), prefUnit.getSPD(), prefUnit.getHP(), prefUnit.getEXP());
+			this.addUnit(unit, army.unitAmountList.get(i).intValue(), army.getUnitSlotIDList().get(i));
+		}
+		
+	}
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -67,6 +88,19 @@ public class Army{
 			}
 		}
 		return true;
+	}
+	
+	
+	@Override
+	public Army clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		Army arm = new Army(this.HeroID.intValue());
+		for(int i=0; i<this.units.size(); i++){
+			ModelUnit prefUnit = this.units.get(i); 
+			ModelUnit unit = new ModelUnit(prefUnit.getUnitID(), prefUnit.getName(), prefUnit.getATK(), prefUnit.getSPD(), prefUnit.getHP(), prefUnit.getEXP());
+			arm.addUnit(unit, this.unitAmountList.get(i).intValue(), this.getUnitSlotIDList().get(i));
+		}
+		return arm;
 	}
 }
 

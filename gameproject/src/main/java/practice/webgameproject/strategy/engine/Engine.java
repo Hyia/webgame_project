@@ -984,11 +984,13 @@ public class Engine {
 		 * 
 		 */
 		boolean isContinusBattle = false;
+		logger.info("배틀시작 "+attackerArms.size()+","+localArmy.size());
 		do{
 			//라운드가 진행되면서 점차 깎일 공격력
 			int tempMyAtk = myAtkSum;
 			int tempDefAtk = defAtkSum;
-			logger.info("양측 딜량 공("+tempMyAtk+"), 방("+tempDefAtk+")");
+			logger.info("라운드시작 "+attackerArms.size()+","+localArmy.size());
+					logger.info("양측 딜량 공("+tempMyAtk+"), 방("+tempDefAtk+")");
 			//일단 공격자측 피해입음
 			/**
 			 * 이 루프를 다 돌게되었을 때 생길 수 있는 경우
@@ -1112,7 +1114,8 @@ public class Engine {
 			
 			//라운드 종료. 저장할것.
 			//addRound는 라운드 추가에 성공시 TRUE를 리턴
-			isContinusBattle =  logMaker.addRound(new ArrayList<Army>(attackerArms), new ArrayList<Army>(localArmy));//TODO FIXME 제발
+			isContinusBattle =  logMaker.addRound(attackerArms, localArmy);
+			logger.info("라운드 종료 "+attackerArms.size()+","+localArmy.size());
 		}while(myHpSum>0 && defHpSum>0 && isContinusBattle);
 		
 		/**
@@ -1594,7 +1597,7 @@ public class Engine {
 				//이미 해당 유닛종류가 성에 있는 경우.
 				for(int i=0; i< troops.size();i++){
 					ModelSlot slot = troops.get(i);
-					if(slot.getSlotUID().intValue() == ((ModelWaitList_Unit) target).getUnitID().intValue()){
+					if(slot.getSlotUID() != null && slot.getSlotUID().intValue() == ((ModelWaitList_Unit) target).getUnitID().intValue()){
 						//수량 증가시키고 나감
 						slot.setSlotAmount(slot.getSlotAmount() + ((ModelWaitList_Unit) target).getAmount());
 						service.updateSlot(slot, slot);

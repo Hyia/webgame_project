@@ -129,7 +129,16 @@ public class BattleLogMaker {
 
 
 	public void setAttackerArmy(final List<Army> attackerArmy) {
-		this.attackerArmy = new ArrayList<Army>(attackerArmy);
+		List<Army> cpa = new ArrayList<Army>();
+		for(int i=0; i< attackerArmy.size(); i++){
+			try {
+				cpa.add(attackerArmy.get(i).clone());
+			} catch (CloneNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		this.attackerArmy = cpa;
 	}
 
 
@@ -157,7 +166,16 @@ public class BattleLogMaker {
 
 
 	public void setDefenderArmy(final List<Army> defenderArmy) {
-		this.defenderArmy = new ArrayList<Army>(defenderArmy);
+		List<Army> cpd = new ArrayList<Army>();
+		for(int i=0; i< defenderArmy.size(); i++){
+			try {
+				cpd.add(defenderArmy.get(i).clone());
+			} catch (CloneNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		this.defenderArmy = cpd;
 	}
 
 
@@ -174,14 +192,39 @@ public class BattleLogMaker {
 	}
 
 	//해당 라운드를 ModelBattleResult에 추가하며 추가에 성공하면 true를 반환.
-	public boolean addRound(final List<Army> attackerArmyStatus,final List<Army> defenderArmyStatus){
+	public boolean addRound(final List<Army> attackerArmyStatus,final List<Army> defenderArmyStatus) {
 		currentRound++;
 		if(currentRound >= MAX_ROUND){
 			return false;
 		}
 		
-		Round r = new Round(currentRound, new ArrayList<Army>(attackerArmyStatus),new ArrayList<Army>(defenderArmyStatus));
+		if(attackerArmyStatus.size() == 0 || defenderArmyStatus.size() == 0){
+			return false;
+		}
+		
+		try {
+		
+		List<Army> cpa = new ArrayList<Army>();
+		for(int i=0; i< attackerArmyStatus.size(); i++){
+				cpa.add(new Army(attackerArmyStatus.get(i)));
+		}
+		List<Army> cpd = new ArrayList<Army>();
+		for(int i=0; i< defenderArmyStatus.size(); i++){
+			cpd.add(new Army(defenderArmyStatus.get(i)));
+		}
+		
+		logger.info("실 사이즈:"+attackerArmyStatus.size()+","+defenderArmyStatus.size());
+		logger.info("두 사이즈:"+cpa.size()+","+cpd.size());
+		
+		Round r = new Round(currentRound, cpa,cpd);
 		round.add(r);
+		
+		
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.info("에러잖아요 에드라운드에");
+		}
 		return true;
 	}
 	public List<Round> getRound() {
@@ -249,6 +292,8 @@ public class BattleLogMaker {
 
 		for(int i=0; i<defenderArmy.size();i++){
 			List<Integer> unitInitAmounts = defenderArmy.get(i).getUnitAmountList();
+			logger.info("라운드 크기:"+round.size());
+			logger.info("라운드0 방어측크기:"+round.get(round.size()-1).defenderArmy.size());
 			List<Integer> unitAfterAmounts = round.get(round.size()-1).defenderArmy.get(i).getUnitAmountList();
 			str+= "<tr>";
 			
