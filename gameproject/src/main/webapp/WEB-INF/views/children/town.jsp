@@ -121,12 +121,11 @@
 	        	$kindHTML="<table id='buildlist'></table>";
 	        	$('#div2').append($kindHTML);
 	        	
-	        	for(var buildings=0;buildings<4;buildings++){
-	        		alert("c8");
-	        		//if(buildingsKind[buildings]!=2||buildingsKind[buildings]!=3){
-	        		//	$('#buildlist').append("<tr><td name='imgtd'></td><td name='explan'><p>"+explanation[buildings+1]+"</p></td><td name='btn'><input type='submit' value='Make'/></td></tr>");
-	            	//	$('imgtd').append("<img src='/images/img_mael"+buildingsKind[buildings+1]+".png'");
-	        		//}
+	        	for(var buildings=0;buildings<buildingsKind.length;buildings++){
+	        		if(buildingsKind[buildings]!=2||buildingsKind[buildings]!=3){
+	        			$('#buildlist').append("<tr><td name='imgtd'></td><td name='explan'><p>"+explanation[buildings+1]+"</p></td><td name='btn'><input type='submit' value='Make'/></td></tr>");
+	        			$('#buildlist tr:eq('+buildings+')>td[name="imgtd"]').append("<img src='/images/img_mael"+(buildings+1)+".png'/>");
+	        		}
 	        		
 	        	}
 	        	
