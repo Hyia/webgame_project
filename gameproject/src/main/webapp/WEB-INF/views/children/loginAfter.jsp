@@ -25,7 +25,9 @@
            <c:forEach items="${mapElement.value}" var="listElement" >
       <tr>
               <td>영웅ID: ${listElement.key}</td>
-              <td>시간: ${listElement.value}</td>
+              <td><c:if test="${listElement.value.isReturning()}">공격중</c:if>
+              <c:if test="${!listElement.value.isReturning()}">귀환중</c:if></td>
+              <td>시간: ${listElement.value.getRemainTime()}</td>
       </tr>
            </c:forEach>
    </c:forEach>

@@ -130,6 +130,7 @@ public class CombatController {
 //		for(int i=0; i<heroIds.length;i++){
 //			logger.info("가는 영웅은 "+heroIds[i]);
 //		}
+		logger.info("야 컨트롤러는 "+locationID+"로 보내려고 한거임");
 		int result = game.goBattle(heroIds[0], locationID);
 		if(result < 0){
 			return ErrorController.getErrorPage(result);

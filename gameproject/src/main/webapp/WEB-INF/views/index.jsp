@@ -23,6 +23,7 @@ body{
 	height:450px;
 	float:left;
 	margin:10px;
+	overflow: auto;
 }
 #contents{
 	border:1px solid #487be1;

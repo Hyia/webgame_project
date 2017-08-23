@@ -57,7 +57,7 @@ public interface IServices {
 	public static final int MAP_MAX_HEIGHT = 50;
 	public static final int MAP_MAX_WIDTH = 50;
 
-	public static final long TRAVEL_UNIT_TIME = 5000;
+	public static final long TRAVEL_UNIT_TIME = 10000;
 
 	public static final String ARMY_NEUTRAL = "_NUTURAL_";
 
