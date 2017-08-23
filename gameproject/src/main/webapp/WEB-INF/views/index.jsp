@@ -61,7 +61,7 @@ body{
 <title>Login Page</title>
 
 
-<script src='/resources/js/jquery-3.1.0.js'></script>
+<script src='http://code.jquery.com/jquery-3.1.0.js'></script>
 <script src='http://cdn.rawgit.com/vast-engineering/jquery-popup-overlay/1.7.13/jquery.popupoverlay.js'></script>
      <script>
       $(document).ready( function(e){
@@ -80,7 +80,7 @@ body{
      			 var index = $(this).index();
      			 var value = $(this).html();
      			 if(value == "town"){
-     	     		$('#maincontent').load('/town/${locationID}');
+     				 $('#maincontent').load('/town/${locationID}');
      			 }
      			 if(value == "map"){
      	     		$('#maincontent').load('/map/${locationID}');
@@ -127,6 +127,10 @@ body{
 		            
 		        </form>
 		   </c:if>
+		<!-- login after -->
+	    	<c:if test="${isLogedin != null && isLogedin == true}">
+	    		<%@ include file="children/loginAfter.jsp" %>
+	    	</c:if>
 	   </div>
     </div>
     
