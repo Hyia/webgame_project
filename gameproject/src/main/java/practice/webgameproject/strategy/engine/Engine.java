@@ -1035,7 +1035,6 @@ public class Engine {
 					myAtkSum = myAtkSum - unit.getATK().intValue();
 					unitAmount.set(j, amount-1);
 					sum_of_def_exp += unit.getEXP();
-					
 					//한줄이 모두 1씩 감소했는데 여전히 오버딜을 받은 상태인 경우
 					if(tempDefAtk > 0 && j == units.size()-1){
 						//다시 첫번째 슬롯부터 딜을 받는다.
@@ -1113,7 +1112,7 @@ public class Engine {
 			
 			//라운드 종료. 저장할것.
 			//addRound는 라운드 추가에 성공시 TRUE를 리턴
-			isContinusBattle =  logMaker.addRound(attackerArms, localArmy);
+			isContinusBattle =  logMaker.addRound(new ArrayList<Army>(attackerArms), new ArrayList<Army>(localArmy));//TODO FIXME 제발
 		}while(myHpSum>0 && defHpSum>0 && isContinusBattle);
 		
 		/**
@@ -1589,12 +1588,12 @@ public class Engine {
 			if(target instanceof ModelWaitList_Unit){
 				int locationID = ((ModelWaitList_Unit) target).getLocationID().intValue();
 				int amount = ((ModelWaitList_Unit) target).getAmount().intValue();
-				List<ModelCastleTroop> troops = service.getCastleTroops(locationID);
+				List<ModelSlot> troops = service.getCastleTroop_SlotList(new ModelCastle(null, null, null, locationID, null));
 				boolean isAdded = false;
 				
 				//이미 해당 유닛종류가 성에 있는 경우.
 				for(int i=0; i< troops.size();i++){
-					ModelSlot slot = service.getSlot(troops.get(i).getSlotID());
+					ModelSlot slot = troops.get(i);
 					if(slot.getSlotUID().intValue() == ((ModelWaitList_Unit) target).getUnitID().intValue()){
 						//수량 증가시키고 나감
 						slot.setSlotAmount(slot.getSlotAmount() + ((ModelWaitList_Unit) target).getAmount());

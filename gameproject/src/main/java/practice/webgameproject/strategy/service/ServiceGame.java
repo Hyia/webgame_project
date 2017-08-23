@@ -997,7 +997,6 @@ public class ServiceGame extends DaoGame{
 
 	//해당 성의 병력을 가져옴. FIXME 그런데 SLOT 리스트를 리턴하는편이 더 낫지않을까...?
 	public List<ModelCastleTroop> getCastleTroops(int locationID) {
-
 		return null;
 	}
 
