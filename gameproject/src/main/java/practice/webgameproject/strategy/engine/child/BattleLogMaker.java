@@ -2,10 +2,15 @@ package practice.webgameproject.strategy.engine.child;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,13 +20,18 @@ import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.action.internal.UnresolvedEntityInsertActions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import practice.webgameproject.strategy.engine.Engine;
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelUnit;
 
 public class BattleLogMaker {
-	private static final String LOGFILEROOT = "$LOGFILEROOT";//로그파일의 루트 디렉토리
+	private static final Logger logger = LoggerFactory.getLogger(BattleLogMaker.class);
+	
+	private static final String LOGFILEROOT = "C:/";//로그파일의 루트 디렉토리
 	private static final String LOGFILETAIL = ".log";//로그파일의 루트 디렉토리
 	
 	public static final int MAX_ROUND = 6;
@@ -104,8 +114,8 @@ public class BattleLogMaker {
 
 
 
-	public void setAttacker(List<ModelHeroTable> attacker) {
-		this.attacker = attacker;
+	public void setAttacker(final List<ModelHeroTable> attacker) {
+		this.attacker = new ArrayList<ModelHeroTable>(attacker);
 	}
 
 
@@ -118,8 +128,8 @@ public class BattleLogMaker {
 
 
 
-	public void setAttackerArmy(List<Army> attackerArmy) {
-		this.attackerArmy = attackerArmy;
+	public void setAttackerArmy(final List<Army> attackerArmy) {
+		this.attackerArmy = new ArrayList<Army>(attackerArmy);
 	}
 
 
@@ -132,8 +142,8 @@ public class BattleLogMaker {
 
 
 
-	public void setDefender(List<ModelHeroTable> defender) {
-		this.defender = defender;
+	public void setDefender(final List<ModelHeroTable> defender) {
+		this.defender = new ArrayList<ModelHeroTable>(defender);
 	}
 
 
@@ -146,8 +156,8 @@ public class BattleLogMaker {
 
 
 
-	public void setDefenderArmy(List<Army> defenderArmy) {
-		this.defenderArmy = defenderArmy;
+	public void setDefenderArmy(final List<Army> defenderArmy) {
+		this.defenderArmy = new ArrayList<Army>(defenderArmy);
 	}
 
 
@@ -164,13 +174,13 @@ public class BattleLogMaker {
 	}
 
 	//해당 라운드를 ModelBattleResult에 추가하며 추가에 성공하면 true를 반환.
-	public boolean addRound(List<Army> attackerArmyStatus,List<Army> defenderArmyStatus){
+	public boolean addRound(final List<Army> attackerArmyStatus,final List<Army> defenderArmyStatus){
 		currentRound++;
 		if(currentRound >= MAX_ROUND){
 			return false;
 		}
 		
-		Round r = new Round(currentRound, attackerArmyStatus,defenderArmyStatus);
+		Round r = new Round(currentRound, new ArrayList<Army>(attackerArmyStatus),new ArrayList<Army>(defenderArmyStatus));
 		round.add(r);
 		return true;
 	}
@@ -179,10 +189,11 @@ public class BattleLogMaker {
 	}
 
 	public void writeLog(Map<String,Object> rewards) {
-		logName = new SimpleDateFormat("YYYYMMDDhhmmssSSS").format(logDate)+"-"+attacker_ID+"-"+defender_ID;
+		logName = new SimpleDateFormat("YYYYMMddhhmmssSSS").format(logDate)+"-"+attacker_ID+"-"+defender_ID;
 		BufferedWriter out = null;
 	    try {
-	        out = new BufferedWriter(new FileWriter(LOGFILEROOT+"/"+logName+LOGFILETAIL));
+	        out = new BufferedWriter//(new FileWriter(LOGFILEROOT+logName+LOGFILETAIL));
+	        (new OutputStreamWriter(new FileOutputStream(LOGFILEROOT+logName+LOGFILETAIL), StandardCharsets.UTF_8));
 	        //헤더만듬
 	        out.write(makeHeader());
 	        //각 라운드 기록함
@@ -201,7 +212,7 @@ public class BattleLogMaker {
 	private String makeHeader(){
 		//TODO 초기병력 정보를 담는 가장 위쪽을 만들 것
 		String str = "<table class='logtable'><tr>"
-				+ "<td colspan='12' align='left' class='logdate'>"+new SimpleDateFormat("YYYY/MM/DD/hh:mm:ss").format(logDate)+"</td></tr>"
+				+ "<td colspan='12' align='left' class='logdate'>"+new SimpleDateFormat("YYYY/MM/dd/hh:mm:ss").format(logDate)+"</td></tr>"
 				+ "<tr><td colspan='6' class='log_userid'>"+attacker_ID+"</td>"
 				+ "<td colspan='6' class='log_userid'>"+defender_ID+"</td></tr>";
 		
@@ -276,50 +287,33 @@ public class BattleLogMaker {
 		return str;
 	}
 	public static String getLogFile(String logName,String attacker_ID, String defender_ID){
-		//		logName = new SimpleDateFormat("YYYYMMDDhhmmssSSS").format(logDate)+"-"+attacker_ID+"-"+defender_ID;
-		String logText = "";
-		BufferedReader br = null;
-		try {
-			br = new BufferedReader(new FileReader(LOGFILEROOT+"/"+logName+"-"+attacker_ID+"-"+defender_ID+LOGFILETAIL));
-			
-			while(true){
-				String line = br.readLine();
-				if(line ==null){
-					break;
-				}
-				
-				logText.concat("\r\n"+line);
-			}
-			
-			br.close();
-		} catch (IOException e) {
-			// Do nothing
-		}
-		
-		return "";
+		String fullLogname = logName+"-"+attacker_ID+"-"+defender_ID;
+		return getLogFile(fullLogname);
 	}
 	public static String getLogFile(String fullLogname){
 		//		logName = new SimpleDateFormat("YYYYMMDDhhmmssSSS").format(logDate)+"-"+attacker_ID+"-"+defender_ID;
 		String logText = "";
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new FileReader(LOGFILEROOT+"/"+fullLogname+LOGFILETAIL));
-			
+			logger.info(LOGFILEROOT+fullLogname+LOGFILETAIL);
+			br = new BufferedReader//(new FileReader(LOGFILEROOT+fullLogname+LOGFILETAIL));
+			(new InputStreamReader(new FileInputStream(LOGFILEROOT+fullLogname+LOGFILETAIL), "UTF-8"));			
 			while(true){
 				String line = br.readLine();
 				if(line ==null){
 					break;
 				}
 				
-				logText.concat("\r\n"+line);
+				logText += line;
 			}
 			
 			br.close();
 		} catch (IOException e) {
 			// Do nothing
+			e.printStackTrace();
 		}
 		
-		return "";
+		return logText;
 	}
 	
 	private String armStatus(List<Army> attackerArmy, List<Army> defenderArmy){
@@ -340,8 +334,8 @@ public class BattleLogMaker {
 			for(int j=0; j<units.size(); j++){
 				String imgName = units.get(j).getName();
 				str += "<td><img src='/images/"+imgName+".png' alt='"+imgName+"'>"+"["+arm.getUnitAmountList().get(j).intValue()+"]</td>";
-				aatksum += units.get(j).getATK();
-				ahpsum += units.get(j).getHP();
+				aatksum += units.get(j).getATK() * arm.getUnitAmountList().get(j).intValue();
+				ahpsum += units.get(j).getHP() * arm.getUnitAmountList().get(j).intValue();
 			}
 			str +="</tr>";
 		}
@@ -357,8 +351,8 @@ public class BattleLogMaker {
 			for(int j=0; j<units.size(); j++){
 				String imgName = units.get(j).getName();
 				str += "<td><img src='/images/"+imgName+".png' alt='"+imgName+"'>"+"["+arm.getUnitAmountList().get(j).intValue()+"]</td>";
-				datksum += units.get(j).getATK();
-				dhpsum += units.get(j).getHP();
+				datksum += units.get(j).getATK() * arm.getUnitAmountList().get(j).intValue();
+				dhpsum += units.get(j).getHP() * arm.getUnitAmountList().get(j).intValue();
 			}
 			str +="</tr>";
 		}

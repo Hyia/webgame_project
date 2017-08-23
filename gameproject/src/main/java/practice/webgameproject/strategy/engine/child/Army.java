@@ -22,7 +22,7 @@ public class Army{
 	public void addUnit(ModelUnit unit, Integer amount,Integer slotID){
 		this.units.add(unit);
 		this.unitAmountList.add(amount);
-		this.unitAmountList.add(slotID);
+		this.unitSlotIDList.add(slotID);
 	}
 	
 	

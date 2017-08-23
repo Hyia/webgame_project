@@ -58,7 +58,7 @@ public class HomeController {
 			model.addAttribute("locationID", ((Integer)session.getAttribute(SESSION_NAME_USERINIT_LOCATIONID)));
 		}
 		
-		if(!game.isEngineRunning){
+		if(!game.isEngineRunning()){
 			game.EngineInitalizer();
 		}
 		

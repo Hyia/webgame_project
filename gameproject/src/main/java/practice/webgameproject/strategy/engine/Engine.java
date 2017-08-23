@@ -44,7 +44,7 @@ import practice.webgameproject.strategy.service.ServiceGame;
 @Configurable
 public class Engine {
 	private static final Logger logger = LoggerFactory.getLogger(Engine.class);
-	public static boolean isEngineRunning = false;
+	private static boolean isEngineRunning = false;
 
 	@Autowired
 	private ServiceGame service;
@@ -73,9 +73,11 @@ public class Engine {
 		//		this.service = service;
 		//쓰레드 홀더 초기화
 		threadsHolder = new ArrayList<ThreadHolder>();
-
+		isEngineRunning = false;
 	}
-	
+	public boolean isEngineRunning(){
+		return isEngineRunning;
+	}
 	public void EngineInitalizer(){
 		//나은 제조시간을 가져옴
 		List<Object> producions = service.getProducingList();
@@ -115,7 +117,6 @@ public class Engine {
 				}
 				
 			}
-			isEngineRunning = true;
 		}
 		
 		//유닛 티어분류
@@ -136,6 +137,9 @@ public class Engine {
 		List<ModelUnit> tier3Units = new ArrayList<ModelUnit>();
 		tier3Units.add(service.getUnitInformation(IServices.UNIT_TYPE_LV3));
 		unitTierList.add(tier3Units);
+		
+		isEngineRunning = true;
+		logger.info("엔진 init");
 		
 	}
 	
@@ -628,6 +632,8 @@ public class Engine {
 	private ModelUnit getUnit(int unitID){
 		ModelUnit unit = new ModelUnit(unitID, null, null, null, null,null);
 		int index = units.indexOf(unit);
+		
+		logger.info("getUnit에 들어온 uid는 "+unitID+", 그리고 index는 "+index);
 		if(index != -1){
 			return units.get(index);
 		}
@@ -678,7 +684,7 @@ public class Engine {
 		//나눔
 		average_unitmove_speed = speed_sum / herosUnits.size();
 		
-		travelTime = (long) ((travelTime*1000)	/average_unitmove_speed);//millisecond
+		travelTime = (long) ((travelTime)	/average_unitmove_speed);//millisecond
 		
 		
 		//쓰레드 시작
@@ -874,6 +880,7 @@ public class Engine {
 				ModelSlot slot = heroUnits.get(j);
 				if(slot.getSlotUID() != null){
 					ModelUnit unitInfo = getUnit(slot.getSlotUID());
+					logger.info("공격자측 유닛의 슬롯아이디는 "+slot.getSlotID()+"이고 UID는 "+slot.getSlotUID()+"그리고 이름은 "+unitInfo.getName());
 					ModelUnit unit = new ModelUnit(unitInfo);
 					int amount = slot.getSlotAmount();
 					int atk = correction(unit.getATK(), hero.getSTR().intValue(), (hero.getSpecialty().intValue() == slot.getSlotUID().intValue()));
@@ -881,6 +888,7 @@ public class Engine {
 
 					unit.setATK(atk);
 					unit.setHP(hp);
+					logger.info("공격자측 유닛("+unit.getName()+"유닛이 "+amount+"기, 공체는 "+unit.getATK()+"공에 "+unit.getHP()+"체");
 					heroArmy.addUnit(unit, amount,slot.getSlotID());
 					
 					myAtkSum += (atk*amount);
@@ -896,8 +904,8 @@ public class Engine {
 		logMaker.setAttacker_ID(attacker.get(0).getOwner());
 		
 		//방어자측 정보+보정
-		logMaker.setDefender(null);
-		logMaker.setDefender_ID(null);
+//		logMaker.setDefender(null);
+//		logMaker.setDefender_ID(null);
 		int defAtkSum = 0;
 		int defHpSum = 0;
 		boolean isCreep = false;// 슬롯아이디가 없는 임시생성병력인지를 체크. 이 병력들은  DB업데이트가 필요없다는 뜻.
@@ -917,13 +925,18 @@ public class Engine {
 
 					defAtkSum += (unit.getATK()*amount);
 					defHpSum += (unit.getHP()*amount);
+					logger.info("방어자측 유닛("+unit.getName()+"유닛이 "+amount+"기, 공체는 "+unit.getATK()+"공에 "+unit.getHP()+"체");
 				}
 			}else{
 				//영웅 있는 병력
 				//영웅 한 기의 슬롯 전체를 돌며 보정 후 영웅 한 기의 휘하병력상태를 저장				
 				ModelHeroTable hero = service.getHero(new ModelHeroTable(HeroID, null, null, null, null, null, null, null, null, null));
 				dheros++;
-				logMaker.setDefender_ID(hero.getOwner());
+				if(hero.getOwner()!= null){
+					logMaker.setDefender_ID(hero.getOwner());
+				}else{
+					logMaker.setDefender_ID(IServices.ARMY_NEUTRAL);
+				}
 				for(int j=0; j< units.size(); j++){
 					ModelUnit unit = units.get(j);
 					int amount = unitAmounts.get(j);
@@ -951,6 +964,9 @@ public class Engine {
 //		logMaker.setDefender(defHeros.size()==0? null: defHeros);
 		logMaker.setDefender(defHeros);
 		logMaker.setDefenderArmy(localArmy);
+		if(logMaker.getDefender_ID() == null){
+			logMaker.setDefender_ID(IServices.ARMY_NEUTRAL);
+		}
 		//정보저장 끝
 
 		//이제 전투
@@ -972,6 +988,7 @@ public class Engine {
 			//라운드가 진행되면서 점차 깎일 공격력
 			int tempMyAtk = myAtkSum;
 			int tempDefAtk = defAtkSum;
+			logger.info("양측 딜량 공("+tempMyAtk+"), 방("+tempDefAtk+")");
 			//일단 공격자측 피해입음
 			/**
 			 * 이 루프를 다 돌게되었을 때 생길 수 있는 경우
@@ -985,6 +1002,7 @@ public class Engine {
 				
 				if(tempDefAtk <= 0){
 					//딜부족이면 루프를 더이상 돌 필요가 없음
+					logger.info("방어자의 공격력 부족으로 루프 나감");
 					break;
 				}
 				//공격력이 남으면 다음 슬롯을 돌게됨
@@ -1004,6 +1022,7 @@ public class Engine {
 					int unithp = unit.getHP().intValue();
 					
 					//딜 다 받아냈고, 잔여딜은 무효화.
+					logger.info("공측 유닛 ("+unit.getName()+",슬롯"+j+",숫자"+amount+")에게 "+tempDefAtk+"의 데미지");
 					if(unithp > tempDefAtk){
 						tempDefAtk = tempDefAtk - unithp;//음수로 만들어서 루프를 빠져나가도록 함.
 						break;
@@ -1063,6 +1082,7 @@ public class Engine {
 					
 					int unithp = unit.getHP().intValue();
 					
+					logger.info("방측 유닛 ("+unit.getName()+",슬롯"+j+",숫자"+amount+")에게 "+tempMyAtk+"의 데미지");
 					//딜 다 받아냈고, 잔여딜은 무효화.
 					if(unithp > tempMyAtk){
 						tempMyAtk = tempMyAtk - unithp;//음수로 만들어서 루프를 빠져나가도록 함.
@@ -1143,14 +1163,16 @@ public class Engine {
 		}else{
 			whoWins = logMaker.getAttacker_ID();
 		}
+		
+		
 		ModelLog logger = new ModelLog(logMaker.getLogName(), logMaker.getAttacker_ID(), logMaker.getDefender_ID(), false, false, logMaker.getLogDate(),whoWins);
 
 		service.insertLog(logger);
 
 		// TODO 전투로 변경된 병력상황을 DB에 반영
 		//공격자 부분
-		for(int i=0; i< attacker.size(); i++){
-			List<ModelSlot> heroSlots = 	service.getHeroTroop_SlotList(attacker.get(i).getHeroID());
+		for(int i=0; i< attackerArms.size(); i++){
+			List<ModelSlot> heroSlots = 	service.getHeroTroop_SlotList(attackerArms.get(i).getHeroID());
 			for(int j=0; j< heroSlots.size(); j++){
 				ModelSlot slot = heroSlots.get(i);
 				
@@ -1383,9 +1405,26 @@ public class Engine {
 			//일반화
 			List<ModelHeroTable> attacker = new ArrayList<ModelHeroTable>();
 			attacker.add(target);
+			logger.info("전투 - 풀때기");
 			
 			//잡몹 생성
 			List<Army> localArmy = makeCreeps(distance);
+			if(localArmy == null){
+				logger.info("로컬병력이 널");
+			}else{
+				if(localArmy.size() == 0){
+					logger.info("로컬병력 크기가 0");
+				}
+				for(int i=0; i<localArmy.size(); i++){
+					List<ModelUnit> units = localArmy.get(i).getUnits();
+					if(units==null || units.size()==0){
+						logger.info("지역병력이 음슴...");
+					}
+					for(int j=0; j<units.size();j++){
+						logger.info(units.get(j).getName()+"병력이 "+localArmy.get(i).getUnitAmountList().get(j).intValue()+"기");
+					}
+				}
+			}
 			logName = fight(attacker, localArmy);
 			break;
 		case IServices.LOCATION_TYPE_EXTERNALRESOURCE://야외자원지
@@ -1429,7 +1468,8 @@ public class Engine {
 		// TODO 영웅이 출몰하는 경우가 있다면 이 메서드를 새로 만들 필요가 있다.
 		// 지휘하는 영웅이 없는 부대 생성.
 		Army army = new Army(IServices.HEROID_NO_HERO_TROOPS);
-		int slotAmount = (int)Math.random()*(MAX_SLOT_PER_HERO-1) + 1;//최소 1개슬롯 보장
+		int slotAmount = (int)(Math.random()*(MAX_SLOT_PER_HERO-1)) + 1;//최소 1개슬롯 보장
+		logger.info("makeCreeps에서 결정한 슬롯크기는 : "+slotAmount);
 		for(int i=0; i< slotAmount; i++){
 			if(creepLevel < Math.pow(creepLevelCut, creepLevelCut)){
 				// 1 단계 이하의 유닛을 랜덤하게 가져와서 level+1개만큼 뿌려주자!
@@ -1450,6 +1490,7 @@ public class Engine {
 				army.addUnit(unit, amount, null);
 			}
 		}
+		creeps.add(army);
 		
 		return creeps;
 	}
@@ -1495,12 +1536,10 @@ public class Engine {
 		@Override
 		public boolean equals(Object obj) {
 			if(obj instanceof ThreadHolder){
-				logger.info("threadHolder의 equals가 불려보니 ThreadHolder더라");
 				ThreadHolder target = (ThreadHolder) obj;
 				return locationID.intValue() == target.locationID.intValue();
 			}
 			if(obj instanceof Integer){
-				logger.info("threadHolder의 equals가 불려보니 Integer더라");
 				Integer target = (Integer)obj;
 				return target.intValue() == this.locationID.intValue();
 			}
@@ -1706,9 +1745,10 @@ public class Engine {
 			status_isAttacking = false;			
 			//회군명령 또는 전투쾅 후 회군중
 			//지나갔던 시간만큼 되돌아오기.
-			long 가던시간 = currentTime - startTime + (new Date()).getTime();
+			long 가던시간 = currentTime - startTime;
 			//이 order_return이 다시 true가 되면 즉시회군(과금아이템?).
 			order_return = false;
+			timeleft = 가던시간 - currentTime;
 			while(timeleft >= 0 && !order_return){
 				currentTime = (new Date()).getTime();
 				timeleft = 가던시간 - currentTime;
