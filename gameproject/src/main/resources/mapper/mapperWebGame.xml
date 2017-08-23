@@ -240,7 +240,7 @@
     </select>
     
     <!-- 유닛  건설정보 가져오기 --><!--CHECK-->
-    <select id="getUnitBuild"  resultType="ModelUnitBuild">        
+    <select id="getUnitBuild" resultType="ModelUnitBuild">        
  		SELECT * FROM unitbuild
     </select>
     
@@ -401,10 +401,10 @@
 					and  #{updateValue.Owner} !=''  then #{updateValue.Owner}
                   	else Owner
                  	end,
-		LocationID = case
-                  	when #{updateValue.LocationID} is not null
-					and  #{updateValue.LocationID} !=0  then #{updateValue.LocationID}
-                  	else LocationID
+		LacationID = case
+                  	when #{updateValue.LacationID} is not null
+					and  #{updateValue.LacationID} !=0  then #{updateValue.LacationID}
+                  	else LacationID
                  	end,
 		Statuus = case
                   	when #{updateValue.Statuus} is not null

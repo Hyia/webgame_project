@@ -10,6 +10,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.eclipse.core.resources.mapping.ModelStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelBuilding;
 import practice.webgameproject.strategy.model.ModelCastle;
 import practice.webgameproject.strategy.model.ModelMembers;
+import practice.webgameproject.strategy.model.ModelStructures;
 import practice.webgameproject.strategy.model.ModelXYval;
 import practice.webgameproject.strategy.service.ServiceGame;
 
@@ -36,10 +38,6 @@ import practice.webgameproject.strategy.service.ServiceGame;
 @RequestMapping(value="/town")
 public class TownController {
 	private static final Logger logger = LoggerFactory.getLogger(TownController.class);
-	
-
-	private static final int MAX_WIDTH_IN_SCREEN = 4;
-	private static final int MAX_HEIGHT_IN_SCREEN = 4;
 	
 	@Autowired
 	@Qualifier("gameEngine")
@@ -69,8 +67,20 @@ public class TownController {
 			roomNumber.add(mapData.get(i).getRoomNumber());
 		}
 		
-		//model.addAttribute("mapWidth", MAX_WIDTH_IN_SCREEN);
-		//model.addAttribute("mapHeight", MAX_HEIGHT_IN_SCREEN);
+		//List<String> buildUnits=new ArrayList<String>();
+		//buildUnits=game.remainUnitBuildTime(locationID);
+		//if(buildUnits!=null){
+		//	model.addAttribute("unitlist",buildUnits);
+		//}
+		
+		List<ModelStructures> structures= game.getBuildableBuildings(null);
+		List<Integer> buildingsKind=new ArrayList<Integer>();
+		for(int i=0;i<structures.size();i++){
+			buildingsKind.add(structures.get(i).getKind());
+		}
+		model.addAttribute("buildingsKind",buildingsKind);
+		
+
 		model.addAttribute("kind", kinds.size() > 0 ? kinds : "null" ); // 만들어
 		model.addAttribute("roomNumber", roomNumber.size() > 0 ? kinds : "null"); // 만들어
 		model.addAttribute("mapData", mapData.size() > 0 ? kinds : "null"); //TODO 만들어
@@ -96,7 +106,7 @@ public class TownController {
 			Integer unitid=3;
 			game.productUnit((ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS),locationID , unitid, unit1);	
 		}
-		return "redirect:/index";//TODO 지형 상세 페이지로 이동시킬것.
+		return "redirect:/index";
 	}
 	
 	

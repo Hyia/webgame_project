@@ -17,7 +17,9 @@
  #div1{height: 98%;width: 48%; left: 0; position: absolute; margin:5px;border:1px solid #00aaed;}
  #div2{height: 48%;width: 48%; right: 0; top:0; position: absolute;margin:5px;border:1px solid #0b0b0b;overflow:auto;}
  #div2 input{height: 100%;width:100%;}
- #div2 table{weidth:100%;height:40%;left: 0; bottom: 0;}
+ #div2 table{width:100%;height:40%;left: 0; bottom: 0;border:1px solid #0b0b0b;}
+ #div2 imgtd,#div2 btn{width: 15%;height:20%;}
+ #div2 explan{width: 70%;height:20%;}
  #unitInfo td{border:1px solid #00aaed; }
  #div3{height: 48%;width: 48%; right: 0; bottom:0; position: absolute;margin:5px;border:1px solid #FFBB00;}
  #div3 table{position:absolute;left: 0; top: 0;}
@@ -37,7 +39,11 @@
     	var roomNumber= ${roomNumber};
     	var castleLocationID= ${castleLocationID};
     	var locationID= ${locationID};
-    	var popupin=1;
+    	//var unitEndTimeList=${unitlist};
+    	var buildingsKind=${buildingsKind};
+    	
+    	
+    	var explanation=["회관입니다.","성벽입니다.<br>수성시 방어력이 증가합니다.","성벽입니다.<br>수성시 공격력이 증가합니다.","군사기지 입니다.<br>하급, 중급, 상급 유닛을 생산하는 건물 입니다."];
     	
     		$('#my_popup').popup();
     		
@@ -88,36 +94,47 @@
  			}
  		}
      	
-     	
      	for(var c=0;castleLocationID[c]!=null;c++){
-     		$imgS="<a name='castles' href='/town/"+castleLocationID[c]+"'><img src='/images/img_castle.png' /></a>"
-     		$('#townSide tr:eq('+c+')>td:eq(0)').append($imgS);
-     	}
-     	
-     	
-     	$('a[name="castles"]').click(function(e){
-     		$(this).parents("#maincontent").load($(this).attr("href"));
-    		return false;
-    	});
-     	
-     	$('#town img').click(function () {
-            var src=$(this).attr('src');
-            $('#showimg').attr('src', src);
-            
-            var val=$(this).attr('value');
-            var roomnumber=$(this).attr('name');
-            
- 			var $kindHTML="";
-            
-            switch(val){
-            case "0":
-            	$('#div2').children().remove();
-            	$('#div3').children().remove();
-            	break;
+ 		$imgS="<a name='castles' href='/town/"+castleLocationID[c]+"'><img src='/images/img_castle.png' /></a>"
+ 		$('#townSide tr:eq('+c+')>td:eq(0)').append($imgS);
+	 	}
+	 	
+	 	
+	 	$('a[name="castles"]').click(function(e){
+	 		$(this).parents("#maincontent").load($(this).attr("href"));
+			return false;
+		});
+	 	
+	 	$('#town img').click(function () {
+	        var src=$(this).attr('src');
+	        $('#showimg').attr('src', src);
+	        
+	        var val=$(this).attr('value');
+	        var roomnumber=$(this).attr('name');
+	        
+				var $kindHTML="";
+	        switch(val){
+	        case "0":
+	        	$('#div2').children().remove();
+	        	$('#div3').remove();
+	        	$('#div2').css("height", "90%");
+	        	$kindHTML="<table id='buildlist'></table>";
+	        	$('#div2').append($kindHTML);
+	        	
+	        	for(var buildings=0;buildings<4;buildings++){
+	        		alert("c8");
+	        		//if(buildingsKind[buildings]!=2||buildingsKind[buildings]!=3){
+	        		//	$('#buildlist').append("<tr><td name='imgtd'></td><td name='explan'><p>"+explanation[buildings+1]+"</p></td><td name='btn'><input type='submit' value='Make'/></td></tr>");
+	            	//	$('imgtd').append("<img src='/images/img_mael"+buildingsKind[buildings+1]+".png'");
+	        		//}
+	        		
+	        	}
+	        	
+	        	break;
 	    	case "1":
 	    		$('#div2').children().remove();
 	    		$('#div3').children().remove();
-	    		$kindHTML="<p><h2>회관</h2></br>회관입니다.</p></br>";
+	    		$kindHTML="<p><h2>회관</h2><br>"+explanation[0]+"</p>";
 	        	$('#div2').append($kindHTML);
 	        	
 	        	$kindHTML="<h3>컨텐츠 준비중</h3>";
@@ -134,31 +151,43 @@
 	    	case "4":
 	    		$('#div2').children().remove();
 	    		$('#div3').children().remove();
-	        	$kindHTML="<p><h2>군사기지</h2><br>하급, 중급, 상급 유닛을 생산하는 건물 입니다.</p></br>";
+	    		alert("들왓다.");
+	        	$kindHTML="<p><h2>군사기지</h2><br>"+explanation[3]+"</p>";
 	        	$kindHTML+="<form action='http://localhost:8080/town/"+locationID+"/insertunit' method='post'><table id='unitInfo'><tr> <td>UnitName</td> <td>ATK</td> <td>SPD</td> 	<td>HP</td> <td>BuildTime</td> 	<td>Production</td><td>Quantity</td></tr><tr> <td>하급</td>	<td>5</td> 	 <td>5</td> 	<td>5</td> 	<td>00:00:10</td> 	<td>50</td><td><input type='number' name='unit1'></td><td><input type='submit' id='unit1btn' value='Make' /></td> </tr><tr> <td>중급</td> 	<td>10</td>  <td>10</td> 	<td>10</td> <td>00:00:25</td> 	<td>100</td><td><input type='number' name='unit2'></td><td><input type='submit' id='unit2btn' value='Make'/></td> </tr><tr> <td>상급</td> 	<td>20</td>  <td>20</td> 	<td>20</td> <td>00:01:00</td> 	<td>200</td><td><input type='number' name='unit3'></td><td><input type='submit' id='unit3btn' value='Make'/></td> </tr></table>";
 	        	$('#div2').append($kindHTML);
 	        	
-	        	$kindHTML="<table><tr><td>WaitTime</td><td>UnitName</td><td>Amount</td></tr></table>"
-	        	$('#div3').append($kindHTML);
+	        	
+	        	
+				//if(unitEndTimeList.size()!=0&&unitlist.size()!=null){
+		        //	for(var a=0;a<unitEndTimeList.size();a++){
+		        //		$kindHTML="<table><tr><td>"+unitEndTimeList[a]+"</td><td>UnitName</td><td>Amount</td></tr></table>"
+		    	//        $('#div3').append($kindHTML);		        			
+		        //	}
+				//}
+				
 	    		break;
 	    	}
-        });
+    });
+ 	
+ 	
+ 	$('#div2').on( 'click' ,'input[type="submit"]', function(event){
+		switch($(this).attr('id')){
+		case "unit1btn":
+			alert("클릭이벤트 들어왔다.");
+			
+                	var $insertUnit="";
+					$insertUnit ="<tr><td>00:10:00</td><td>하급</td><td>5</td></tr>";
+					$('#div3 table:last').append($insertUnit);
+					alert("테이블 갯수구하기: "+$('#div table').length);
+			break;
+		case "unit1btn":
+			break;
+		case "unit1btn":
+			break;
+		}
+ 	}); 
      	
      	
-     	$('#div2').on( 'click' ,'input[type="submit"]', function(event){
-			switch($(this).attr('id')){
-			case "unit1btn":
-				alert("클릭이벤트 들어왔다.");
-	                	var $insertUnit="";
-						$insertUnit ="<tr><td>00:10:00</td><td>하급</td><td>5</td></tr>";
-						$('#div3 table:last').append($insertUnit);
-				break;
-			case "unit1btn":
-				break;
-			case "unit1btn":
-				break;
-			}
-     	});
      	
  		
     });

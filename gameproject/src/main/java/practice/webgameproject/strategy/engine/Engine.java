@@ -436,7 +436,7 @@ public class Engine {
 			service.updateMemberResource(who);
 			
 			//쓰레드 시작하기
-			long buildTime = (new Date()).getTime() + structure.getTime().intValue();
+			long buildTime = (new Date()).getTime() + structure.getTime().getTime();
 			ModelWaitList_Building queueBuilding = new ModelWaitList_Building(new Date(buildTime), locationID, structure.getKind().intValue(), roomNumber);
 			ProductThread tr = new ProductThread();
 			tr.setTarget(queueBuilding);
@@ -529,7 +529,7 @@ public class Engine {
 			service.updateMemberResource(who);
 			
 			//쓰레드 시작하기
-			long buildTime = (new Date()).getTime() + structure.getTime().intValue();
+			long buildTime = (new Date()).getTime() + structure.getTime().getTime();
 			ModelWaitList_Building queueBuilding = new ModelWaitList_Building(new Date(buildTime), locationID, structure.getKind().intValue(), roomNumber);
 			ProductThread tr = new ProductThread();
 			tr.setTarget(queueBuilding);
