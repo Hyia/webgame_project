@@ -135,7 +135,7 @@ public interface IServices {
 	
 	public List<ModelWaitList_Unit>		 getWaitList_Unit			(ModelCastle targetWitList);
 	
-	public List<ModelBuilding>			 getBuilding				(ModelBuilding targetBuilding);
+	public ModelBuilding			 	 getBuilding				(ModelBuilding targetBuilding);
 	
 	public Integer						 getAllProduction			(ModelCastle targetCastleProduction);
 	

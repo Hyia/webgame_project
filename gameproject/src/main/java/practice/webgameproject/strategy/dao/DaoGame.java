@@ -252,9 +252,9 @@ public class DaoGame implements IServices{
 	}
 
 	@Override
-	public List<ModelBuilding> getBuilding(ModelBuilding targetBuilding) {
+	public ModelBuilding getBuilding(ModelBuilding targetBuilding) {
 		
-		return session.selectList("mapper.mysql.mapperWebGame.getBuilding",targetBuilding);
+		return session.selectOne("mapper.mysql.mapperWebGame.getBuilding",targetBuilding);
 	}
 
 	@Override

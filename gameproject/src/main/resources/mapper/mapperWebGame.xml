@@ -179,7 +179,7 @@
     
     <!-- 성의 건물 정보   가져오기 --><!--CHECK-->
     <select id="getBuilding" parameterType="ModelBuilding"  resultType="ModelBuilding">        
- 		SELECT * FROM building where LocationID=#{LocationID} order by RoomNumber asc
+ 		SELECT * FROM building where LocationID=#{LocationID} and RoomNumber=#{RoomNumber}
       		  
     </select>
     
