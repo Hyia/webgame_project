@@ -177,9 +177,15 @@
  
     </select>
     
-    <!-- 성의 건물 정보   가져오기 --><!--CHECK-->
+    <!-- 성의 RoomNumber의 건물 정보   가져오기 --><!--CHECK-->
     <select id="getBuilding" parameterType="ModelBuilding"  resultType="ModelBuilding">        
  		SELECT * FROM building where LocationID=#{LocationID} and RoomNumber=#{RoomNumber}
+      		  
+    </select>
+    
+    <!-- 성의 건물 정보   가져오기 --><!--CHECK-->
+    <select id="getBuildingList" parameterType="ModelCastle"  resultType="ModelBuilding">        
+ 		SELECT * FROM building where LocationID=#{LocationID} order by RoomNumber asc
       		  
     </select>
     

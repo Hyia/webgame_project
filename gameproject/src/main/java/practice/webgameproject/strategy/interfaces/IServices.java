@@ -137,6 +137,8 @@ public interface IServices {
 	
 	public ModelBuilding			 	 getBuilding				(ModelBuilding targetBuilding);
 	
+	public List<ModelBuilding>			 getBuildingList			(ModelCastle targetCastle);
+	
 	public Integer						 getAllProduction			(ModelCastle targetCastleProduction);
 	
 	public ModelOutResource 			 getOutResource				(Integer locationID);

@@ -403,6 +403,20 @@ public class ServiceGame extends DaoGame{
         
         return result;
 	}
+	
+	@Override
+	public List<ModelBuilding> getBuildingList(ModelCastle targetCastle) {
+
+		List<ModelBuilding> result= null;
+        
+        try {
+        	result = dao.getBuildingList(targetCastle);
+        } catch (Exception e) {
+            logger.error("getBuilding " + e.getMessage() );
+        }
+        
+        return result;
+	}
 
 	@Override
 	public Integer getAllProduction(ModelCastle targetCastleProduction) {
