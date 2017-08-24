@@ -28,8 +28,8 @@
       <tr>
               <td colspan="2">영웅ID: ${listElement.key}</td>
               </tr><tr>
-              <td>상태: <c:if test="${listElement.value.isReturning()}">진군</c:if>
-              <c:if test="${!listElement.value.isReturning()}">귀환</c:if></td>
+              <td><c:if test="${listElement.value.isReturning()}"><img src="/images/img_attack.png"/></c:if>
+              <c:if test="${!listElement.value.isReturning()}"><img src="/images/img_returning.png"/></c:if></td>
               <td>${listElement.value.getRemainTime()}</td>
       </tr>
            </c:forEach>
