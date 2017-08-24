@@ -75,7 +75,7 @@ public class HomeController {
 	@RequestMapping(value = "/loginreq", method = RequestMethod.POST)
 	public String cliced_btn_test(Model model, HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttributes) {
 		String login = request.getParameter("login");//login // register
-		logger.info(login);
+		logger.info("login btn status: "+login);
 		
 		String userID = request.getParameter("id");
 		String userPWD = request.getParameter("pwd");
