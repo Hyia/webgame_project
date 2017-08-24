@@ -115,7 +115,7 @@ public class TownController {
 							,@PathVariable("locationID") Integer locationID
 							,HttpSession session){
 		game.buildStucture(((ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS)).getUserID(), locationID, kind, roomNumber);
-		return "redirect:/children/town";
+		return "redirect:/town/"+locationID;
 	}
 	
 	

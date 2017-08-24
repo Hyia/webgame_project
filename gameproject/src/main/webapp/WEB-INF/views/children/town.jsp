@@ -122,7 +122,7 @@
 	        switch(val){
 	        case "0":
 	        	$('#div2').children().remove();
-	        	$('#div3').remove();
+	        	$('#div3').hide();
 	        	$('#div2').css("height", "90%");
 	        	$kindHTML="<table id='buildlist'></table>";
 	        	$('#div2').append($kindHTML);
@@ -139,6 +139,7 @@
 	    	case "1":
 	    		$('#div2').children().remove();
 	    		$('#div3').children().remove();
+	    		$('#div3').show();
 	    		$kindHTML="<p><h2>회관</h2><br>"+explanation[0]+"</p>";
 	        	$('#div2').append($kindHTML);
 	        	
@@ -148,14 +149,17 @@
 	    	case "2":
 	    		$('#div2').children().remove();
 	    		$('#div3').children().remove();
+	    		$('#div3').show();
 	    		break;
 	    	case "3":
 	    		$('#div2').children().remove();
 	    		$('#div3').children().remove();
+	    		$('#div3').show();
 	    		break;
 	    	case "4":
 	    		$('#div2').children().remove();
 	    		$('#div3').children().remove();
+	    		$('#div3').show();
 	    		alert("들왓다.");
 	        	$kindHTML="<p><h2>군사기지</h2><br>"+explanation[3]+"</p>";
 	        	$kindHTML+="<form action='http://localhost:8080/town/"+locationID+"/insertunit' method='post'><table id='unitInfo'><tr> <td>UnitName</td> <td>ATK</td> <td>SPD</td> 	<td>HP</td> <td>BuildTime</td> 	<td>Production</td><td>Quantity</td></tr><tr> <td>하급</td>	<td>5</td> 	 <td>5</td> 	<td>5</td> 	<td>00:00:10</td> 	<td>50</td><td><input type='number' name='unit1'></td><td><input type='submit' id='unit1btn' value='Make' /></td> </tr><tr> <td>중급</td> 	<td>10</td>  <td>10</td> 	<td>10</td> <td>00:00:25</td> 	<td>100</td><td><input type='number' name='unit2'></td><td><input type='submit' id='unit2btn' value='Make'/></td> </tr><tr> <td>상급</td> 	<td>20</td>  <td>20</td> 	<td>20</td> <td>00:01:00</td> 	<td>200</td><td><input type='number' name='unit3'></td><td><input type='submit' id='unit3btn' value='Make'/></td> </tr></table>";
@@ -175,12 +179,22 @@
 	        
 	        $('#div2'). on ( 'click' ,'input[value="Make"]', function(event){
 	        	var btn=$(this).attr('name');
-	        	alert("건물만들기 들어옴.");
+	        	
 	        	switch(btn){
 	        		case "makeBuilding1":
-	        			alert("Case 들어옴");
 	        			$.post("http://localhost:8080/town/"+locationID+"/insertbuilding",{roomNumber:roomNumber,kind:1});
-	        			alert("Case 끝남");
+	        			break;
+	        		
+	        		case "makeBuilding2":
+	        			$.post("http://localhost:8080/town/"+locationID+"/insertbuilding",{roomNumber:roomNumber,kind:2});
+	        			break;
+	        			
+	        		case "makeBuilding3":
+	        			$.post("http://localhost:8080/town/"+locationID+"/insertbuilding",{roomNumber:roomNumber,kind:3});
+	        			break;
+	        			
+	        		case "makeBuilding4":
+	        			$.post("http://localhost:8080/town/"+locationID+"/insertbuilding",{roomNumber:roomNumber,kind:4});
 	        			break;
 	        	
 	        	};
