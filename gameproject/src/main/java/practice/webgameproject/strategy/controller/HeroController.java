@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
 import practice.webgameproject.strategy.engine.Engine;
+import practice.webgameproject.strategy.engine.child.Army;
 import practice.webgameproject.strategy.interfaces.IServices;
 import practice.webgameproject.strategy.model.ModelHeroTable;
 import practice.webgameproject.strategy.model.ModelLog;
@@ -74,8 +75,21 @@ public class HeroController {
 		String userID = ((ModelMembers)session.getAttribute("UserInfo")).getUserID();
 		ModelHeroTable hero = game.getHero(heroID);
 		
-		model.addAttribute("pic", hero.getPotrait());
-		model.addAttribute("expl", ("무명의 영웅("+hero.getHeroID()+")입니다. 영웅은 병력을 이끌며 사기에 영향을 미칩니다."));
+		String innerHtml = "";
+		innerHtml += "<table id='"+hero.getHeroID()+"'><tr><td colspan='3'>보유병력</td></tr><tr>";
+		Army arm = game.getHeroTroops(hero.getHeroID());
+		for(int j=0; j<arm.getUnits().size();j++){
+			if(arm.getUnits().get(j)!=null){
+				innerHtml+= "<td>"+arm.getUnits().get(j).getName()+"("+arm.getUnitAmountList().get(j)+")</td>";
+			}else{
+				innerHtml+="<td>빔</td>";
+			}
+		}
+		innerHtml+="</tr></table>";
+		
+		model.addAttribute("pic", "[사진"+hero.getPotrait()+"]");
+		model.addAttribute("expl", ("무명의 영웅("+hero.getHeroID()+")입니다. 영웅은 병력을 이끌며 사기에 영향을 미칩니다.<br>"
+				+ innerHtml));
 		
 		model.addAttribute("btnaex", "사진변경");
 		model.addAttribute("btnbex", "이름변경");

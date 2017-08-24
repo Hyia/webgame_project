@@ -22,6 +22,7 @@ import practice.webgameproject.strategy.model.ModelLog;
 import practice.webgameproject.strategy.model.ModelMembers;
 import practice.webgameproject.strategy.model.ModelOutResource;
 import practice.webgameproject.strategy.model.ModelSlot;
+import practice.webgameproject.strategy.model.ModelStructures;
 import practice.webgameproject.strategy.model.ModelUnit;
 import practice.webgameproject.strategy.model.ModelUnitBuild;
 import practice.webgameproject.strategy.model.ModelWaitList_Building;
@@ -224,6 +225,18 @@ public class testWebGameDB {
 		assertSame(1, result.get(0).getUnitID());
 		assertSame(2, result.get(1).getUnitID());
 		assertSame(3, result.get(2).getUnitID());
+	}
+	@Test
+	public void testGetStructure() {
+		
+		ModelStructures result= null;
+		
+		
+		result = serviceGame.getStructure(new ModelStructures("회관", 1, null, 100));
+		
+		//System.out.print(result.toString());
+		
+		assertNotNull(result);
 	}
 
 	@Test

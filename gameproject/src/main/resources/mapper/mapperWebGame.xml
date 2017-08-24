@@ -253,13 +253,11 @@
     <!-- 건물 건설정보  가져오기 --><!--CHECK-->
     <select id="getStructures"  resultType="ModelStructures">        
  		SELECT * FROM structures
-      		  
     </select>
     
     <!-- 건물 건설정보  가져오기 --><!--CHECK-->
     <select id="getStructure"  parameterType="ModelStructures" resultType="ModelStructures">        
  		SELECT * FROM structures where Kind=#{Kind}
-      		  
     </select>
     
     <!-- Log 가져오기 --><!--CHECK-->
@@ -454,11 +452,7 @@
     <!-- 영웅 슬롯 유닛 정보 업데이트 --><!--CHECK-->
     <update id="updateSlot" parameterType="hashmap">
     	update slot 
-       		SET  SlotUID	=	case
-                  	when #{updateValue.SlotUID} is not null
-					and  #{updateValue.SlotUID} !=0  then #{updateValue.SlotUID}
-                  	else SlotUID
-                 	end,
+       		SET  SlotUID	=	#{updateValue.SlotUID},
        			 SlotAmount		=	case
                   	when #{updateValue.SlotAmount} is not null then #{updateValue.SlotAmount}
                   	else SlotAmount

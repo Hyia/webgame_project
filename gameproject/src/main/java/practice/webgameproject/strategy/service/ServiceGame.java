@@ -229,7 +229,7 @@ public class ServiceGame extends DaoGame{
         } catch (Exception e) {
             logger.error("getStructure " + e.getMessage() );
         }
-        
+        logger.info("result(getStructure = "+result);
         return result;
 	}
 
