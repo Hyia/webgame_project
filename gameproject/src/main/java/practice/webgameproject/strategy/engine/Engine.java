@@ -1356,7 +1356,7 @@ public class Engine {
 	}
 	
 	public List<ModelBuilding> getBuildingInTown(Integer locationID){
-		List<ModelBuilding> buildings = service.getBuilding(new ModelCastle(null, null, null, locationID, null));
+		List<ModelBuilding> buildings = service.getBuildingList(new ModelCastle(null, null, null, locationID, null));
 		return buildings;
 	}
 	
