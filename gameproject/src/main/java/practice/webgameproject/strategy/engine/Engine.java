@@ -434,6 +434,8 @@ public class Engine {
 		target.setLevel(0);
 		ModelStructures structure = service.getSturcture(kind);
 		
+		logger.info("buildstructure structure = "+ structure);
+		logger.info("buildstructure target = "+ target);
 		int require_resource = service.getUpgradeValue(target, structure.getValues().intValue());
 		if(stocked_resource >= require_resource){
 			//뭔가 건설 시행

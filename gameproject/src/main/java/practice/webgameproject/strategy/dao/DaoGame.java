@@ -140,8 +140,7 @@ public class DaoGame implements IServices{
 	
 	@Override
 	public ModelStructures getStructure(ModelStructures targetStructures) {
-		
-		return session.selectOne("mapper.mysql.mapperWebGame.getStructure");
+		return session.selectOne("mapper.mysql.mapperWebGame.getStructure",targetStructures);
 	}
 
 	@Override

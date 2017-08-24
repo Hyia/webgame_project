@@ -74,8 +74,11 @@ public class HeroController {
 		String userID = ((ModelMembers)session.getAttribute("UserInfo")).getUserID();
 		ModelHeroTable hero = game.getHero(heroID);
 		
+		String innerHtml = "";
+		
 		model.addAttribute("pic", hero.getPotrait());
-		model.addAttribute("expl", ("무명의 영웅("+hero.getHeroID()+")입니다. 영웅은 병력을 이끌며 사기에 영향을 미칩니다."));
+		model.addAttribute("expl", ("무명의 영웅("+hero.getHeroID()+")입니다. 영웅은 병력을 이끌며 사기에 영향을 미칩니다.<br>"
+				+ ""));
 		
 		model.addAttribute("btnaex", "사진변경");
 		model.addAttribute("btnbex", "이름변경");
