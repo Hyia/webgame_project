@@ -2,8 +2,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <div id="after_login" >
-	<p>${UserInfo.getUserNicName()} 님 환영합니다.</p>
+<form id='afterloginform' action="/logout" method='post'>
+	<p>${UserInfo.getUserNicName()} 님 환영합니다.<input type="submit" value='logout'></p>
 	<p>자원: ${UserInfo.getSaveProduction()}</p>
+</form>
 	<table id='buildtimeTable'>
    <c:forEach items="${constructTimes}" var="mapElement">
       <tr>
