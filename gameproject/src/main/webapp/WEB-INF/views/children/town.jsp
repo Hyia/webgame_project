@@ -40,6 +40,7 @@
     	var roomNumber= ${roomNumber};
     	var castleLocationID= ${castleLocationID};
     	var locationID= ${locationID};
+    	var levels=${levels};
     	//var unitEndTimeList=${unitlist};
     	var buildingsKind=${buildingsKind};
     	
@@ -87,7 +88,7 @@
     	var room=1;
      	for(var k=1;k<4;k++){
  			for(var j=1;j<4;j++,kinds++){
- 				if(kind[kinds]==null){
+ 				if(kind[kinds]==null && ){
  					$imgS="<img src='/images/img_maelBuildTyle.png' name='"+room+"' class='my_popup_open'  value='0' /></a>";
  				}else{
  					$imgS="<img src='/images/img_mael"+kind[kinds]+".png' name='"+room+"' class='my_popup_open' value='"+kind[kinds]+"'/>";

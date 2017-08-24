@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -59,10 +60,12 @@ public class TownController {
 		
 		
 		List<ModelBuilding> mapData = game.getBuildingInTown(locationID);
+		List<Integer> levels = new ArrayList<Integer>();
 		List<Integer> kinds = new ArrayList<Integer>();
 		List<Integer> roomNumber = new ArrayList<Integer>();
 		
 		for(int i=0; i<mapData.size(); i++){
+			levels.add(mapData.get(i).getLevel());
 			kinds.add(mapData.get(i).getKind());
 			roomNumber.add(mapData.get(i).getRoomNumber());
 		}
@@ -83,9 +86,11 @@ public class TownController {
 
 		model.addAttribute("kind", kinds.size() > 0 ? kinds : "null" ); // 만들어
 		model.addAttribute("roomNumber", roomNumber.size() > 0 ? kinds : "null"); // 만들어
+		model.addAttribute("level", levels); // 만들어
 		model.addAttribute("mapData", mapData.size() > 0 ? kinds : "null"); //TODO 만들어
 		model.addAttribute("castleLocationID",castleLocationID);
 		model.addAttribute("locationID", locationID);
+		
 		return "/children/town";
 	}
 	
