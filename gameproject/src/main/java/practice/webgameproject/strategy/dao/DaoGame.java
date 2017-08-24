@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -140,6 +141,7 @@ public class DaoGame implements IServices{
 	
 	@Override
 	public ModelStructures getStructure(ModelStructures targetStructures) {
+		
 		return session.selectOne("mapper.mysql.mapperWebGame.getStructure",targetStructures);
 	}
 
