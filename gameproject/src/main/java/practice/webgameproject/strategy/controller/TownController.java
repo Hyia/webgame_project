@@ -90,7 +90,27 @@ public class TownController {
 	}
 	
 	@RequestMapping(value = "/{locationID}/insertunit", method = RequestMethod.POST)
-	public String cityDetail(@RequestParam(value = "unit1") Integer unit1
+	public String insertunit(@RequestParam(value = "unit1") Integer unit1
+							,@RequestParam(value = "unit2") Integer unit2
+							,@RequestParam(value = "unit3") Integer unit3
+							,@PathVariable("locationID") Integer locationID
+							,HttpSession session){
+		
+		if(unit1!=null&&unit1>0){
+			Integer unitid=1;
+			game.productUnit((ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS),locationID , unitid, unit1);
+		}else if(unit2!=null&&unit2>0){
+			Integer unitid=2;
+			game.productUnit((ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS),locationID , unitid, unit1);	
+		}else if(unit3!=null&&unit3>0){
+			Integer unitid=3;
+			game.productUnit((ModelMembers)session.getAttribute(HomeController.SESSION_NAME_MODELMEMBERS),locationID , unitid, unit1);	
+		}
+		return "redirect:/index";
+	}
+	
+	@RequestMapping(value = "/{locationID}/insertbuilding", method = RequestMethod.POST)
+	public String insertbuilding(@RequestParam(value = "unit1") Integer unit1
 							,@RequestParam(value = "unit2") Integer unit2
 							,@RequestParam(value = "unit3") Integer unit3
 							,@PathVariable("locationID") Integer locationID

@@ -46,8 +46,9 @@
     	
     	var explanation=["회관입니다.","성벽입니다.<br>수성시 방어력이 증가합니다.","성벽입니다.<br>수성시 공격력이 증가합니다.","군사기지 입니다.<br>하급, 중급, 상급 유닛을 생산하는 건물 입니다."];
     	
-    		$('#my_popup').popup();
-    		
+    	$('#my_popup').popup();
+    	
+    	//Castle OutSide	
     	var k = 0;
     	var imgn=1;
     	 for(var i=0;i<5;i++){
@@ -81,8 +82,7 @@
     			$('#town tr:eq('+i+')>td:eq(4)').append($imgS);
     		}
     	}
-    	
-    	 
+    	//Castle in ground
     	var kinds=0;
      	for(var k=1;k<4;k++){
  			for(var j=1;j<4;j++,kinds++){
@@ -95,6 +95,7 @@
  			}
  		}
      	
+     	//left side Castle Link & Img
      	for(var c=0;castleLocationID[c]!=null;c++){
  		$imgS="<a name='castles' href='/town/"+castleLocationID[c]+"'><img src='/images/img_castle.png' /></a>"
  		$('#townSide tr:eq('+c+')>td:eq(0)').append($imgS);
@@ -106,12 +107,14 @@
 			return false;
 		});
 	 	
+	 	var roomNumber;
+	 	//Castle In RoomNumber Img Click Event
 	 	$('#town img').click(function () {
 	        var src=$(this).attr('src');
 	        $('#showimg').attr('src', src);
 	        
 	        var val=$(this).attr('value');
-	        var roomnumber=$(this).attr('name');
+	        roomNumber=$(this).attr('name');
 	        
 				var $kindHTML="";
 	        switch(val){
@@ -124,7 +127,7 @@
 	        	
 	        	for(var buildings=0;buildings<buildingsKind.length;buildings++){
 	        		if(buildingsKind[buildings]!=2||buildingsKind[buildings]!=3){
-	        			$('#buildlist').append("<tr><td name='imgtd'></td><td name='explan'><p>"+explanation[buildings]+"</p></td><td name='btn'><input type='submit' value='Make'/></td></tr>");
+	        			$('#buildlist').append("<tr><td name='imgtd'></td><td name='explan'><p>"+explanation[buildings]+"</p></td><td name='btn'><input name='makeBuilding"+(buildings+1)+"' type='button' value='Make'/></td></tr>");
 	        			$('#buildlist tr:eq('+buildings+')>td[name="imgtd"]').append("<img src='/images/img_mael"+(buildings+1)+".png'/>");
 	        		}
 	        		
@@ -167,7 +170,25 @@
 				
 	    		break;
 	    	}
-    });
+	        
+	        $('#div2'). on ( 'click' ,'input[type="button"]', function(event){
+	        	var btn=$(this).attr('name');
+	        	
+	        	switch(btn){
+	        		case "makeBuilding1":
+	        			$.post("http://localhost:8080/town/"+locationID+"/insertbuilding"
+	        					,{roomNumber:roomNumber,kind:1}
+	        					,function(data,textStatus,jqXHR){
+	        						
+	        					}).fail(function(jqXGR,textStatys,errorThrown){
+	        						alert(textStatus);
+	        					});
+	        			break;
+	        	
+	        	}
+	        });
+	 
+	 });
  	
  	
  	$('#div2').on( 'click' ,'input[type="submit"]', function(event){
