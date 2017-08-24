@@ -256,6 +256,12 @@
       		  
     </select>
     
+    <!-- 건물 건설정보  가져오기 --><!--CHECK-->
+    <select id="getStructure"  parameterType="ModelStructures" resultType="ModelStructures">        
+ 		SELECT * FROM structures where Kind=#{Kind}
+      		  
+    </select>
+    
     <!-- Log 가져오기 --><!--CHECK-->
     <select id="getLog_ATK_DF_All" parameterType="String" resultType="ModelLog">        
  		select * from log

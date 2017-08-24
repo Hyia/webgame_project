@@ -96,6 +96,8 @@ public interface IServices {
 	
 	public List<ModelStructures> getStructures			();
 	
+	public ModelStructures		 getStructure			(ModelStructures targetStructures);
+	
 	public List<ModelXYval>		 getAllXYval			();
 	
 	public List<ModelLog>		 getLog_ATK_DF_All		(String userID);

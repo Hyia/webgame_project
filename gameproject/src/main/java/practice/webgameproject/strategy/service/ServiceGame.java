@@ -218,6 +218,20 @@ public class ServiceGame extends DaoGame{
         
         return result;
 	}
+	
+	@Override
+	public ModelStructures getStructure(ModelStructures targetStructures) {
+
+		ModelStructures result=null;
+        
+        try {
+        	result = dao.getStructure(targetStructures);
+        } catch (Exception e) {
+            logger.error("getStructure " + e.getMessage() );
+        }
+        
+        return result;
+	}
 
 	@Override
 	public List<ModelXYval> getAllXYval() {
@@ -977,8 +991,7 @@ public class ServiceGame extends DaoGame{
 
 	//건물 기본정보를 가져옴
 	public ModelStructures getSturcture(Integer kind) {
-
-		return null;
+		return getStructure(new ModelStructures(null, kind, null, null));
 	}
 
 	//건물레벨증가에 필요한 자원을 가져옴
