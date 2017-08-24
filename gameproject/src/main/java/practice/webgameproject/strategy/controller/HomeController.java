@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -73,6 +74,8 @@ public class HomeController {
 	
 	@RequestMapping(value = "/loginreq", method = RequestMethod.POST)
 	public String cliced_btn_test(Model model, HttpServletRequest request, HttpSession session, RedirectAttributes redirectAttributes) {
+		String login = request.getParameter("login");//login // register
+		logger.info(login);
 		
 		String userID = request.getParameter("id");
 		String userPWD = request.getParameter("pwd");
@@ -96,6 +99,11 @@ public class HomeController {
 		model.addAttribute("isLogedin", "false");
 
 		return "index";
+	}
+	@RequestMapping(value = "/logout", method = RequestMethod.POST, produces = "text/plain;charset=UTF-8")
+	public String logoutMethod(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
 	}
 	
 	@RequestMapping(value = "/children/loginAfter", method = RequestMethod.GET)

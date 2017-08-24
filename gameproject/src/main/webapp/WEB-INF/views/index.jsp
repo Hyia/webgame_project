@@ -140,6 +140,7 @@ body{
 		            
 		            <p class="submit">
 		            	<input type="submit" name="login" value="Login">
+		            	<input type="submit" name="login" value="register">
 		            </p>
 		            
 		            
