@@ -89,7 +89,7 @@ public class Engine {
 			//건물인 경우
 			if(target instanceof ModelWaitList_Building){
 				ProductThread tr = new ProductThread();
-				tr.setFinish_time(((ModelWaitList_Building) target).getWaitTime().getTime());
+				tr.setFinish_time(((ModelWaitList_Building) target).getWaitTime().getTime() + new Date().getTime());
 				tr.setTarget(target);
 				tr.start();
 //				threadsHolder.add(new ThreadHolder(((ModelWaitList_Building) target).getLocationID(), tr));
@@ -105,7 +105,7 @@ public class Engine {
 			//유닛인 경우
 			if(target instanceof ModelWaitList_Unit){
 				ProductThread tr = new ProductThread();
-				tr.setFinish_time(((ModelWaitList_Unit) target).getWaitTime().getTime());
+				tr.setFinish_time(((ModelWaitList_Unit) target).getWaitTime().getTime() + new Date().getTime());
 				tr.setTarget(target);
 				tr.start();
 //				threadsHolder.add(new ThreadHolder(((ModelWaitList_Unit) target).getLocationID(), tr));
@@ -450,7 +450,7 @@ public class Engine {
 			ModelWaitList_Building queueBuilding = new ModelWaitList_Building(new Date(buildTime), locationID, structure.getKind().intValue(), roomNumber);
 			ProductThread tr = new ProductThread();
 			tr.setTarget(queueBuilding);
-			tr.setFinish_time(queueBuilding.getWaitTime().getTime());
+			tr.setFinish_time(queueBuilding.getWaitTime().getTime()+new Date().getTime());
 			tr.start();
 //			threadsHolder.add(new ThreadHolder(queueBuilding.getLocationID(), tr));
 			int index = threadsHolder.indexOf(new ThreadHolder(locationID));
@@ -543,7 +543,7 @@ public class Engine {
 			ModelWaitList_Building queueBuilding = new ModelWaitList_Building(new Date(buildTime), locationID, structure.getKind().intValue(), roomNumber);
 			ProductThread tr = new ProductThread();
 			tr.setTarget(queueBuilding);
-			tr.setFinish_time(queueBuilding.getWaitTime().getTime());
+			tr.setFinish_time(queueBuilding.getWaitTime().getTime()+new Date().getTime());
 			tr.start();
 //			threadsHolder.add(new ThreadHolder(queueBuilding.getLocationID(), tr));
 			int index = threadsHolder.indexOf(new ThreadHolder(locationID));
@@ -620,7 +620,7 @@ public class Engine {
 			
 			ProductThread tr = new ProductThread();
 			tr.setTarget(queueUnit);
-			tr.setFinish_time(queueUnit.getWaitTime().getTime());
+			tr.setFinish_time(queueUnit.getWaitTime().getTime()+ new Date().getTime());
 			tr.start();
 //			threadsHolder.add(new ThreadHolder(locationID, tr));
 			int index = threadsHolder.indexOf(new ThreadHolder(locationID));
@@ -1374,10 +1374,6 @@ public class Engine {
 			}
 		}
 		
-		for(int i=0; i< toreturn.size();i++){
-			logger.info("건물정보 : " + toreturn.get(i).getKind()==null?"없음":toreturn.get(i).getKind() + "("+toreturn.get(i).getRoomNumber()+")");
-		}
-		
 		return toreturn;
 	}
 	
@@ -1613,10 +1609,11 @@ public class Engine {
 		public void run() {
 			//wait until time elapsed or quick done
 			timeleft = finish_time - (new Date()).getTime();
+			logger.info("건물건설큐: 첫 잔여시간 = "+new SimpleDateFormat("HH:mm:SS").format(new Date(timeleft -9*3600*1000)));
 			while(timeleft >= 0 && !quickdone){
 				timeleft = finish_time - (new Date()).getTime();
 			}
-			
+			logger.info("건설완료");
 			//건물인 경우
 			if(target instanceof ModelWaitList_Building){
 				int locationID = ((ModelWaitList_Building) target).getLocationID().intValue();
