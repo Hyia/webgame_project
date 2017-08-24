@@ -171,21 +171,17 @@
 	    		break;
 	    	}
 	        
-	        $('#div2'). on ( 'click' ,'input[type="button"]', function(event){
+	        $('#div2'). on ( 'click' ,'input[value="Make"]', function(event){
 	        	var btn=$(this).attr('name');
-	        	
+	        	alert("건물만들기 들어옴.");
 	        	switch(btn){
 	        		case "makeBuilding1":
-	        			$.post("http://localhost:8080/town/"+locationID+"/insertbuilding"
-	        					,{roomNumber:roomNumber,kind:1}
-	        					,function(data,textStatus,jqXHR){
-	        						
-	        					}).fail(function(jqXGR,textStatys,errorThrown){
-	        						alert(textStatus);
-	        					});
+	        			alert("Case 들어옴");
+	        			$.post("http://localhost:8080/town/"+locationID+"/insertbuilding",{roomNumber:roomNumber,kind:1});
+	        			alert("Case 끝남");
 	        			break;
 	        	
-	        	}
+	        	};
 	        });
 	 
 	 });
