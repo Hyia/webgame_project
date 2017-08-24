@@ -958,8 +958,13 @@ public class ServiceGame extends DaoGame{
 
 	//특정누군가의 어디에 있는 건물정보를 가져옴
 	public ModelBuilding getBuilding(Integer locationID, int roomNumber) {
-
-		return null;
+		ModelBuilding building = null;
+		building = getBuilding(new ModelBuilding(locationID, null, null, roomNumber));
+		if(building == null){
+			building = new ModelBuilding(locationID, null, 0, roomNumber);
+			insertBuilding(building);
+		}
+		return building;
 	}
 
 	//건물 기본정보를 가져옴
