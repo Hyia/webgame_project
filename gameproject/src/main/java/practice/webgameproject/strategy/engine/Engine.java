@@ -732,7 +732,13 @@ public class Engine {
 	private boolean hasAddableConstructOrder(Integer locationID){
 		int counter = 0;
 
-		ThreadHolder holder =threadsHolder.get(locationID); 
+		int index = threadsHolder.indexOf(new ThreadHolder(locationID));
+		ThreadHolder holder;
+		if(index != -1){
+			holder =threadsHolder.get(index);
+		}else{
+			holder = new ThreadHolder(locationID);
+		}
 		for(int i=0; i< holder.threads.size(); i++){
 			if(holder.threads.get(i) instanceof ProductThread){
 				if( (((ProductThread)holder.threads.get(i)).target) instanceof ModelWaitList_Building){
