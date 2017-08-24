@@ -20,14 +20,15 @@
 	<table id='marchtimeTable'>
    <c:forEach items="${marchTimes}" var="mapElement">
       <tr>
-           <td>성 ${mapElement.key.name}(위치:${mapElement.key.locationID})</td>
+           <td colspan="2">성 ${mapElement.key.name}(위치:${mapElement.key.locationID})</td>
       </tr>
            <c:forEach items="${mapElement.value}" var="listElement" >
       <tr>
-              <td>영웅ID: ${listElement.key}</td>
-              <td><c:if test="${listElement.value.isReturning()}">공격중</c:if>
-              <c:if test="${!listElement.value.isReturning()}">귀환중</c:if></td>
-              <td>시간: ${listElement.value.getRemainTime()}</td>
+              <td colspan="2">영웅ID: ${listElement.key}</td>
+              </tr><tr>
+              <td>상태: <c:if test="${listElement.value.isReturning()}">진군</c:if>
+              <c:if test="${!listElement.value.isReturning()}">귀환</c:if></td>
+              <td>${listElement.value.getRemainTime()}</td>
       </tr>
            </c:forEach>
    </c:forEach>
