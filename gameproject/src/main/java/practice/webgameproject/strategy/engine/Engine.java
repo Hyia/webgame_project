@@ -1361,16 +1361,22 @@ public class Engine {
 	
 	public List<ModelBuilding> getBuildingInTown(Integer locationID){
 		List<ModelBuilding> buildings = service.getBuildingList(new ModelCastle(null, null, null, locationID, null));
+		List<ModelBuilding> toreturn = new ArrayList<ModelBuilding>();
 		
 		for(int i=0, j=0; i< 11; i++){
-			if(buildings.get(j).getRoomNumber().intValue() != i){
-				buildings.add(i, new ModelBuilding(locationID, null, 0, i+1));
+			if(buildings.get(j).getRoomNumber().intValue() != (i+1)){
+				toreturn.add(new ModelBuilding(locationID, null, 0, i+1));
 			}else{
+				toreturn.add(buildings.get(j));
 				j++;
 			}
 		}
 		
-		return buildings;
+		for(int i=0; i< toreturn.size();i++){
+			logger.info("건물정보 : " + toreturn.get(i).getKind()==null?"없음":toreturn.get(i).getKind() + "("+toreturn.get(i).getRoomNumber()+")");
+		}
+		
+		return toreturn;
 	}
 	
 	public List<ModelStructures> getBuildableBuildings(ModelCastle target){
