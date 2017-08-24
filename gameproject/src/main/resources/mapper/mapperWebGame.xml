@@ -401,10 +401,10 @@
 					and  #{updateValue.Owner} !=''  then #{updateValue.Owner}
                   	else Owner
                  	end,
-		LacationID = case
-                  	when #{updateValue.LacationID} is not null
-					and  #{updateValue.LacationID} !=0  then #{updateValue.LacationID}
-                  	else LacationID
+		LocationID = case
+                  	when #{updateValue.LocationID} is not null
+					and  #{updateValue.LocationID} !=0  then #{updateValue.LocationID}
+                  	else LocationID
                  	end,
 		Statuus = case
                   	when #{updateValue.Statuus} is not null
