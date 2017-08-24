@@ -18,8 +18,9 @@
  #div2{height: 48%;width: 48%; right: 0; top:0; position: absolute;margin:5px;border:1px solid #0b0b0b;overflow:auto;}
  #div2 input{height: 100%;width:100%;}
  #div2 table{width:100%;height:40%;left: 0; bottom: 0;border:1px solid #0b0b0b;}
- #div2 imgtd,#div2 btn{width: 15%;height:20%;}
+ #div2 imgtd,#div2 btn{width: 20%;height:20%;}
  #div2 explan{width: 70%;height:20%;}
+ #buildlist td{border:1px solid #0b0b0b;}
  #unitInfo td{border:1px solid #00aaed; }
  #div3{height: 48%;width: 48%; right: 0; bottom:0; position: absolute;margin:5px;border:1px solid #FFBB00;}
  #div3 table{position:absolute;left: 0; top: 0;}
@@ -123,7 +124,7 @@
 	        	
 	        	for(var buildings=0;buildings<buildingsKind.length;buildings++){
 	        		if(buildingsKind[buildings]!=2||buildingsKind[buildings]!=3){
-	        			$('#buildlist').append("<tr><td name='imgtd'></td><td name='explan'><p>"+explanation[buildings+1]+"</p></td><td name='btn'><input type='submit' value='Make'/></td></tr>");
+	        			$('#buildlist').append("<tr><td name='imgtd'></td><td name='explan'><p>"+explanation[buildings]+"</p></td><td name='btn'><input type='submit' value='Make'/></td></tr>");
 	        			$('#buildlist tr:eq('+buildings+')>td[name="imgtd"]').append("<img src='/images/img_mael"+(buildings+1)+".png'/>");
 	        		}
 	        		
