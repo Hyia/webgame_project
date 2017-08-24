@@ -426,6 +426,10 @@ public class Engine {
 		who = service.getMember(who);
 		int stocked_resource = who.getSaveProduction();
 		ModelBuilding target = service.getBuilding(locationID,roomNumber);//
+		if(target == null){
+			target = new ModelBuilding(locationID, kind, 0, roomNumber);
+			service.insertBuilding(target);
+		}
 		target.setKind(kind);
 		target.setLevel(0);
 		ModelStructures structure = service.getSturcture(kind);
