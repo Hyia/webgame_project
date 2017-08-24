@@ -11,12 +11,12 @@
       <tr>
            <td>성 ${mapElement.key.name}(위치:${mapElement.key.locationID})</td>
       </tr>
-      <tr>
            <c:forEach items="${mapElement.value}" var="listElement" >
+      <tr>
               <td>건물방번호: ${listElement.key}</td>
               <td>시간: ${listElement.value}</td>
-           </c:forEach>
       </tr>
+           </c:forEach>
    </c:forEach>
 	<table>	
 	<table id='marchtimeTable'>
