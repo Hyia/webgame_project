@@ -460,8 +460,7 @@
                   	else SlotUID
                  	end,
        			 SlotAmount		=	case
-                  	when #{updateValue.SlotAmount} is not null
-					and  #{updateValue.SlotAmount} !=0  then #{updateValue.SlotAmount}
+                  	when #{updateValue.SlotAmount} is not null then #{updateValue.SlotAmount}
                   	else SlotAmount
                  	end
        	WHERE 	 SlotID			=	#{searchValue.SlotID}
