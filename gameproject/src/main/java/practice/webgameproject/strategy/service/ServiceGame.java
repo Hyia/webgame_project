@@ -391,7 +391,7 @@ public class ServiceGame extends DaoGame{
 	}
 
 	@Override
-	public List<ModelBuilding> getBuilding(ModelCastle targetBuilding) {
+	public List<ModelBuilding> getBuilding(ModelBuilding targetBuilding) {
 
 		List<ModelBuilding> result= null;
         
