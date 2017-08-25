@@ -86,7 +86,7 @@ public class TownController {
 
 		model.addAttribute("kind", kinds.size() > 0 ? kinds : "null" ); // 만들어
 		model.addAttribute("roomNumber", roomNumber.size() > 0 ? kinds : "null"); // 만들어
-		model.addAttribute("level", levels); // 만들어
+		model.addAttribute("levels", levels); // 만들어
 		model.addAttribute("mapData", mapData.size() > 0 ? kinds : "null"); //TODO 만들어
 		model.addAttribute("castleLocationID",castleLocationID);
 		model.addAttribute("locationID", locationID);

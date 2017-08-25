@@ -88,9 +88,12 @@
     	var room=1;
      	for(var k=1;k<4;k++){
  			for(var j=1;j<4;j++,kinds++){
- 				if(kind[kinds]==null && ){
+ 				if(kind[kinds]==null){
  					$imgS="<img src='/images/img_maelBuildTyle.png' name='"+room+"' class='my_popup_open'  value='0' /></a>";
- 				}else{
+ 				}else if(kind[kinds]!=null && levels[kinds]==0){
+ 					$imgS="<img src='/images/img_maelBuilding.gif' name='"+room+"' /></a>";
+ 				}
+ 				else{
  					$imgS="<img src='/images/img_mael"+kind[kinds]+".png' name='"+room+"' class='my_popup_open' value='"+kind[kinds]+"'/>";
  				}
  				$('#town tr:eq('+k+')>td:eq('+j+')').append($imgS);
