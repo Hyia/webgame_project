@@ -254,7 +254,7 @@ public class BattleLogMaker {
 	
 	private String makeHeader(){
 		//TODO 초기병력 정보를 담는 가장 위쪽을 만들 것
-		String str = "<table class='logtable'><tr>"
+		String str = "<table class='logtable' border='1'><tr>"
 				+ "<td colspan='12' align='left' class='logdate'>"+new SimpleDateFormat("YYYY/MM/dd/hh:mm:ss").format(logDate)+"</td></tr>"
 				+ "<tr><td colspan='6' class='log_userid'>"+attacker_ID+"</td>"
 				+ "<td colspan='6' class='log_userid'>"+defender_ID+"</td></tr>";
@@ -266,7 +266,7 @@ public class BattleLogMaker {
 	
 	@SuppressWarnings("unchecked")
 	private String makeTail(Map<String,Object> rewards){
-		String str = "<tr><td colspan=12 class=logtitle>피해</td></tr><tr>"
+		String str = "<tr><td colspan='12'><hr></td></tr><tr><td colspan=12 class='logtitle' border='1'>피해</td></tr><tr>"
 				+ "<td colspan='6'><table width='100%'>";
 		
 		for(int i=0; i<attackerArmy.size();i++){

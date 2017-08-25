@@ -88,7 +88,7 @@ public class HeroController {
 		innerHtml+="</tr></table>";
 		
 		model.addAttribute("pic", "[사진"+hero.getPotrait()+"]");
-		model.addAttribute("expl", ("무명의 영웅("+hero.getHeroID()+")입니다. 영웅은 병력을 이끌며 사기에 영향을 미칩니다.<br>"
+		model.addAttribute("expl", ("무명의 영웅("+hero.getHeroID()+")입니다.<br>영웅은 병력을 이끌며 사기에 영향을 미칩니다.<br><hr>"
 				+ innerHtml));
 		
 		model.addAttribute("btnaex", "사진변경");

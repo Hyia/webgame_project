@@ -24,7 +24,7 @@
 <td rowspan='${heros.size()}'>
 <div id="herolist">
 <c:forEach var="i" items="${heros}">
-<table id='${i.heroID}'>
+<table id='${i.heroID}' border="1">
     <tr>
         <td rowspan='2'>이미지(예정)</td>
         <td>무명의 영웅(${i.heroID}) LV.${i.heroLevel}</td>
