@@ -245,6 +245,16 @@ public class DaoGame implements IServices{
 		
 		return session.selectOne("mapper.mysql.mapperWebGame.getXYval_XY",targetXYval);
 	}
+	
+	@Override
+	public List<ModelXYval> getXYval_XYALL(ModelXYval startXY,ModelXYval endXY) {
+		Map<String, ModelXYval> map = new HashMap<String, ModelXYval>();
+		
+		map.put("startXY", startXY);
+		map.put("endXY", endXY);
+		
+		return session.selectOne("mapper.mysql.mapperWebGame.getXYval_XYALL",map);
+	}
 
 	@Override
 	public List<ModelWaitList_Building> getWaitList_Building(ModelCastle targetWitList) {

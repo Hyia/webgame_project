@@ -374,6 +374,20 @@ public class ServiceGame extends DaoGame{
         
         return result;
 	}
+	
+	@Override
+	public List<ModelXYval> getXYval_XYALL(ModelXYval startXY,ModelXYval endXY) {
+
+		List<ModelXYval> result=null;
+        
+        try {
+        	result = dao.getXYval_XYALL(startXY,endXY);
+        } catch (Exception e) {
+            logger.error("getXYval_XYALL " + e.getMessage() );
+        }
+        
+        return result;
+	}
 
 	@Override
 	public List<ModelWaitList_Building> getWaitList_Building(ModelCastle targetWitList) {

@@ -133,6 +133,8 @@ public interface IServices {
 	
 	public ModelXYval					 getXYval_XY				(ModelXYval targetXYval);
 	
+	public List<ModelXYval>				 getXYval_XYALL				(ModelXYval startXY,ModelXYval endXY);
+	
 	public List<ModelWaitList_Building>  getWaitList_Building		(ModelCastle targetWitList);
 	
 	public List<ModelWaitList_Unit>		 getWaitList_Unit			(ModelCastle targetWitList);

@@ -163,6 +163,14 @@
          		 
     </select>
     
+    <!-- 성좌표 정보 가져오기 ver 2 --><!--CHECK-->
+    <select id="getXYval_XYALL" parameterType="hashmap"  resultType="ModelXYval">        
+  		 SELECT * FROM
+      		  xyval where CastleX=#{CastleX} and CastleY=#{CastleY}
+         		 
+    </select>
+    
+    
     <!-- 모든 좌표 정보 가져오기 --><!--CHECK-->
     <select id="getAllXYval" resultType="ModelXYval">        
   		 SELECT * FROM xyval
