@@ -471,6 +471,7 @@ public class Engine {
 	
 	public List<ModelXYval> getMap(int max_width, int max_height, Integer center_locationID){
 		List<ModelXYval> result = new ArrayList<ModelXYval>();
+		List<ModelXYval> toreturn = new ArrayList<ModelXYval>();
 		
 		int halfWidth = (int) (max_width/2);
 		int halfHeight = (int) (max_height/2);
@@ -483,20 +484,22 @@ public class Engine {
 		int arrayStartX = centerX - halfWidth;
 		int arrayStartY = centerY - halfHeight;
 		
-		for(int x=arrayStartX; x< max_width+arrayStartX; x++){
-			for(int y=arrayStartY; y<max_height+arrayStartY; y++){
-				ModelXYval xyval = service.getXYval_XY(new ModelXYval(null, x, y, null));
-				if(xyval != null){
-					result.add(xyval);
+		result = service.getXYval_XYALL(new ModelXYval(null, arrayStartX, arrayStartY, null), new ModelXYval(null, arrayStartX+max_width, arrayStartY+max_height, null));
+
+		for(int x = arrayStartX; x< max_width + arrayStartX; x++){
+			for(int y=arrayStartY; y<max_height + arrayStartY; y++){
+				int index = result.indexOf(new ModelXYval(null, x, y, null));
+				if(index != -1){
+					toreturn.add(result.get(index));
 				}else{
 					//없는 경우 ( 맵 바깥 )
-					result.add(new ModelXYval(null, x, y, IServices.LOCATION_TYPE_INVAILD));
+					toreturn.add(new ModelXYval(null, x, y, IServices.LOCATION_TYPE_INVAILD));
 				}
 			}
 		}
 		
 		
-		return result;
+		return toreturn;
 	}
 	
 	public ModelXYval getXYval_ID(Integer locationID){

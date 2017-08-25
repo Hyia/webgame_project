@@ -3,8 +3,7 @@
 <html>
 <head>
 <style type="text/css">
- table {width:100%;height:100%; border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;
- background-color: #ffcd28;}
+ #worldmaptable,#worldmapoutside {width:100%;height:100%; border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none; background-color: #ffcd28;}
  td { border-collapse:collapse; margin: 0px; padding: 0px;border-spacing: 0px; border-bottom-style: none;}
  #map img{width: 100%;height:100%;}
  #worldmap{width: 100%;height:100%;}
@@ -19,7 +18,7 @@
     	var kind = ${kind};
     	var locationID = ${locations};
 
-    	var $mapTable = "<table>";
+    	var $mapTable = "<table id='worldmaptable'>";
 
     	var k = 0;
     	for(var i=0; i<height; i++){

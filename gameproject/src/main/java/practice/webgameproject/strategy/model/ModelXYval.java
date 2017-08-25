@@ -75,10 +75,11 @@ public class ModelXYval {
 		// TODO Auto-generated method stub
 		if(obj instanceof ModelXYval){
 			ModelXYval target = (ModelXYval)obj;
-			if(target.getLocationID() !=null){
+			if(target.getLocationID() !=null && this.LocationID != null){
 				return target.LocationID.intValue() == this.LocationID.intValue();
 			}else{
-				return (target.getCastleX()==this.CastleX) && (target.getCastleY()==this.CastleY);
+				
+				return (target.getCastleX().intValue()==this.CastleX.intValue()) && (target.getCastleY().intValue()==this.CastleY.intValue());
 			}
 		}
 		if(obj instanceof Integer){
